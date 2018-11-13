@@ -1,7 +1,7 @@
 {
-  "name": "discordslave",
-  "version": "0.2.0",
-  "description": "A slave bot using Discord.js",
+  "name": "aftonbladet-spell-checker",
+  "version": "0.1.0",
+  "description": "A spell checker for Aftonbladet.se",
   "main": "main.js",
   "scripts": {
     "start": "node main.js"
