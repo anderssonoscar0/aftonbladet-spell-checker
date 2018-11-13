@@ -1,0 +1,2 @@
+# aftonbladet-spell-checker
+
