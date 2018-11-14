@@ -17,8 +17,9 @@ const config = require('./config.js');
       .then(res => res.text())
       .then(htmlbody => {
         var parsedBody = HTMLParser.parse(htmlbody);
-        var authorName = parsedBody.querySelector('._3ij4i').rawText;
-        console.log(authorName);
+        var authorName = parsedBody.querySelector('._3ij4i').rawText.toLowerCase().replace(' ', '.');
+        var authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se';
+        console.log(authorName + ' : ' + authorEmail);
       });
   });
 })();
