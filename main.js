@@ -18,7 +18,7 @@ const config = require('./config.js');
       .then(htmlbody => {
         var parsedBody = HTMLParser.parse(htmlbody);
         var authorName = parsedBody.querySelector('._3ij4i').rawText.toLowerCase().replace(' ', '.');
-        var authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se';
+        var authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se'; // If authorName 'TT' -> newsroom is the author
         console.log(authorName + ' : ' + authorEmail);
       });
   });
