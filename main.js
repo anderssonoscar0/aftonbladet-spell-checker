@@ -4,6 +4,14 @@ const client = new Discord.Client();
 let Parser = require('rss-parser');
 let parser = new Parser();
 var SpellChecker = require('simple-spellchecker');
+var myDictionary = null;
+
+// Load dictionary.
+SpellChecker.getDictionary('sv-SE', './node_modules/simple-spellchecker/dict', function (err, result) {
+  if (!err) {
+    myDictionary = result;
+  }
+});
 
 const fetch = require('node-fetch');
 const config = require('./config.js');
@@ -58,7 +66,8 @@ function checkSpelling (html, authorEmail) {
   let wordArray = html.split(' ');
   for (var i = 0; i < wordArray.length; i++) {
     const cleanedWord = cleanWord(wordArray[i]);
-    console.log(cleanedWord);
+    var test = myDictionary.spellCheck(cleanedWord);
+    console.log(test + ' - ' + cleanedWord);
   }
 }
 
@@ -66,10 +75,12 @@ function cleanWord (word) {
   let cleanedWord = word;
   cleanedWord = cleanedWord.replace('+', '');
   cleanedWord = cleanedWord.replace('-', '');
+  cleanedWord = cleanedWord.replace('–', '');
   cleanedWord = cleanedWord.replace('?', '');
   cleanedWord = cleanedWord.replace('FÖLJ', '');
   cleanedWord = cleanedWord.replace('”', '');
   cleanedWord = cleanedWord.replace('!', '');
+  cleanedWord = cleanedWord.replace(',', '');
   return cleanedWord;
 }
 
