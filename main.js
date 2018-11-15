@@ -53,21 +53,36 @@ function readRRS () {
           let parsedBody = HTMLParser.parse(htmlbody);
           const authorName = parsedBody.querySelector('._3ij4i').rawText.toLowerCase().replace(' ', '.');
           const authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se'; // If authorName 'TT' -> newsroom is the author
-
           let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ');
-          checkSpelling(articleBody, authorEmail);
+          checkSpelling(articleBody, authorEmail, articleId);
         });
     });
   })();
 }
 
-function checkSpelling (html, authorEmail) {
+function checkSpelling (html, authorEmail, articleId) {
   console.log('running check');
   let wordArray = html.split(' ');
+  console.log('------------------------------------');
   for (var i = 0; i < wordArray.length; i++) {
     const cleanedWord = cleanWord(wordArray[i]);
     var test = myDictionary.spellCheck(cleanedWord);
-    console.log(test + ' - ' + cleanedWord);
+    if (wordArray[i] === 'LÄS') {
+      console.log('BREAKING');
+      break;
+    } else if (wordArray[i] === 'Foto:') {
+      i = i + 2;
+    } else if (/[A-Z]/.test(wordArray[i][0]) === true && test === false) {
+      // console.log('"' + wordArray[i] + '" is proably a name. SKIPPING');
+      i++;
+    } else if (wordArray[i].includes('(') || wordArray[i].includes(')')) {
+      i++;
+      // console.log(wordArray[i] + ' contains an invalid character. SKIPPING');
+    } else {
+      if (test === false) {
+        console.log(test + ' - ' + cleanedWord);
+      }
+    }
   }
 }
 
@@ -81,6 +96,7 @@ function cleanWord (word) {
   cleanedWord = cleanedWord.replace('”', '');
   cleanedWord = cleanedWord.replace('!', '');
   cleanedWord = cleanedWord.replace(',', '');
+  cleanedWord = cleanedWord.replace('•', '');
   return cleanedWord;
 }
 
