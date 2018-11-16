@@ -66,16 +66,13 @@ function checkSpelling (html, authorEmail, articleId) {
   console.log('------------------------------------');
   for (var i = 0; i < wordArray.length; i++) {
     const cleanedWord = cleanWord(wordArray[i]);
-    var test = myDictionary.spellCheck(cleanedWord);
-    if (wordArray[i] === 'LÄS') {
-      console.log('BREAKING');
-      break;
-    } else if (/[A-Z]/.test(wordArray[i]) === true && test === false) {
-      // console.log('"' + wordArray[i] + '" is proably a name. SKIPPING');
-      i++;
+    
+    if (cleanedWord === undefined) {
+      // Word got 'removed' at cleaning. SKIPPING
     } else {
-      if (test === false) {
-        console.log(test + ' - ' + cleanedWord);
+      var isSpellingCorrect = myDictionary.spellCheck(cleanedWord);
+      if (isSpellingCorrect === false) {
+        console.log(isSpellingCorrect + ' - ' + cleanedWord);
         const wordInSentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
           wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3];
         // alertError(cleanedWord, wordInSentence);
@@ -86,10 +83,9 @@ function checkSpelling (html, authorEmail, articleId) {
 }
 
 function cleanWord (word) {
-  const invalidChars = /[ !•”–@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?1234567890]/;
+  const invalidChars = /[ A-ZÅÄÖ!•►”–@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?1234567890]/;
   if (invalidChars.test(word) || word === '') {
-    // console.log(cleanedWord + ' - Contains invalid character. SKIPPING');
-    return 'Ebba'; // The word contains invalid characters, returning 'Ebba' since names will be deleted later.
+    return undefined; // The word contains invalid characters, returning 'Ebba' since names will be deleted later.
   } else {
     return word;
   }
