@@ -119,20 +119,17 @@ function alertError (word, sentence) {
 function addWordToDictionary (word) {
   // Adding word to Dictionary
   try {
-    fs.appendFileSync('./dict/sv-SE.dic', word);
-    console.log('The "data to append" was appended to file!');
+    fs.appendFileSync('./dict/sv-SE.dic', '\n' + word);
   } catch (err) {
     /* Handle the error */
     throw err;
   }
-  console.log('try is over');
   normalize();
 }
 
 function normalize () {
   SpellChecker.normalizeDictionary('./dict/sv-SE.dic', './dict/sv-SE.dic', function (err, success) {
     if (success) {
-      console.log(success);
       console.log('The file was normalized');
     }
     if (err) {
