@@ -85,7 +85,7 @@ function checkSpelling (html, authorEmail, articleId) {
 function cleanWord (word) {
   const invalidChars = /[ A-ZÅÄÖ!•►”–@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?1234567890]/;
   if (invalidChars.test(word) || word === '') {
-    return undefined; // The word contains invalid characters, returning 'Ebba' since names will be deleted later.
+    return undefined; // The word contains invalid characters, returning undefined and skipping it later.
   } else {
     return word;
   }
