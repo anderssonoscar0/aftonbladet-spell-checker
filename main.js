@@ -70,12 +70,15 @@ function checkSpelling (html, authorEmail, articleId) {
     if (wordArray[i] === 'LÄS') {
       console.log('BREAKING');
       break;
-    } else if (/[A-Z]/.test(wordArray[i][0]) === true && test === false) {
+    } else if (/[A-Z]/.test(wordArray[i]) === true && test === false) {
       // console.log('"' + wordArray[i] + '" is proably a name. SKIPPING');
       i++;
     } else {
       if (test === false) {
         console.log(test + ' - ' + cleanedWord);
+        const wordInSentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
+          wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3];
+        // alertError(cleanedWord, wordInSentence);
       }
     }
   }
@@ -93,7 +96,20 @@ function cleanWord (word) {
   }
 }
 
-function alertError (t) {
+function alertError (word, sentence) {
   console.log('alerting');
-  client.channels.get(config.discordChannelId).send('ALERT ALERT');
+  const embed = {
+    'color': 11738382,
+    'title': 'Aftonbladet-Spell-Checker',
+    'fields': [
+      {
+        'name': 'Misspelled word',
+        'value': word
+      }, {
+        'name': 'The word in sentence',
+        'value': sentence
+      }
+    ]
+  };
+  client.channels.get(config.discordChannelId).send('', { embed });
 }
