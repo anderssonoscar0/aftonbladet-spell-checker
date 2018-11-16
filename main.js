@@ -79,13 +79,13 @@ function checkSpelling (html, authorEmail, articleId) {
       }
     }
   }
-  console.log('Check for article ' + articleId + ' has been completed.')
+  console.log('Check for article ' + articleId + ' has been completed.');
 }
 
 function cleanWord (word) {
   let cleanedWord = word;
   const invalidChars = /[ !•”–@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?1234567890]/;
-  if (invalidChars.test(cleanedWord)) {
+  if (invalidChars.test(cleanedWord) || cleanedWord === '') {
     // console.log(cleanedWord + ' - Contains invalid character. SKIPPING');
     return 'Ebba';
   } else {
