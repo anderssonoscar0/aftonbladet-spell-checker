@@ -3,13 +3,16 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 let Parser = require('rss-parser');
 let parser = new Parser();
+const fs = require('fs');
 var SpellChecker = require('simple-spellchecker');
 var myDictionary = null;
 
 // Load dictionary.
-SpellChecker.getDictionary('sv-SE', './node_modules/simple-spellchecker/dict', function (err, result) {
+SpellChecker.getDictionary('sv-SE', './dict', function (err, result) {
   if (!err) {
     myDictionary = result;
+  } else {
+    console.log(err);
   }
 });
 
@@ -19,7 +22,7 @@ const config = require('./config.js');
 // Discord startup
 client.on('ready', () => {
   console.log('Startup Sucess!');
-  readRRS();
+  // readRRS();
 });
 client.login(config.discordToken);
 
@@ -38,6 +41,10 @@ client.on('message', message => {
 
   if (command === 'deny') {
     message.channel.send('Denying!');
+  }
+
+  if (command === 'add') {
+    addWordToDictionary(args[0]);
   }
 });
 
@@ -107,4 +114,29 @@ function alertError (word, sentence) {
     ]
   };
   client.channels.get(config.discordChannelId).send('', { embed });
+}
+
+function addWordToDictionary (word) {
+  // Adding word to Dictionary
+  try {
+    fs.appendFileSync('./dict/sv-SE.dic', word);
+    console.log('The "data to append" was appended to file!');
+  } catch (err) {
+    /* Handle the error */
+    throw err;
+  }
+  console.log('try is over');
+  normalize();
+}
+
+function normalize () {
+  SpellChecker.normalizeDictionary('./dict/sv-SE.dic', './dict/sv-SE.dic', function (err, success) {
+    if (success) {
+      console.log(success);
+      console.log('The file was normalized');
+    }
+    if (err) {
+      throw err;
+    }
+  });
 }
