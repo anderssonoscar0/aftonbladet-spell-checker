@@ -87,7 +87,7 @@ function cleanWord (word) {
   const invalidChars = /[ !•”–@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?1234567890]/;
   if (invalidChars.test(cleanedWord) || cleanedWord === '') {
     // console.log(cleanedWord + ' - Contains invalid character. SKIPPING');
-    return 'Ebba';
+    return 'Ebba'; // The word contains invalid characters, returning 'Ebba' since names will be deleted later.
   } else {
     return cleanedWord;
   }
