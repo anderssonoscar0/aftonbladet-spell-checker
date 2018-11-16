@@ -61,7 +61,7 @@ function readRRS () {
 }
 
 function checkSpelling (html, authorEmail, articleId) {
-  console.log('running check');
+  console.log('Running check on article ' + articleId);
   let wordArray = html.split(' ');
   console.log('------------------------------------');
   for (var i = 0; i < wordArray.length; i++) {
@@ -70,34 +70,27 @@ function checkSpelling (html, authorEmail, articleId) {
     if (wordArray[i] === 'LÄS') {
       console.log('BREAKING');
       break;
-    } else if (wordArray[i] === 'Foto:') {
-      i = i + 2;
     } else if (/[A-Z]/.test(wordArray[i][0]) === true && test === false) {
       // console.log('"' + wordArray[i] + '" is proably a name. SKIPPING');
       i++;
-    } else if (wordArray[i].includes('(') || wordArray[i].includes(')')) {
-      i++;
-      // console.log(wordArray[i] + ' contains an invalid character. SKIPPING');
     } else {
       if (test === false) {
         console.log(test + ' - ' + cleanedWord);
       }
     }
   }
+  console.log('Check for article ' + articleId + ' has been completed.')
 }
 
 function cleanWord (word) {
   let cleanedWord = word;
-  cleanedWord = cleanedWord.replace('+', '');
-  cleanedWord = cleanedWord.replace('-', '');
-  cleanedWord = cleanedWord.replace('–', '');
-  cleanedWord = cleanedWord.replace('?', '');
-  cleanedWord = cleanedWord.replace('FÖLJ', '');
-  cleanedWord = cleanedWord.replace('”', '');
-  cleanedWord = cleanedWord.replace('!', '');
-  cleanedWord = cleanedWord.replace(',', '');
-  cleanedWord = cleanedWord.replace('•', '');
-  return cleanedWord;
+  const invalidChars = /[ !•”–@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?1234567890]/;
+  if (invalidChars.test(cleanedWord)) {
+    // console.log(cleanedWord + ' - Contains invalid character. SKIPPING');
+    return 'Ebba';
+  } else {
+    return cleanedWord;
+  }
 }
 
 function alertError (t) {
