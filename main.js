@@ -150,10 +150,7 @@ function addWordToDictionary (args) {
     if (err) throw err;
     let words = [];
     let sentences = [];
-    console.log(doc.words.length)
     for (var i = 0; i < doc.words.length; i++) {
-      console.log(doc.words[i]);
-      console.log(i + ' vs ' + wordSpotInArray);
       if (wordSpotInArray === i) {
         // Word to be added to dictionary. SKIPPING
         try {
@@ -171,7 +168,6 @@ function addWordToDictionary (args) {
     }
     doc.words = words;
     doc.sentences = sentences;
-    console.log(doc.words.length)
     doc.alerted = false;
     doc.save();
     alertSchedule();
@@ -192,7 +188,6 @@ function normalize () {
 // Checks for new articles and send an discord alert.
 function alertSchedule () {
   console.log('Running alert');
-
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
   });
