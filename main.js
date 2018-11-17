@@ -73,9 +73,9 @@ function readRRS () {
 }
 
 function checkSpelling (html, authorEmail, articleId, authorEmail) {
-  console.log('Running check on article ' + articleId);
-  let wordArray = html.split(' ');
   console.log('------------------------------------');
+  let wordArray = html.split(' ');
+  console.log('Running check on article ' + articleId);
   var mispelledWords = [];
   var sentences = [];
 
@@ -102,7 +102,7 @@ function checkSpelling (html, authorEmail, articleId, authorEmail) {
     }
   }
   addNewArticle(mispelledWords, sentences, articleId, authorEmail); // Add the misspelled words to MongoDB
-  console.log('Check for article ' + articleId + ' has been completed.');
+  console.log('-----------------------------');
 }
 
 function cleanWord (word) {
@@ -119,7 +119,7 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
   console.log(articleId);
   console.log(words);
   console.log(sentences);
-  console.log('-----------------------------');
+  console.log('Check for article ' + articleId + ' has been completed.');
 
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
