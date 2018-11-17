@@ -1,5 +1,6 @@
 var HTMLParser = require('node-html-parser');
 const Discord = require('discord.js');
+var mongoose = require('mongoose');
 const client = new Discord.Client();
 let Parser = require('rss-parser');
 let parser = new Parser();
@@ -18,11 +19,13 @@ SpellChecker.getDictionary('sv-SE', './dict', function (err, result) {
 
 const fetch = require('node-fetch');
 const config = require('./config.js');
+var Article = require('./schemas/article.js');
 
 // Discord startup
 client.on('ready', () => {
   console.log('Startup Sucess!');
-  // readRRS();
+  readRRS();
+  // testing();
 });
 client.login(config.discordToken);
 
@@ -71,21 +74,24 @@ function checkSpelling (html, authorEmail, articleId) {
   console.log('Running check on article ' + articleId);
   let wordArray = html.split(' ');
   console.log('------------------------------------');
+  var mispelledWords = [];
+  var sentences = [];
+
   for (var i = 0; i < wordArray.length; i++) {
     const cleanedWord = cleanWord(wordArray[i]);
-    
     if (cleanedWord === undefined) {
       // Word got 'removed' at cleaning. SKIPPING
     } else {
       var isSpellingCorrect = myDictionary.spellCheck(cleanedWord);
       if (isSpellingCorrect === false) {
         console.log(isSpellingCorrect + ' - ' + cleanedWord);
-        const wordInSentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
-          wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3];
-        // alertError(cleanedWord, wordInSentence);
+        mispelledWords.push(cleanedWord);
+        sentences.push(wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
+        wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3]);
       }
     }
   }
+  addNewArticle(mispelledWords, sentences, articleId);
   console.log('Check for article ' + articleId + ' has been completed.');
 }
 
@@ -96,6 +102,25 @@ function cleanWord (word) {
   } else {
     return word;
   }
+}
+
+function addNewArticle (words, sentences, articleId) {
+  console.log('Adding mispelled word');
+  console.log(articleId);
+  console.log(words);
+  console.log(sentences);
+  console.log('-----------------------------');
+
+  mongoose.connect(config.mongodbURI, {
+    useNewUrlParser: true
+  });
+
+  const newArticle = new Article({
+    _id: articleId,
+    words: words,
+    sentences: sentences
+  });
+  newArticle.save();
 }
 
 function alertError (word, sentence) {
@@ -136,4 +161,17 @@ function normalize () {
       throw err;
     }
   });
+}
+
+function testing () {
+  const articleId = '/a/ng60Ba';
+  fetch(config.aftonbladetBaseUrl + articleId)
+    .then(res => res.text())
+    .then(htmlbody => {
+      let parsedBody = HTMLParser.parse(htmlbody);
+      const authorName = parsedBody.querySelector('._3ij4i').rawText.toLowerCase().replace(' ', '.');
+      const authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se'; // If authorName 'TT' -> newsroom is the author
+      let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ');
+      checkSpelling(articleBody, authorEmail, articleId);
+    });
 }

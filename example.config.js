@@ -6,5 +6,6 @@ module.exports = {
   mailPort: 1,
   mailServerAdress: 'x',
   mailAdress: 'x',
-  mailPassword: 'x'
+  mailPassword: 'x',
+  mongodbURI: 'x'
 };
