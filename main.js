@@ -66,13 +66,13 @@ function readRRS () {
           const authorName = parsedBody.querySelector('._3ij4i').rawText.toLowerCase().replace(' ', '.');
           const authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se'; // If authorName 'TT' -> newsroom is the author
           let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ');
-          checkSpelling(articleBody, authorEmail, articleId);
+          checkSpelling(articleBody, authorEmail, articleId, authorEmail);
         });
     });
   })();
 }
 
-function checkSpelling (html, authorEmail, articleId) {
+function checkSpelling (html, authorEmail, articleId, authorEmail) {
   console.log('Running check on article ' + articleId);
   let wordArray = html.split(' ');
   console.log('------------------------------------');
@@ -101,7 +101,7 @@ function checkSpelling (html, authorEmail, articleId) {
       }
     }
   }
-  addNewArticle(mispelledWords, sentences, articleId); // Add the misspelled words to MongoDB
+  addNewArticle(mispelledWords, sentences, articleId, authorEmail); // Add the misspelled words to MongoDB
   console.log('Check for article ' + articleId + ' has been completed.');
 }
 
@@ -114,7 +114,7 @@ function cleanWord (word) {
   }
 }
 
-function addNewArticle (words, sentences, articleId) {
+function addNewArticle (words, sentences, articleId, authorEmail) {
   console.log('Adding mispelled word');
   console.log(articleId);
   console.log(words);
@@ -128,7 +128,8 @@ function addNewArticle (words, sentences, articleId) {
   const newArticle = new Article({
     _id: articleId,
     words: words,
-    sentences: sentences
+    sentences: sentences,
+    authorEmail: authorEmail
   });
   newArticle.save();
 }
@@ -154,6 +155,7 @@ function normalize () {
     }
   });
 }
+
 
 function testing () {
   const articleId = '/a/ng60Ba';

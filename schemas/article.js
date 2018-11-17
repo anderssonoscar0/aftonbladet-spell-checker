@@ -6,6 +6,7 @@ var newArticleSchema = new Schema({
   words: { type: Array },
   sentences: { type: Array },
   alerted: { type: Boolean, default: false },
+  authorEmail: { type: String },
   date: { type: Date, default: Date.now }
 }, { runSettersOnQuery: true });
 
