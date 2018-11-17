@@ -1,6 +1,7 @@
 var HTMLParser = require('node-html-parser');
 const Discord = require('discord.js');
 var mongoose = require('mongoose');
+var schedule = require('node-schedule');
 const client = new Discord.Client();
 let Parser = require('rss-parser');
 let parser = new Parser();
@@ -24,8 +25,9 @@ var Article = require('./schemas/article.js');
 // Discord startup
 client.on('ready', () => {
   console.log('Startup Sucess!');
-  // readRRS();
-  testing();
+  readRRS();
+  // testing();
+  // alertSchedule();
 });
 client.login(config.discordToken);
 
@@ -131,24 +133,6 @@ function addNewArticle (words, sentences, articleId) {
   newArticle.save();
 }
 
-function alertError (word, sentence) {
-  console.log('alerting');
-  const embed = {
-    'color': 11738382,
-    'title': 'Aftonbladet-Spell-Checker',
-    'fields': [
-      {
-        'name': 'Misspelled word',
-        'value': word
-      }, {
-        'name': 'The word in sentence',
-        'value': sentence
-      }
-    ]
-  };
-  client.channels.get(config.discordChannelId).send('', { embed });
-}
-
 function addWordToDictionary (word) {
   // Adding word to Dictionary
   try {
@@ -183,3 +167,57 @@ function testing () {
       checkSpelling(articleBody, authorEmail, articleId);
     });
 }
+
+// Checks for new articles and send an discord alert.
+function alertSchedule () {
+  console.log('Running alert');
+
+  mongoose.connect(config.mongodbURI, {
+    useNewUrlParser: true
+  });
+  const query = Article.find({ 'alerted': false });
+  query.limit(5);
+
+  query.exec(function (err, docs) {
+    if (err) throw err;
+    docs.forEach(article => {
+      console.log(article._id);
+      let words = '';
+      let sentences = '';
+      for (var i = 0; i < article.words.length; i++) {
+        words = words + '(' + [i] + ') - ' + article.words[i] + '\n';
+        sentences = sentences + '(' + [i] + ') - ' + article.sentences[i] + '\n';
+      }
+
+      const embed = {
+        'color': 11738382,
+        'timestamp': article.date,
+        'footer': {
+          'icon_url': 'https://cdn.discordapp.com/embed/avatars/0.png',
+          'text': article._id
+        },
+        'title': 'Aftonbladet-Spell-Checker',
+        'fields': [
+          {
+            'name': 'Misspelled words',
+            'value': words
+          }, {
+            'name': 'The words in sentence',
+            'value': sentences
+          }
+        ]
+      };
+      client.channels.get(config.discordChannelId).send('Link to article ' + config.aftonbladetBaseUrl + article._id, { embed });
+      Article.findOne({ '_id': article._id }, function (err, doc) {
+        if (err) throw err;
+        doc.alerted = true;
+        doc.save();
+      });
+    });
+  });
+}
+
+// Schedule alert every 5 minutes
+schedule.scheduleJob('*/1 * * * *', function () {
+  alertSchedule();
+});
