@@ -26,7 +26,6 @@ var Article = require('./schemas/article.js');
 client.on('ready', () => {
   console.log('Startup Sucess!');
   readRRS();
-  // testing();
   // alertSchedule();
 });
 client.login(config.discordToken);
@@ -154,20 +153,6 @@ function normalize () {
       throw err;
     }
   });
-}
-
-
-function testing () {
-  const articleId = '/a/ng60Ba';
-  fetch(config.aftonbladetBaseUrl + articleId)
-    .then(res => res.text())
-    .then(htmlbody => {
-      let parsedBody = HTMLParser.parse(htmlbody);
-      const authorName = parsedBody.querySelector('._3ij4i').rawText.toLowerCase().replace(' ', '.');
-      const authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se'; // If authorName 'TT' -> newsroom is the author
-      let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ');
-      checkSpelling(articleBody, authorEmail, articleId);
-    });
 }
 
 // Checks for new articles and send an discord alert.
