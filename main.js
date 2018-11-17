@@ -123,9 +123,6 @@ function cleanWord (word) {
 
 function addNewArticle (words, sentences, articleId, authorEmail) {
   console.log('Adding mispelled word');
-  console.log(articleId);
-  console.log(words);
-  console.log(sentences);
   console.log('Check for article ' + articleId + ' has been completed.');
 
   mongoose.connect(config.mongodbURI, {
@@ -138,7 +135,15 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
     sentences: sentences,
     authorEmail: authorEmail
   });
-  newArticle.save();
+  newArticle.save(function(err) {
+    if (err) {
+      if (err.code === 11000) {
+        console.log(articleId + ' has already been checked for errors.');
+      } else {
+        throw err;
+      }
+    }
+  });
 }
 
 function addWordToDictionary (args) {
