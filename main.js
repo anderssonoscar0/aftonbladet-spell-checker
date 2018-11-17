@@ -196,9 +196,8 @@ function alertSchedule () {
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
   });
-  const query = Article.find({ 'alerted': false });
+  const query = Article.find({alerted: false, words: { $exists: true, $not: {$size: 0}}, sentences: { $exists: true, $not: {$size: 0}}});
   query.limit(5);
-
   query.exec(function (err, docs) {
     if (err) throw err;
     docs.forEach(article => {
