@@ -18,6 +18,7 @@ SpellChecker.getDictionary('sv-SE', './dict', function (err, result) {
   }
 });
 
+
 const fetch = require('node-fetch');
 const config = require('./config.js');
 var Article = require('./schemas/article.js');
@@ -32,6 +33,7 @@ client.login(config.discordToken);
 
 // Discord listen
 client.on('message', message => {
+
   if (!message.content.startsWith(config.discordPrefix)) return;
   if (!message.channel.id === config.discordChannelId) return;
   const args = message.content.slice(config.discordPrefix.length).trim().split(/ +/g);
@@ -150,7 +152,6 @@ function addWordToDictionary (args) {
   // Adding word to Dictionary
   const wordSpotInArray = parseInt(args[0]);
   const articleId = args[1];
-  
   Article.findOne({ '_id': articleId }, function (err, doc) {
     if (err) throw err;
     let words = [];
@@ -175,8 +176,8 @@ function addWordToDictionary (args) {
     doc.sentences = sentences;
     doc.alerted = false;
     doc.save();
-    alertSchedule();
   });
+  alertSchedule();
 }
 
 function normalize () {
