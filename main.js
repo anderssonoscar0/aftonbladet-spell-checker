@@ -24,8 +24,8 @@ var Article = require('./schemas/article.js');
 // Discord startup
 client.on('ready', () => {
   console.log('Startup Sucess!');
-  readRRS();
-  // testing();
+  // readRRS();
+  testing();
 });
 client.login(config.discordToken);
 
@@ -85,13 +85,21 @@ function checkSpelling (html, authorEmail, articleId) {
       var isSpellingCorrect = myDictionary.spellCheck(cleanedWord);
       if (isSpellingCorrect === false) {
         console.log(isSpellingCorrect + ' - ' + cleanedWord);
-        mispelledWords.push(cleanedWord);
-        sentences.push(wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
-        wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3]);
+        const sentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
+        wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3];
+
+        // Check if the sentence contains invalid characters
+        const invalidChars = /[!•►”–@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?1234567890]/;
+        if (invalidChars.test(sentence)) {
+          // Sentence contains invalid characters. SKIPPING
+        } else {
+          mispelledWords.push(cleanedWord);
+          sentences.push(sentence);
+        }
       }
     }
   }
-  addNewArticle(mispelledWords, sentences, articleId);
+  addNewArticle(mispelledWords, sentences, articleId); // Add the misspelled words to MongoDB
   console.log('Check for article ' + articleId + ' has been completed.');
 }
 
