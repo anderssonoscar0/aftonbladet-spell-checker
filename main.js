@@ -93,9 +93,10 @@ function checkSpelling (html, authorEmail, articleId, authorEmail) {
     if (cleanedWord === undefined) {
       // Word got 'removed' at cleaning. SKIPPING
     } else {
-      var isSpellingCorrect = myDictionary.spellCheck(cleanedWord);
-      if (isSpellingCorrect === false) {
-        console.log(isSpellingCorrect + ' - ' + cleanedWord);
+      var isWordInDictionary = myDictionary.spellCheck(cleanedWord);
+      var isWordMisspelled = myDictionary.isMisspelled(cleanedWord);
+      if (isWordInDictionary === false && isWordMisspelled === true) {
+        console.log(isWordInDictionary + ' - ' + cleanedWord);
         const sentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
         wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3];
 
