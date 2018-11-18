@@ -51,8 +51,8 @@ client.on('message', message => {
     const invalidChars = /[ a-z!✓•▪►”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
     if (args.length < 2) {
       message.channel.send('Missing argument');
-    } else if (invalidChars.test(args[0])) {
-      message.channel.send('Argument contains invalid characters. Command is ".addword <Number> <ArticleId>"');
+    } else if (!invalidChars.test(args[0])) {
+      message.channel.send('Command is ".addword <Number> <ArticleId>"');
     } else {
       addWordToDictionary(args);
     }
@@ -148,14 +148,15 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
 
 function addWordToDictionary (args) {
   // Adding word to Dictionary
-  const wordSpotInArray = parseInt(args[0]);
-  const articleId = args[1];
+  const articleId = args[0];
+  console.log('article id is' + articleId);
+  args.shift(); // Remove the first item in args (The article ID)
   Article.findOne({ '_id': articleId }, function (err, doc) {
     if (err) throw err;
     let words = [];
     let sentences = [];
     for (var i = 0; i < doc.words.length; i++) {
-      if (wordSpotInArray === i) {
+      if (args.includes(i.toString())) {
         // Word to be added to dictionary. SKIPPING
         try {
           fs.appendFileSync('./dict/sv-SE.dic', '\n' + doc.words[i]);
