@@ -18,7 +18,6 @@ SpellChecker.getDictionary('sv-SE', './dict', function (err, result) {
   }
 });
 
-
 const fetch = require('node-fetch');
 const config = require('./config.js');
 var Article = require('./schemas/article.js');
@@ -33,7 +32,6 @@ client.login(config.discordToken);
 
 // Discord listen
 client.on('message', message => {
-
   if (!message.content.startsWith(config.discordPrefix)) return;
   if (!message.channel.id === config.discordChannelId) return;
   const args = message.content.slice(config.discordPrefix.length).trim().split(/ +/g);
@@ -58,7 +56,6 @@ client.on('message', message => {
     } else {
       addWordToDictionary(args);
     }
-   
   }
 });
 
@@ -81,7 +78,7 @@ function readRRS () {
   })();
 }
 
-function checkSpelling (html, authorEmail, articleId, authorEmail) {
+function checkSpelling (html, authorEmail, articleId) {
   console.log('------------------------------------');
   let wordArray = html.split(' ');
   console.log('Running check on article ' + articleId);
@@ -138,7 +135,7 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
     sentences: sentences,
     authorEmail: authorEmail
   });
-  newArticle.save(function(err) {
+  newArticle.save(function (err) {
     if (err) {
       if (err.code === 11000) {
         console.log(articleId + ' has already been checked for errors.');
@@ -198,7 +195,7 @@ function alertSchedule () {
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
   });
-  const query = Article.find({alerted: false, words: { $exists: true, $not: {$size: 0}}, sentences: { $exists: true, $not: {$size: 0}}});
+  const query = Article.find({ alerted: false, words: { $exists: true, $not: { $size: 0 } }, sentences: { $exists: true, $not: { $size: 0 } } });
   query.limit(5);
   query.exec(function (err, docs) {
     if (err) throw err;
