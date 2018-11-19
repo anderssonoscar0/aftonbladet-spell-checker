@@ -241,3 +241,8 @@ function alertSchedule () {
 schedule.scheduleJob('*/1 * * * *', function () {
   alertSchedule();
 });
+
+// Scheudule article search every 5 minutes
+schedule.scheduleJob('*/5 * * * *', function () {
+  readRRS();
+});
