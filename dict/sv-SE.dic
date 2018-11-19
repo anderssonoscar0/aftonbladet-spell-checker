@@ -8006,6 +8006,7 @@ ASXX#a5349|a5350|a5351|a5352|a5353|a5354|a5355|a5356
 åsyftat
 åsyftats
 asyl
+asylansökan
 asylen
 asylens
 asyler
@@ -33405,6 +33406,7 @@ figurers
 figurs
 fika
 fikade
+fikapaus
 fikar
 fikat
 fikon
@@ -41186,6 +41188,8 @@ förvarar
 förvaras
 förvarat
 förvarats
+förvaret
+förvaret
 förvaring
 förvaringen
 förvaringens
@@ -44233,6 +44237,8 @@ gälldes
 galler
 gäller
 galleri
+gallerian
+gallerian
 gallerier
 gallerierna
 galleriernas
@@ -52321,6 +52327,7 @@ hjälpe
 hjälpen
 hjälpens
 hjälper
+hjälpinsatser
 hjälplig
 hjälpliga
 hjälpligs
@@ -75867,6 +75874,7 @@ liljors
 lilla
 lillas
 lille
+lillebror
 lilles
 lillfinger
 lillfingers
@@ -78924,6 +78932,7 @@ måndagars
 måndagen
 måndagens
 måndags
+måndagskvällen
 mandat
 mandaten
 mandatens
@@ -86658,6 +86667,7 @@ nyföddas
 nyfödde
 nyföddes
 nyfödds
+nyförälskade
 nyförvärvad
 nyförvärvade
 nyförvärvades
@@ -86804,6 +86814,7 @@ nypornas
 nypors
 nypris
 nyps
+nypt
 Nyqvist
 Nyqvists
 NYR#n1497|n1898
@@ -94512,6 +94523,7 @@ personbeskrivningars
 personbeskrivningen
 personbeskrivningens
 personbeskrivnings
+personbil
 persondator
 persondatorer
 persondatorerna
@@ -104278,6 +104290,7 @@ säkerhetsanordningars
 säkerhetsanordningen
 säkerhetsanordningens
 säkerhetsanordnings
+säkerhetsläget
 säkerligen
 sakerna
 sakernas
@@ -109561,6 +109574,7 @@ skottets
 skotthåll
 skotthålls
 skotting
+skottlossning
 skottlossningar
 skottlossningen
 skottning
@@ -129991,6 +130005,9 @@ utvisar
 utvisas
 utvisat
 utvisats
+utvisningar
+utvisningarna
+utvisningen
 uv
 uvar
 uvarna
