@@ -68,6 +68,15 @@ client.on('message', message => {
       updateArticleError(args, false);
     }
   }
+
+  if (command === 'clear') {
+    if (message.member.hasPermission('MANAGE_MESSAGES')) {
+      message.channel.fetchMessages()
+        .then(function (list) {
+          message.channel.bulkDelete(list);
+        }, function (err) { throw err; });
+    }
+  }
 });
 
 function readRRS () {
