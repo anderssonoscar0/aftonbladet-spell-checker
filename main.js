@@ -206,15 +206,13 @@ function updateArticleError (args, addToDictionary) {
       } else {
         words.push(doc.words[i]);
         sentences.push(doc.sentences[i]);
-        discWords = discWords + '(' + [i] + ') - ' + doc.words[i] + '\n';
-        discSentences = discSentences + '(' + [i] + ') - ' + doc.sentences[i] + '\n';
       }
     }
     doc.words = words;
     doc.sentences = sentences;
     doc.alerted = false;
     doc.save();
-    sendDiscordAlert(doc._id, doc.date, discWords, discSentences, doc.discordMessageId);
+    sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId);
   });
 }
 
@@ -241,13 +239,7 @@ function alertSchedule () {
     if (err) throw err;
     docs.forEach(article => {
       console.log(article._id);
-      let words = '';
-      let sentences = '';
-      for (var i = 0; i < article.words.length; i++) {
-        words = words + '(' + [i] + ') - ' + article.words[i] + '\n';
-        sentences = sentences + '(' + [i] + ') - ' + article.sentences[i] + '\n';
-      }
-      sendDiscordAlert(article._id, article.date, words, sentences, article.discordMessageId);
+      sendDiscordAlert(article._id, article.date, article.words, article.sentences, article.discordMessageId);
       Article.findOne({ '_id': article._id }, function (err, doc) {
         if (err) throw err;
         doc.alerted = true;
@@ -258,6 +250,12 @@ function alertSchedule () {
 }
 
 function sendDiscordAlert (articleId, articleDate, words, sentences, discordMessageId) {
+  let sendWords = '';
+  let sendSentences = '';
+  for (var i = 0; i < words.length; i++) {
+    sendWords = sendWords + '(' + [i] + ') - ' + words[i] + '\n';
+    sendSentences = sendSentences + '(' + [i] + ') - ' + sentences[i] + '\n';
+  }
   const embed = {
     'color': 11738382,
     'timestamp': articleDate,
@@ -269,10 +267,10 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
     'fields': [
       {
         'name': 'Misspelled words',
-        'value': words
+        'value': sendWords
       }, {
         'name': 'The words in sentence',
-        'value': sentences
+        'value': sendSentences
       }
     ]
   };
