@@ -52,9 +52,20 @@ client.on('message', message => {
     if (args.length < 2) {
       message.channel.send('Missing argument');
     } else if (!invalidChars.test(args[0])) {
-      message.channel.send('Command is ".addword <Number> <ArticleId>"');
+      message.channel.send('Command is ".addword <ArticleId> <Number>"');
     } else {
-      addWordToDictionary(args);
+      updateArticleError(args, true);
+    }
+  }
+
+  if (command === 'ignore') {
+    const invalidChars = /[ a-z!✓•▪►”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+    if (args.length < 2) {
+      message.channel.send('Missing argument');
+    } else if (!invalidChars.test(args[0])) {
+      message.channel.send('Command is ".ignore <ArticleId> <Number>"');
+    } else {
+      updateArticleError(args, false);
     }
   }
 });
@@ -146,7 +157,7 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
   });
 }
 
-function addWordToDictionary (args) {
+function updateArticleError (args, addToDictionary) {
   // Adding word to Dictionary
   const articleId = args[0];
   console.log('article id is' + articleId);
@@ -157,15 +168,21 @@ function addWordToDictionary (args) {
     let sentences = [];
     for (var i = 0; i < doc.words.length; i++) {
       if (args.includes(i.toString())) {
-        // Word to be added to dictionary. SKIPPING
-        try {
-          fs.appendFileSync('./dict/sv-SE.dic', '\n' + doc.words[i]);
-        } catch (err) {
+
+        if (addToDictionary === true) {
+          // Add the word to the dictionary
+          try {
+            fs.appendFileSync('./dict/sv-SE.dic', '\n' + doc.words[i]);
+          } catch (err) {
           /* Handle the error */
-          throw err;
+            throw err;
+          }
+          normalize();
+          client.channels.get(config.discordChannelId).send(doc.words[i] + ' was added to the dictionary.');
+        } else {
+          // Dont add it to the dictionary (Ignore the article error)
+          client.channels.get(config.discordChannelId).send(doc.words[i] + ' was ignored.');
         }
-        normalize();
-        client.channels.get(config.discordChannelId).send(doc.words[i] + ' was added to the dictionary.');
       } else {
         words.push(doc.words[i]);
         sentences.push(doc.sentences[i]);
