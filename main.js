@@ -100,7 +100,6 @@ function readRRS () {
   })();
 }
 
-
 function checkSpelling (html, authorEmail, articleId) {
   console.log('------------------------------------');
   let wordArray = html.split(' ');
@@ -152,20 +151,28 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
     useNewUrlParser: true
   });
 
-  const newArticle = new Article({
-    _id: articleId,
-    words: words,
-    sentences: sentences,
-    authorEmail: authorEmail
-  });
-  newArticle.save(function (err) {
-    if (err) {
-      if (err.code === 11000) {
-        console.log(articleId + ' has already been checked for errors.');
+  client.channels.get(config.discordChannelId).send(articleId + ' was just checked. THIS MESSAGE SHOULD UPDATE SOON');
+  client.channels.get(config.discordChannelId).fetchMessages({ limit: 1 }).then(messages => {
+    console.log(messages.first().id);
+    const messageId = messages.first().id;
+    const newArticle = new Article({
+      _id: articleId,
+      words: words,
+      sentences: sentences,
+      authorEmail: authorEmail,
+      discordMessageId: messageId
+    });
+    newArticle.save(function (err) {
+      if (err) {
+        if (err.code === 11000) {
+          console.log(articleId + ' has already been checked for errors.');
+        } else {
+          throw err;
+        }
       } else {
-        throw err;
+        alertSchedule();
       }
-    }
+    });
   });
 }
 
@@ -178,6 +185,8 @@ function updateArticleError (args, addToDictionary) {
     if (err) throw err;
     let words = [];
     let sentences = [];
+    let discWords = '';
+    let discSentences = '';
     for (var i = 0; i < doc.words.length; i++) {
       if (args.includes(i.toString())) {
         if (addToDictionary === true) {
@@ -197,14 +206,16 @@ function updateArticleError (args, addToDictionary) {
       } else {
         words.push(doc.words[i]);
         sentences.push(doc.sentences[i]);
+        discWords = discWords + '(' + [i] + ') - ' + doc.words[i] + '\n';
+        discSentences = discSentences + '(' + [i] + ') - ' + doc.sentences[i] + '\n';
       }
     }
     doc.words = words;
     doc.sentences = sentences;
     doc.alerted = false;
     doc.save();
+    sendDiscordAlert(doc._id, doc.date, discWords, discSentences, doc.discordMessageId);
   });
-  alertSchedule();
 }
 
 function normalize () {
@@ -236,26 +247,7 @@ function alertSchedule () {
         words = words + '(' + [i] + ') - ' + article.words[i] + '\n';
         sentences = sentences + '(' + [i] + ') - ' + article.sentences[i] + '\n';
       }
-
-      const embed = {
-        'color': 11738382,
-        'timestamp': article.date,
-        'footer': {
-          'icon_url': 'https://cdn.discordapp.com/embed/avatars/0.png',
-          'text': article._id
-        },
-        'title': 'Aftonbladet-Spell-Checker',
-        'fields': [
-          {
-            'name': 'Misspelled words',
-            'value': words
-          }, {
-            'name': 'The words in sentence',
-            'value': sentences
-          }
-        ]
-      };
-      client.channels.get(config.discordChannelId).send('Link to article ' + config.aftonbladetBaseUrl + article._id, { embed });
+      sendDiscordAlert(article._id, article.date, words, sentences, article.discordMessageId);
       Article.findOne({ '_id': article._id }, function (err, doc) {
         if (err) throw err;
         doc.alerted = true;
@@ -263,6 +255,37 @@ function alertSchedule () {
       });
     });
   });
+}
+
+function sendDiscordAlert (articleId, articleDate, words, sentences, discordMessageId) {
+  const embed = {
+    'color': 11738382,
+    'timestamp': articleDate,
+    'footer': {
+      'icon_url': 'https://cdn.discordapp.com/embed/avatars/0.png',
+      'text': articleId
+    },
+    'title': 'Aftonbladet-Spell-Checker',
+    'fields': [
+      {
+        'name': 'Misspelled words',
+        'value': words
+      }, {
+        'name': 'The words in sentence',
+        'value': sentences
+      }
+    ]
+  };
+
+  client.channels.get(config.discordChannelId).fetchMessage(discordMessageId)
+    .then(message => {
+      console.log(words === '');
+      if (words === '') {
+        message.delete();
+      } else {
+        message.edit('Link to article ' + config.aftonbladetBaseUrl + articleId, { embed });
+      }
+    });
 }
 
 // Schedule alert every 5 minutes
