@@ -76,18 +76,30 @@ function readRRS () {
     feed.items.forEach(item => {
       const string = item.link;
       let articleId = string.substr(0, string.lastIndexOf('/')).substr(33);
-      fetch(config.aftonbladetBaseUrl + articleId)
-        .then(res => res.text())
-        .then(htmlbody => {
-          let parsedBody = HTMLParser.parse(htmlbody);
-          const authorName = parsedBody.querySelector('._3ij4i').rawText.toLowerCase().replace(' ', '.');
-          const authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se'; // If authorName 'TT' -> newsroom is the author
-          let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ');
-          checkSpelling(articleBody, authorEmail, articleId, authorEmail);
-        });
+
+      mongoose.connect(config.mongodbURI, {
+        useNewUrlParser: true
+      });
+      Article.findOne({ '_id': articleId }, function (err, doc) {
+        if (err) throw err;
+        if (doc === null) {
+          fetch(config.aftonbladetBaseUrl + articleId)
+            .then(res => res.text())
+            .then(htmlbody => {
+              let parsedBody = HTMLParser.parse(htmlbody);
+              const authorName = parsedBody.querySelector('._3ij4i').rawText.toLowerCase().replace(' ', '.');
+              const authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se'; // If authorName 'TT' -> newsroom is the author
+              let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ');
+              checkSpelling(articleBody, authorEmail, articleId, authorEmail);
+            });
+        } else {
+          console.log('This article has already been checked for errors! ' + articleId);
+        }
+      });
     });
   })();
 }
+
 
 function checkSpelling (html, authorEmail, articleId) {
   console.log('------------------------------------');
@@ -168,7 +180,6 @@ function updateArticleError (args, addToDictionary) {
     let sentences = [];
     for (var i = 0; i < doc.words.length; i++) {
       if (args.includes(i.toString())) {
-
         if (addToDictionary === true) {
           // Add the word to the dictionary
           try {
