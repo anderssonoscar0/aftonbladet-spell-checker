@@ -170,7 +170,7 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
           throw err;
         }
       } else {
-        alertSchedule();
+        sendDiscordAlert(articleId, Date.now, words, sentences, messageId);
       }
     });
   });
@@ -185,8 +185,6 @@ function updateArticleError (args, addToDictionary) {
     if (err) throw err;
     let words = [];
     let sentences = [];
-    let discWords = '';
-    let discSentences = '';
     for (var i = 0; i < doc.words.length; i++) {
       if (args.includes(i.toString())) {
         if (addToDictionary === true) {
@@ -210,7 +208,6 @@ function updateArticleError (args, addToDictionary) {
     }
     doc.words = words;
     doc.sentences = sentences;
-    doc.alerted = false;
     doc.save();
     sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId);
   });
@@ -224,28 +221,6 @@ function normalize () {
     if (err) {
       throw err;
     }
-  });
-}
-
-// Checks for new articles and send an discord alert.
-function alertSchedule () {
-  console.log('Running alert');
-  mongoose.connect(config.mongodbURI, {
-    useNewUrlParser: true
-  });
-  const query = Article.find({ alerted: false, words: { $exists: true, $not: { $size: 0 } }, sentences: { $exists: true, $not: { $size: 0 } } });
-  query.limit(5);
-  query.exec(function (err, docs) {
-    if (err) throw err;
-    docs.forEach(article => {
-      console.log(article._id);
-      sendDiscordAlert(article._id, article.date, article.words, article.sentences, article.discordMessageId);
-      Article.findOne({ '_id': article._id }, function (err, doc) {
-        if (err) throw err;
-        doc.alerted = true;
-        doc.save();
-      });
-    });
   });
 }
 
@@ -277,19 +252,15 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
 
   client.channels.get(config.discordChannelId).fetchMessage(discordMessageId)
     .then(message => {
-      console.log(words === '');
-      if (words === '') {
+      console.log(sendWords.length === 0);
+      if (sendWords.length === 0) {
         message.delete();
+        client.channels.get(config.discordChannelId).send(articleId + ' has no errors remaining!');
       } else {
         message.edit('Link to article ' + config.aftonbladetBaseUrl + articleId, { embed });
       }
     });
 }
-
-// Schedule alert every 5 minutes
-schedule.scheduleJob('*/1 * * * *', function () {
-  alertSchedule();
-});
 
 // Scheudule article search every 5 minutes
 schedule.scheduleJob('*/5 * * * *', function () {
