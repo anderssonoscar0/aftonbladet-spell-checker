@@ -261,9 +261,6 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
     .then(message => {
       if (sendWords.length === 0) {
         message.delete();
-        Article.findOneAndDelete({ '_id': articleId }, function (err) {
-          if (err) throw err;
-        });
         client.channels.get(config.discordChannelId).send(articleId + ' has no errors remaining!');
       } else {
         message.edit('Link to article ' + config.aftonbladetBaseUrl + articleId, { embed });
