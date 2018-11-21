@@ -177,7 +177,7 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
           throw err;
         }
       } else {
-        sendDiscordAlert(articleId, Date.now, words, sentences, messageId);
+        sendDiscordAlert(articleId, new Date(), words, sentences, messageId);
       }
     });
   });
