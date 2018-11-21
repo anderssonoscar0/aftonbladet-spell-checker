@@ -252,7 +252,7 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
         'value': sendWords
       }, {
         'name': 'The words in sentence',
-        'value': sendSentences
+        'value': sentences.length > 15 ? 'To many errors to show.' : sendSentences
       }
     ]
   };
