@@ -54,7 +54,7 @@ client.on('message', message => {
     } else if (!invalidChars.test(args[0])) {
       message.channel.send('Command is ".addword <ArticleId> <Number>"');
     } else {
-      updateArticleError(args, true);
+      updateArticleError(args, true); // Update the article AND add the words
     }
   }
 
@@ -65,7 +65,7 @@ client.on('message', message => {
     } else if (!invalidChars.test(args[0])) {
       message.channel.send('Command is ".ignore <ArticleId> <Number>"');
     } else {
-      updateArticleError(args, false);
+      updateArticleError(args, false); // Update the article and IGNORE the words
     }
   }
 
