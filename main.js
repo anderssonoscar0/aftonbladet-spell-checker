@@ -112,7 +112,7 @@ function readRRS () {
 function checkSpelling (html, authorEmail, articleId) {
   console.log('------------------------------------');
   let wordArray = html.split(' ');
-  console.log('Running check on article ' + articleId);
+  console.log('Starting check for article: ' + articleId);
   var mispelledWords = [];
   var sentences = [];
 
@@ -153,8 +153,7 @@ function cleanWord (word) {
 }
 
 function addNewArticle (words, sentences, articleId, authorEmail) {
-  console.log('Adding mispelled word');
-  console.log('Check for article ' + articleId + ' has been completed.');
+  console.log('Check for article: ' + articleId + ' has been completed. Adding to Database.');
 
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
@@ -162,7 +161,6 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
 
   client.channels.get(config.discordChannelId).send(articleId + ' was just checked. THIS MESSAGE SHOULD UPDATE SOON');
   client.channels.get(config.discordChannelId).fetchMessages({ limit: 1 }).then(messages => {
-    console.log(messages.first().id);
     const messageId = messages.first().id;
     const newArticle = new Article({
       _id: articleId,
@@ -188,7 +186,7 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
 function updateArticleError (args, addToDictionary) {
   // Adding word to Dictionary
   const articleId = args[0];
-  console.log('article id is' + articleId);
+  console.log('Updating articleId: ' + articleId);
   args.shift(); // Remove the first item in args (The article ID)
   Article.findOne({ '_id': articleId }, function (err, doc) {
     if (err) throw err;
@@ -261,7 +259,6 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
 
   client.channels.get(config.discordChannelId).fetchMessage(discordMessageId)
     .then(message => {
-      console.log(sendWords.length === 0);
       if (sendWords.length === 0) {
         message.delete();
         client.channels.get(config.discordChannelId).send(articleId + ' has no errors remaining!');
