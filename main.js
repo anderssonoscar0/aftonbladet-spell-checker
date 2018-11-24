@@ -59,7 +59,7 @@ client.on('message', message => {
   }
 
   if (command === 'ignore') {
-    const invalidChars = /[ a-z!✓•▪►”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+    const invalidChars = /[ !✓•▪►”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
     if (args.length < 2) {
       message.channel.send('Missing argument');
     } else if (!invalidChars.test(args[0])) {
