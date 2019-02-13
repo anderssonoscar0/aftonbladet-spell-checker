@@ -97,11 +97,21 @@ function readRRS () {
             .then(res => res.text())
             .then(htmlbody => {
               let parsedBody = HTMLParser.parse(htmlbody);
-              let authorName = parsedBody.querySelector('._1zkyS');
+              let authorName = parsedBody.querySelector('._38DY_');
               if (authorName === null) {
                 console.log(articleId + ' is an + article. SKIPPING');
               } else {
-                authorName = authorName.rawText.toLowerCase().replace(' ', '.');
+                console.log('author ' + authorName.rawText);
+                authorName = authorName.rawText.toLowerCase().replace(' ', '.'); // Replace first space with a dot
+                authorName = authorName.replace(' ', ''); // Remove second space
+                const invalidChars = /[ ÅÄÖåäö]/;
+                if (invalidChars.test(authorName)) {
+                  console.log('CONTAINS åäö ÅÄÖ');
+                  authorName = authorName.replace('å', 'a');
+                  authorName = authorName.replace('ä', 'a');
+                  authorName = authorName.replace('ö', 'o');
+                  authorName = authorName.replace('é', 'e');
+                }
                 const authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se'; // If authorName 'TT' -> newsroom is the author
                 let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ');
                 checkSpelling(articleBody, authorEmail, articleId, authorEmail);
