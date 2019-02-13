@@ -193,7 +193,7 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
           throw err;
         }
       } else {
-        sendDiscordAlert(articleId, new Date(), words, sentences, messageId);
+        sendDiscordAlert(articleId, new Date(), words, sentences, messageId, authorEmail);
       }
     });
   });
@@ -232,7 +232,7 @@ function updateArticleError (args, addToDictionary) {
     doc.words = words;
     doc.sentences = sentences;
     doc.save();
-    sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId);
+    sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId, doc.authorEmail);
   });
 }
 
@@ -247,7 +247,7 @@ function normalize () {
   });
 }
 
-function sendDiscordAlert (articleId, articleDate, words, sentences, discordMessageId) {
+function sendDiscordAlert (articleId, articleDate, words, sentences, discordMessageId, authorEmail) {
   let sendWords = '';
   let sendSentences = '';
   for (var i = 0; i < words.length; i++) {
@@ -261,7 +261,10 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
       'icon_url': 'https://cdn.discordapp.com/embed/avatars/0.png',
       'text': articleId
     },
-    'title': 'Aftonbladet-Spell-Checker',
+    'author': {
+      'name': authorEmail,
+      'icon_url': 'https://i.imgur.com/CMkUWBo.png'
+    },
     'fields': [
       {
         'name': 'Misspelled words',
