@@ -96,7 +96,7 @@ function readRRS () {
             .then(res => res.text())
             .then(htmlbody => {
               let parsedBody = HTMLParser.parse(htmlbody);
-              let authorName = parsedBody.querySelector('._3ij4i');
+              let authorName = parsedBody.querySelector('._1zkyS');
               if (authorName === null) {
                 console.log(articleId + ' is an + article. SKIPPING');
               } else {
