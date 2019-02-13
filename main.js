@@ -51,7 +51,6 @@ client.on('message', message => {
     } else {
       alertAftonbladet(args);
     }
-    
   }
 
   if (command === 'deny') {
@@ -307,12 +306,11 @@ function alertAftonbladet (args) {
   Article.findOne({ '_id': articleId }, function (err, doc) {
     if (err) throw err;
     if (doc) {
-      console.log(doc);
       let mailOptions = {
         from: config.mailAdress,
         to: 'anderssonoscar0@gmail.com',
         subject: 'Hej! Jag har hittat ett misstag i en artikel',
-        html: '<p><b>"' + doc.words[wordId] + '"</b> stavas egentligen såhär "<b>' + args[2] + '</b>"</p><br>'
+        html: '<p><b>"' + doc.words[wordId] + '"</b> stavas egentligen såhär "<b>' + args[2] + '</b>"</p><br><a href="https://www.aftonbladet.se' + args[0] + '">Aftonbladet titel</a>'
       };
       mailer.mail(mailOptions);
     } else {
