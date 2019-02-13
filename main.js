@@ -20,6 +20,7 @@ SpellChecker.getDictionary('sv-SE', './dict', function (err, result) {
 
 const fetch = require('node-fetch');
 const config = require('./config.js');
+const mailer = require('./mailer.js');
 var Article = require('./schemas/article.js');
 
 // Discord startup
@@ -39,8 +40,8 @@ client.on('message', message => {
   console.log(args);
   console.log(command);
 
-  if (command === 'accept') {
-    message.channel.send('Accepting!');
+  if (command === 'alert') {
+    alertAftonbladet(args);
   }
 
   if (command === 'deny') {
@@ -271,6 +272,30 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
         message.edit('Link to article ' + config.aftonbladetBaseUrl + articleId, { embed });
       }
     });
+}
+
+function alertAftonbladet (args) {
+  mongoose.connect(config.mongodbURI, {
+    useNewUrlParser: true
+  });
+
+  const articleId = args[0];
+  Article.findOne({ '_id': articleId }, function (err, doc) {
+    if (err) throw err;
+    if (doc) {
+      console.log(doc);
+      let mailOptions = {
+        from: config.mailAdress,
+        to: 'anderssonoscar0@gmail.com',
+        subject: 'Sending Email using Node.js',
+        text: 'That was easy!'
+      };
+      mailer.mail(mailOptions);
+    } else {
+      console.log('Cant find any article with that ID');
+      client.channels.get(config.discordChannelId).send("Can't find article with id: " + articleId);
+    }
+  });
 }
 
 // Scheudule article search every 5 minutes
