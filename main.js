@@ -107,15 +107,14 @@ function readRRS () {
             .then(htmlbody => {
               let parsedBody = HTMLParser.parse(htmlbody);
               let authorName = parsedBody.querySelector('._38DY_');
+              const articleTitle = parsedBody.querySelector('._11S-G').rawText;
               if (authorName === null) {
                 console.log(articleId + ' is an + article. SKIPPING');
               } else {
-                console.log('author ' + authorName.rawText);
                 authorName = authorName.rawText.toLowerCase().replace(' ', '.'); // Replace first space with a dot
                 authorName = authorName.replace(' ', ''); // Remove second space
                 const invalidChars = /[ ÅÄÖåäö]/;
                 if (invalidChars.test(authorName)) {
-                  console.log('CONTAINS åäö ÅÄÖ');
                   authorName = authorName.replace('å', 'a');
                   authorName = authorName.replace('ä', 'a');
                   authorName = authorName.replace('ö', 'o');
@@ -123,7 +122,7 @@ function readRRS () {
                 }
                 const authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se'; // If authorName 'TT' -> newsroom is the author
                 let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ');
-                checkSpelling(articleBody, authorEmail, articleId, authorEmail);
+                checkSpelling(articleBody, authorEmail, articleId, articleTitle);
               }
             });
         } else {
@@ -134,7 +133,7 @@ function readRRS () {
   })();
 }
 
-function checkSpelling (html, authorEmail, articleId) {
+function checkSpelling (html, authorEmail, articleId, articleTitle) {
   console.log('------------------------------------');
   let wordArray = html.split(' ');
   console.log('Starting check for article: ' + articleId);
@@ -164,7 +163,7 @@ function checkSpelling (html, authorEmail, articleId) {
       }
     }
   }
-  addNewArticle(mispelledWords, sentences, articleId, authorEmail); // Add the misspelled words to MongoDB
+  addNewArticle(mispelledWords, sentences, articleId, authorEmail, articleTitle); // Add the misspelled words to MongoDB
   console.log('-----------------------------');
 }
 
@@ -177,9 +176,8 @@ function cleanWord (word) {
   }
 }
 
-function addNewArticle (words, sentences, articleId, authorEmail) {
+function addNewArticle (words, sentences, articleId, authorEmail, articleTitle) {
   console.log('Check for article: ' + articleId + ' has been completed. Adding to Database.');
-
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
   });
@@ -192,7 +190,8 @@ function addNewArticle (words, sentences, articleId, authorEmail) {
       words: words,
       sentences: sentences,
       authorEmail: authorEmail,
-      discordMessageId: messageId
+      discordMessageId: messageId,
+      articleTitle: articleTitle
     });
     newArticle.save(function (err) {
       if (err) {
@@ -310,7 +309,7 @@ function alertAftonbladet (args) {
         from: config.mailAdress,
         to: 'anderssonoscar0@gmail.com',
         subject: 'Hej! Jag har hittat ett misstag i en artikel',
-        html: '<p><b>"' + doc.words[wordId] + '"</b> stavas egentligen såhär "<b>' + args[2] + '</b>"</p><br><a href="https://www.aftonbladet.se' + args[0] + '">Aftonbladet titel</a>'
+        html: '<p><b>"' + doc.words[wordId] + '"</b> stavas egentligen såhär "<b>' + args[2] + '</b>"</p><br><a href="https://www.aftonbladet.se' + args[0] + '">' + doc.articleTitle + '</a>'
       };
       mailer.mail(mailOptions);
     } else {

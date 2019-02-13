@@ -7,7 +7,8 @@ var newArticleSchema = new Schema({
   sentences: { type: Array },
   authorEmail: { type: String },
   date: { type: Date, default: Date.now },
-  discordMessageId: { type: String }
+  discordMessageId: { type: String },
+  articleTitle: { type: String }
 }, { runSettersOnQuery: true });
 
 module.exports = mongoose.model('articles', newArticleSchema);
