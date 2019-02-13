@@ -41,7 +41,17 @@ client.on('message', message => {
   console.log(command);
 
   if (command === 'alert') {
-    alertAftonbladet(args);
+    const invalidChars = /[ A-z!✓•▪►”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
+    if (args.length < 3) {
+      message.channel.send('Missing arguments');
+    } else if (!invalidChars.test(args[0])) {
+      message.channel.send('Command is ".alert <ArticleId> <Number> <Correct spelling>"');
+    } else if (isNaN(args[1])) {
+      message.channel.send('The misspelled word must be an integer');
+    } else {
+      alertAftonbladet(args);
+    }
+    
   }
 
   if (command === 'deny') {
@@ -293,6 +303,7 @@ function alertAftonbladet (args) {
   });
 
   const articleId = args[0];
+  const wordId = args[1];
   Article.findOne({ '_id': articleId }, function (err, doc) {
     if (err) throw err;
     if (doc) {
@@ -300,8 +311,8 @@ function alertAftonbladet (args) {
       let mailOptions = {
         from: config.mailAdress,
         to: 'anderssonoscar0@gmail.com',
-        subject: 'Sending Email using Node.js',
-        text: 'That was easy!'
+        subject: 'Hej! Jag har hittat ett misstag i en artikel',
+        html: '<p><b>"' + doc.words[wordId] + '"</b> stavas egentligen såhär "<b>' + args[2] + '</b>"</p><br>'
       };
       mailer.mail(mailOptions);
     } else {
