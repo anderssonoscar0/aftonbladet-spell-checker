@@ -226,7 +226,6 @@ function updateArticleError (args, addToDictionary) {
           /* Handle the error */
             throw err;
           }
-          normalize();
           client.channels.get(config.discordChannelId).send(doc.words[i] + ' was added to the dictionary.');
         } else {
           // Dont add it to the dictionary (Ignore the article error)
@@ -307,7 +306,7 @@ function alertAftonbladet (args) {
     if (doc) {
       let mailOptions = {
         from: config.mailAdress,
-        to: 'anderssonoscar0@gmail.com',
+        to: doc.authorEmail,
         subject: 'Hej! Jag har hittat ett misstag i en artikel',
         html: '<p><b>"' + doc.words[wordId] + '"</b> stavas egentligen såhär "<b>' + args[2] + '</b>"</p><br><a href="https://www.aftonbladet.se' + args[0] + '">' + doc.articleTitle + '</a>'
       };
@@ -323,4 +322,9 @@ function alertAftonbladet (args) {
 schedule.scheduleJob('*/1 * * * *', function () {
   console.log('Running schedule...');
   readRRS();
+});
+
+schedule.scheduleJob('*/2 * * * *', function () {
+  console.log('Running schedule...');
+  normalize();
 });
