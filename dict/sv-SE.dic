@@ -18123,6 +18123,8 @@ blöjorna
 blöjornas
 blöjors
 blom
+blombud
+blombudet
 blomkål
 blomkålen
 blomkålens
@@ -19428,6 +19430,7 @@ borttaga
 borttagande
 borttagandet
 borttagandets
+borttagen
 borttages
 borttappa
 borttappad
@@ -19503,6 +19506,7 @@ bostäderna
 bostädernas
 bostäders
 bostads
+bostadsföretaget
 bostadshus
 bostadshusen
 bostadshusens
@@ -29346,6 +29350,7 @@ ene
 enen
 enens
 energi
+energiförsörjningen
 energin
 energins
 energirik
@@ -36224,6 +36229,7 @@ föräldragård
 föräldragårds
 föräldrahem
 föräldrahems
+föräldraledig
 föräldralös
 föräldralösa
 föräldralöse
@@ -50740,6 +50746,8 @@ harpor
 harporna
 harpornas
 harpors
+harpun
+harpunen
 Harriet
 Harriets
 härrör
@@ -60911,6 +60919,7 @@ jätteliks
 jättelikt
 jätten
 jättens
+jätterädd
 jättes
 jätteskoj
 jätteskojs
@@ -65606,6 +65615,7 @@ klimaten
 klimatens
 klimatet
 klimatets
+klimatförändringarna
 klimatisk
 klimatiska
 klimatisks
@@ -67111,6 +67121,7 @@ köl
 kola
 kolan
 kolans
+kolanvändningen
 kölar
 kölarna
 kölarnas
@@ -75383,6 +75394,7 @@ lektionerna
 lektionernas
 lektioners
 lektions
+lektionstid
 lektor
 lektör
 lektorat
@@ -86254,6 +86266,7 @@ noterad
 noterade
 noterades
 noterar
+noteras
 noterat
 noterats
 notering
@@ -88655,6 +88668,7 @@ okomplicerad
 okomplicerade
 okomplicerades
 okomplicerat
+okontaktbar
 okontroversiell
 okontroversiella
 okontroversiells
@@ -89856,6 +89870,7 @@ omtalats
 omtanke
 omtankes
 ömts
+omtumlande
 omtyckt
 omtyckta
 omtyckts
@@ -104092,6 +104107,7 @@ rymdskeppens
 rymdskeppet
 rymdskeppets
 rymdskepps
+rymdskrot
 rymdsond
 rymdsonden
 rymdsondens
@@ -106415,6 +106431,7 @@ semester
 semestern
 semesterns
 semesters
+semestervecka
 semestra
 semestrar
 semestrarna
@@ -109440,6 +109457,7 @@ skogsvandringen
 skogsvandringens
 skogsvandrings
 skoj
+skoja
 skojig
 skojiga
 skojigare
@@ -109570,6 +109588,7 @@ skolor
 skolorna
 skolornas
 skolors
+skolstrejk
 skoltidning
 skoltidningen
 skoltidningens
@@ -115946,6 +115965,7 @@ steniga
 stenigs
 stenigt
 stening
+stenkastning
 stenkulor
 stenlades
 stenläggning
@@ -117181,6 +117201,7 @@ stridskamraterna
 stridskamraternas
 stridskamraters
 stridskamrats
+stridslust
 strikt
 strikta
 striktare
@@ -120846,6 +120867,7 @@ tester
 testerna
 testernas
 testers
+testet
 testning
 testningar
 testningarna
@@ -127527,8 +127549,6 @@ uppmärksammar
 uppmärksammas
 uppmärksammat
 uppmärksammats
-uppmärksammats
-uppmärksammats
 uppmärksams
 uppmärksams
 uppmärksams
@@ -129006,3 +129026,23 @@ uthuggen
 uthuggens
 uthugget
 uthuggna
+uttryckte
+väg
+vågar
+valdes
+vänner
+väntade
+var
+vara
+vårdnadshavarna
+varit
+värnskatt
+värsta
+vårt
+vem
+verkligen
+vet
+vid
+vill
+visade
+visat
