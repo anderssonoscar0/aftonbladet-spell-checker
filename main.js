@@ -320,11 +320,11 @@ function alertAftonbladet (args) {
 
 // Scheudule article search every 5 minutes
 schedule.scheduleJob('*/1 * * * *', function () {
-  console.log('Running schedule...');
+  console.log('Run RrsReader...');
   readRRS();
 });
 
 schedule.scheduleJob('*/2 * * * *', function () {
-  console.log('Running schedule...');
+  console.log('Run Normalizer...');
   normalize();
 });
