@@ -215,6 +215,8 @@ function updateArticleError (args, addToDictionary) {
     if (err) throw err;
     let words = [];
     let sentences = [];
+    let addedWords = 0;
+    let ignoredWords = 0;
     for (var i = 0; i < doc.words.length; i++) {
       if (args.includes(i.toString())) {
         if (addToDictionary === true) {
@@ -225,10 +227,10 @@ function updateArticleError (args, addToDictionary) {
           /* Handle the error */
             throw err;
           }
-          client.channels.get(config.discordChannelId).send(doc.words[i] + ' was added to the dictionary.');
+          addedWords = addedWords + 1;
         } else {
           // Dont add it to the dictionary (Ignore the article error)
-          client.channels.get(config.discordChannelId).send(doc.words[i] + ' was ignored.');
+          ignoredWords = ignoredWords + 1;
         }
       } else {
         words.push(doc.words[i]);
@@ -238,6 +240,7 @@ function updateArticleError (args, addToDictionary) {
     doc.words = words;
     doc.sentences = sentences;
     doc.save();
+    addedWords ? client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId) : client.channels.get(config.discordChannelId).send('Ignored ' + ignoredWords + ' words for article: ' + articleId);
     sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId, doc.authorEmail);
   });
 }
