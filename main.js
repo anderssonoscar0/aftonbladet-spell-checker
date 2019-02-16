@@ -137,7 +137,7 @@ function checkSpelling (html, authorEmail, articleId, articleTitle) {
   console.log('------------------------------------');
   let wordArray = html.split(' ');
   console.log('Starting check for article: ' + articleId);
-  var mispelledWords = [];
+  var misspelledWords = [];
   var sentences = [];
 
   for (var i = 0; i < wordArray.length; i++) {
@@ -148,22 +148,21 @@ function checkSpelling (html, authorEmail, articleId, articleTitle) {
       var isWordInDictionary = myDictionary.spellCheck(cleanedWord);
       var isWordMisspelled = myDictionary.isMisspelled(cleanedWord);
       if (isWordInDictionary === false && isWordMisspelled === true) {
-        console.log(isWordInDictionary + ' - ' + cleanedWord);
         const sentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
         wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3];
-
         // Check if the sentence contains invalid characters
         const invalidChars = /[!•►✓▪”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?1234567890]/;
         if (invalidChars.test(sentence)) {
           // Sentence contains invalid characters. SKIPPING
         } else {
-          mispelledWords.push(cleanedWord);
+          misspelledWords.push(cleanedWord);
           sentences.push(sentence);
         }
       }
     }
   }
-  addNewArticle(mispelledWords, sentences, articleId, authorEmail, articleTitle); // Add the misspelled words to MongoDB
+  console.log('Found ' + misspelledWords.length + ' misspelled words in article: ' + articleTitle);
+  addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle); // Add the misspelled words to MongoDB
   console.log('-----------------------------');
 }
 
@@ -319,7 +318,7 @@ function alertAftonbladet (args) {
 }
 
 // Scheudule article search every 5 minutes
-schedule.scheduleJob('*/1 * * * *', function () {
+schedule.scheduleJob('*/5 * * * *', function () {
   console.log('Run RrsReader...');
   readRRS();
 });

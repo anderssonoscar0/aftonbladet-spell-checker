@@ -1791,6 +1791,8 @@ aktiveringen
 aktiveringens
 aktiverings
 aktives
+aktivister
+aktivisterna
 aktivitet
 aktiviteten
 aktivitetens
@@ -14446,6 +14448,7 @@ belöningars
 belöningen
 belöningens
 belönings
+belöningssystemet
 belöpa
 belöper
 belopp
@@ -42997,6 +43000,7 @@ frisyrerna
 frisyrernas
 frisyrers
 frisyrs
+fritagningsförsök
 fritänkare
 fritänkaren
 fritänkarens
@@ -73625,6 +73629,7 @@ lägerställen
 lägerställens
 lägerställes
 läges
+lägesbilden
 laget
 läget
 lagets
@@ -77486,6 +77491,7 @@ lördagars
 lördagen
 lördagens
 lördags
+lördagskvällen
 lorden
 lordens
 lorder
@@ -79048,6 +79054,7 @@ mamman
 mammans
 mammas
 mammorna
+mammors
 man
 mån
 män
@@ -82346,6 +82353,7 @@ mobiliseringens
 mobiliserings
 mobils
 mobilt
+mobiltelefon
 mobiltelefoner
 mobiltelefoner
 möbler
@@ -92943,6 +92951,7 @@ overkligt
 övervaknings
 övervakningsbilder
 övervakningsfilm
+övervakningsfilmer
 övervakningskameror
 överväldiga
 överväldigad
@@ -103658,6 +103667,7 @@ rubriceras
 rubricerat
 rubricerats
 rubricering
+rubriceringar
 rubriceringen
 rubriceringens
 rubricerings
@@ -106616,6 +106626,7 @@ sentimentals
 sentimentalt
 separat
 separata
+separatistledare
 separats
 separera
 separerad
@@ -107679,6 +107690,7 @@ självständighet
 självständigheten
 självständighetens
 självständighets
+självständighetsförklaringen
 självständigs
 självständigt
 självsvåldig
@@ -108026,6 +108038,7 @@ sjuorna
 sjuornas
 sjuors
 sjurums
+sjutiden
 sjutimmarsmöte
 sjutimmarsmöte
 sjutti
@@ -108548,6 +108561,7 @@ skänkta
 skänkte
 skänktes
 skänkts
+skannas
 Skanör
 Skanörs
 skans
@@ -113272,6 +113286,7 @@ sömnmedlen
 sömnmedlens
 sömnmedlet
 sömnmedlets
+sömnmönster
 sömns
 somrar
 somrarna
@@ -128286,6 +128301,7 @@ uppvärmt
 uppvärmts
 uppväxt
 uppväxts
+uppvigling
 uppvisa
 uppvisad
 uppvisade
@@ -129115,6 +129131,7 @@ utspelet
 uttalandet
 uttryckte
 utvecklingen
+väcka
 väcker
 vad
 vad
@@ -129122,7 +129139,9 @@ väg
 vågar
 vägar
 vägval
+väktare
 val
+väl
 valdes
 väldig
 väldigt
@@ -129137,6 +129156,7 @@ vanligt
 vänner
 väntade
 väntar
+väntas
 var
 vår
 vara
@@ -129155,8 +129175,10 @@ värsta
 vårt
 väsentligt
 väska
+väska
 vatten
 växa
+växelvis
 växer
 veckan
 veckor
@@ -129193,4 +129215,5 @@ visst
 vit
 vittnesuppgifter
 vuxit
+yrkar
 yrket
