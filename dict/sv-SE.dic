@@ -3124,6 +3124,7 @@ ambulanser
 ambulanserna
 ambulansernas
 ambulansers
+ambulanshelikopter
 ambulera
 ambulerade
 ambulerar
@@ -11563,6 +11564,7 @@ backlinje
 backlinjen
 backlinjens
 backlinjes
+backning
 backs
 bäcks
 backspegel
@@ -39833,6 +39835,7 @@ forskningens
 forsknings
 forskningsprojekt
 forskningsrapport
+forskningsstudier
 förskola
 förskolan
 förskolans
@@ -49490,6 +49493,7 @@ hälsningars
 hälsningen
 hälsningens
 hälsnings
+hälsoböcker
 hälsofarlig
 hälsofarliga
 hälsofarligs
@@ -52974,6 +52978,7 @@ högeligen
 högen
 högens
 höger
+högerextrema
 högerhand
 högerhanden
 högerhandens
@@ -61524,6 +61529,7 @@ jordmänniskorna
 jordmänniskornas
 jordmänniskors
 jordmåns
+jordmassor
 jordnära
 jordnöt
 jordnöten
@@ -61547,6 +61553,8 @@ jordrikes
 jordriket
 jordrikets
 jords
+jordskred
+jordskred
 jordyta
 jordytan
 jordytans
@@ -80476,6 +80484,7 @@ medborgarens
 medborgares
 medborgarna
 medborgarnas
+medborgerliga
 meddela
 meddelad
 meddelade
@@ -82818,6 +82827,7 @@ monumentet
 monumentets
 monuments
 moped
+mopeden
 mor
 mör
 mora
@@ -85132,6 +85142,7 @@ nazister
 nazisterna
 nazisternas
 nazisters
+nazisthälsningar
 nazistisk
 nazistiska
 nazistisks
@@ -91549,6 +91560,7 @@ ostens
 Östersunds
 österut
 östes
+ostkust
 ostörd
 ostörda
 ostörds
@@ -96039,6 +96051,7 @@ polisanmäla
 polisanmälde
 polisanmälningar
 polisanmält
+polisbevakning
 polisbil
 polisbilar
 polischef
@@ -98806,6 +98819,7 @@ räddningen
 räddningens
 räddnings
 räddningsarbetet
+räddningshundar
 räddningsmyndighet
 räddningspersonalen
 räddningsplanka
@@ -99206,6 +99220,8 @@ ramlar
 ramlas
 ramlat
 ramlats
+rammade
+rammat
 rämna
 rämnad
 rämnade
@@ -118169,6 +118185,7 @@ surdegars
 surdegen
 surdegens
 surdegs
+surfare
 surfplatta
 Surinam
 Surinams
@@ -129149,6 +129166,7 @@ väldigt
 våldsamt
 valet
 välfärd
+välja
 väljer
 valt
 våningen
@@ -129189,6 +129207,7 @@ verkligen
 verksamhet
 vet
 veta
+vetenskap
 vi
 via
 vid
@@ -129198,6 +129217,7 @@ viktiga
 viktiga
 viktigt
 vilken
+vilket
 vill
 ville
 ville
@@ -129213,7 +129233,9 @@ viss
 vissa
 visst
 vit
+vita
 vittnesuppgifter
 vuxit
 yrkar
 yrket
+ytor
