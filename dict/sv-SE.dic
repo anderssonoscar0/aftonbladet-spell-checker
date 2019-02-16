@@ -2429,6 +2429,7 @@ allianser
 allianserna
 alliansernas
 alliansers
+allianspartierna
 alliera
 allierad
 allierade
@@ -2684,6 +2685,7 @@ alpers
 alpin
 alpina
 alpins
+alpinskidor
 alpint
 ALPN#a1691|a1692|a1697|a1698|a1699|a1700|ö228|ö229|ö230|ö231|ö232|ö233
 ALPR#a1693|a1694|a1695|a1696|e1149|e1150|e1151|e1152|e1153|e1154|e1155|e1156|e1157|e1158|e1159
@@ -3848,6 +3850,7 @@ andras
 ändrats
 andre
 Andreas
+andreman
 andres
 ändring
 ändringar
@@ -4256,6 +4259,7 @@ angrips
 ängsliges
 ängsligs
 ängsligt
+ängsmark
 ANH#i2872
 anhålla
 anhållan
@@ -8268,6 +8272,7 @@ Atens
 återhämtas
 återhämtat
 återhämtats
+återhämtning
 återigen
 återinsätta
 återinsätter
@@ -14670,6 +14675,7 @@ bensinmacken
 bensinmackens
 bensinmacks
 bensins
+bensinstation
 benstomme
 benstommen
 benstommens
@@ -17074,6 +17080,7 @@ biologiske
 biologisks
 biologiskt
 biologs
+biomassa
 biomedicinsk
 biomedicinska
 biomedicinsks
@@ -21712,6 +21719,7 @@ bygga
 byggande
 byggandet
 byggandets
+byggarbetare
 byggas
 byggd
 byggda
@@ -25332,6 +25340,7 @@ disciplinär
 disciplinära
 disciplinärs
 disciplinärt
+disciplinåtgärder
 disciplinen
 disciplinens
 discipliner
@@ -30166,6 +30175,7 @@ ersättningars
 ersättningen
 ersättningens
 ersättnings
+ersättningskrav
 ersatts
 ersätts
 ert
@@ -31095,6 +31105,7 @@ extraknäcker
 extraknäcks
 extraknäckt
 extraknäckte
+extralektioner
 extraordinär
 extraordinära
 extraordinärs
@@ -36224,6 +36235,7 @@ föräldern
 förälderns
 förälders
 föråldrad
+föräldradagar
 föråldrade
 föråldrades
 föräldraförsäkring
@@ -41167,6 +41179,7 @@ förvaltningars
 förvaltningen
 förvaltningens
 förvaltnings
+förvaltningsrätten
 förvåna
 förvånad
 förvånade
@@ -47292,6 +47305,7 @@ granskningars
 granskningen
 granskningens
 gransknings
+gränskontroll
 gränslös
 gränslösa
 gränslöses
@@ -47604,6 +47618,8 @@ grejar
 grejas
 grejat
 grejats
+grejer
+grejerna
 grek
 greken
 grekens
@@ -48134,6 +48150,7 @@ grundmurad
 grundmurade
 grundmurades
 grundmurat
+grundpelare
 grundproblematiken
 grundritning
 grundritningar
@@ -48182,6 +48199,7 @@ grundvalars
 grundvalen
 grundvalens
 grundvals
+grundvattennivåerna
 grunna
 grunnade
 grunnar
@@ -48955,6 +48973,7 @@ häcklarnas
 häcklas
 häcklat
 häcklats
+häckningsplatser
 hackor
 hackorna
 hackornas
@@ -53631,6 +53650,7 @@ hornet
 hörnet
 hornets
 hörnets
+hörnkontoret
 hörnor
 hörnorna
 hörnornas
@@ -54590,6 +54610,7 @@ huvudlös
 huvudlösa
 huvudlöses
 huvudlöst
+huvudmotståndare
 huvudregel
 huvudroll
 huvudrollen
@@ -58469,6 +58490,7 @@ insekternas
 insekters
 insekts
 insektsarter
+insektsfaunan
 insemination
 inseminationen
 inseminationens
@@ -60732,6 +60754,7 @@ jämställdhet
 jämställdheten
 jämställdhetens
 jämställdhets
+jämställdhetsområdet
 jämställer
 jämställes
 jämställs
@@ -61261,6 +61284,7 @@ Joakims
 jobb
 jobba
 jobbade
+jobbannons
 jobbar
 jobbare
 jobbaren
@@ -61452,6 +61476,7 @@ jordbruksbygderna
 jordbruksbygdernas
 jordbruksbygders
 jordbruksbygds
+jordbruksmiljöer
 jordbruksminister
 jordbruksministern
 jorden
@@ -72157,6 +72182,7 @@ kunskapsackumulations
 kunskapsbas
 kunskapsbasen
 kunskapsbasens
+kunskapsbrister
 kunskapskälla
 kunskapskällan
 kunskapskällans
@@ -72974,6 +73000,7 @@ kvinnoföreningars
 kvinnoföreningen
 kvinnoföreningens
 kvinnoförenings
+kvinnojourer
 kvinnor
 kvinnorna
 kvinnornas
@@ -74563,6 +74590,7 @@ lärosalars
 lärosalen
 lärosalens
 lärosals
+lärosäte
 lärospån
 lärospåns
 lärostrid
@@ -75116,6 +75144,7 @@ ledast
 ledaste
 ledde
 leddes
+leddjuren
 leden
 ledens
 leder
@@ -78679,6 +78708,7 @@ magstarks
 magstarkt
 måhända
 mahogny
+mail
 maj
 Maj
 Maja
@@ -79067,6 +79097,8 @@ mandaten
 mandatens
 mandatet
 mandatets
+mandatperiod
+mandatperioder
 mandats
 månde
 mandel
@@ -81725,6 +81757,7 @@ missbrukats
 missbruket
 missbrukets
 missbruks
+missbruksproblem
 missdådare
 missdådaren
 missdådarens
@@ -84683,6 +84716,7 @@ Nasarings
 nasarna
 nasarnas
 näsas
+näsblod
 näsborrar
 näsborrarna
 näsborrarnas
@@ -92284,6 +92318,7 @@ overkligt
 överkomligaste
 överkomligs
 överkomligt
+överkroppen
 överkryssad
 överkryssade
 överkryssades
@@ -97927,6 +97962,8 @@ provokatörerna
 provokatörernas
 provokatörers
 provokatörs
+prövotid
+prövotider
 provs
 provsmakning
 provsmakningar
@@ -100426,6 +100463,7 @@ regeringen
 regeringens
 regerings
 regeringsalternativ
+regeringsbildningen
 regeringsfrågan
 regeringskansli
 regeringskanslier
@@ -104511,6 +104549,7 @@ säkerhetsanordningen
 säkerhetsanordningens
 säkerhetsanordnings
 säkerhetshål
+säkerhetskonferensen
 säkerhetsläget
 säkerhetstjänst
 säkerligen
@@ -104802,6 +104841,7 @@ samarbete
 samarbetes
 samarbetet
 samarbetets
+samarbetsklimat
 samarbetsområde
 samarbetsområden
 samarbetsområdena
@@ -107890,6 +107930,7 @@ sjukpenning
 sjukpenningen
 sjukpenningens
 sjukpennings
+sjukpenningsgrundade
 sjuks
 sjuksängen
 sjuksköterska
@@ -110930,6 +110971,7 @@ slalomåkningen
 slalomåkningens
 slalomåknings
 slaloms
+slalomutrustning
 slamkrypare
 slamkryparen
 slamkryparens
@@ -114553,6 +114595,7 @@ sporrsträcks
 spörsmål
 spörsmåls
 sport
+sportaffär
 sporten
 sportens
 sporter
@@ -115558,6 +115601,7 @@ startat
 startats
 starten
 startens
+startfält
 startplats
 startplatsen
 startplatsens
@@ -117467,6 +117511,7 @@ stubbigt
 stubbs
 stubin
 stubins
+stucken
 stuckit
 stuckits
 student
@@ -125267,6 +125312,7 @@ tullars
 tullen
 tullens
 tulls
+tulltjänstemän
 tulpan
 tulpanen
 tulpanens
@@ -126570,6 +126616,7 @@ understöds
 underströk
 understrukit
 understryka
+understryker
 understrykning
 understrykningar
 understrykningarna
@@ -128444,6 +128491,7 @@ urvalskriterium
 urvalskriteriums
 urverk
 urverks
+urvuxna
 usch
 usel
 uselhet
@@ -129042,9 +129090,20 @@ uthuggen
 uthuggens
 uthugget
 uthuggna
+utifrån
+utlåning
+utlåning
+utmaningar
+utmattning
+utmattning
+utmattningssyndrom
+utöva
 utrotning
+utrustning
+utrustning
 utrymme
 utsatta
+utsikt
 uttalandet
 uttryckte
 utvecklingen
@@ -129052,38 +129111,74 @@ vad
 vad
 väg
 vågar
+vägar
+vägval
+val
 valdes
+väldig
 väldigt
 väldigt
+våldsamt
 valet
 välfärd
+väljer
+våningen
+vanligt
 vänner
 väntade
+väntar
 var
+vår
 vara
 varandra
+varandras
+vårbudget
 vårdnadshavarna
 varför
 varit
+varken
 världen
 världens
+varma
 värnskatt
 värsta
 vårt
 väsentligt
+vatten
+växa
 växer
+veckan
+veckor
+veckorna
 vem
+verkar
 verkligen
+verksamhet
 vet
 veta
 vi
 vid
+vidare
+vikten
 viktiga
 viktiga
+viktigt
 vilken
 vill
+ville
+ville
 vis
+visa
+visa
 visade
 visar
 visar
 visat
+viss
+viss
+vissa
+visst
+vit
+vittnesuppgifter
+vuxit
+yrket
