@@ -321,7 +321,7 @@ schedule.scheduleJob('*/5 * * * *', function () {
   readRRS();
 });
 
-schedule.scheduleJob('*/2 * * * *', function () {
+schedule.scheduleJob('*/5 * * * *', function () {
   console.log('Run Normalizer...');
   normalize();
 });
