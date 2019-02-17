@@ -37,8 +37,6 @@ client.on('message', message => {
   if (!message.channel.id === config.discordChannelId) return;
   const args = message.content.slice(config.discordPrefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
-  console.log(args);
-  console.log(command);
 
   if (command === 'alert') {
     const invalidChars = /[ A-z!✓•▪►”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/;
@@ -125,8 +123,6 @@ function readRRS () {
                 checkSpelling(articleBody, authorEmail, articleId, articleTitle);
               }
             });
-        } else {
-          console.log('This article has already been checked for errors! ' + articleId);
         }
       });
     });
@@ -163,7 +159,7 @@ function checkSpelling (html, authorEmail, articleId, articleTitle) {
   }
   console.log('Found ' + misspelledWords.length + ' misspelled words in article: ' + articleTitle);
   addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle); // Add the misspelled words to MongoDB
-  console.log('-----------------------------');
+  console.log('------------------------------------');
 }
 
 function cleanWord (word) {
@@ -314,7 +310,6 @@ function alertAftonbladet (args) {
       };
       mailer.mail(mailOptions);
     } else {
-      console.log('Cant find any article with that ID');
       client.channels.get(config.discordChannelId).send("Can't find article with id: " + articleId);
     }
   });
