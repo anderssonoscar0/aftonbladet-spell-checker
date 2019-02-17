@@ -18541,6 +18541,7 @@ bods
 boen
 boende
 boendefrågan
+boenden
 boendes
 boendet
 boendets
@@ -19735,6 +19736,7 @@ boxning
 boxningen
 boxningens
 boxnings
+boxningsmatch
 boxrar
 boxrarna
 boxrarnas
@@ -21307,6 +21309,7 @@ budgeterat
 budgeterats
 budgetering
 budgeterings
+budgetförhandlingarna
 budgets
 budgetunderskott
 budgivning
@@ -22080,6 +22083,7 @@ centimetrars
 centra
 central
 centrala
+centralamerikaner
 centralare
 centralast
 centralaste
@@ -27001,6 +27005,7 @@ droger
 drogerna
 drogernas
 drogers
+drogförebyggande
 drogkultur
 drogkulturen
 drogkulturens
@@ -40474,6 +40479,8 @@ försvarligs
 försvarligt
 försvars
 försvarsadvokat
+försvarsdepartementets
+försvarshögkvarteret
 försvarslös
 försvarslösa
 försvarslöses
@@ -40486,6 +40493,7 @@ försvarsmakterna
 försvarsmakternas
 försvarsmakters
 försvarsmakts
+försvarsministern
 försvarsområde
 försvarsområden
 försvarsområdena
@@ -47268,6 +47276,7 @@ gränsa
 gränsade
 gränsar
 gränsat
+gränsbarriär
 gränsbyn
 gränsdragning
 gränsdragningar
@@ -47319,6 +47328,7 @@ gränslös
 gränslösa
 gränslöses
 gränslöst
+gränsmur
 gränssnitt
 gränssnitten
 gränssnittens
@@ -52164,6 +52174,7 @@ Hildings
 Hillevi
 Hillevis
 himla
+himlade
 himlar
 himlarna
 himlarnas
@@ -54626,6 +54637,7 @@ huvudlösa
 huvudlöses
 huvudlöst
 huvudmotståndare
+huvudnyheten
 huvudregel
 huvudroll
 huvudrollen
@@ -58329,6 +58341,7 @@ inresans
 inresas
 inreseberättelse
 inreseberättelses
+inreseförbud
 inresor
 inresorna
 inresornas
@@ -68414,6 +68427,7 @@ kongresskommitté
 kongresskommittén
 kongresskommitténs
 kongresskommittés
+kongressledamot
 kongresslokal
 kongresslokalen
 kongresslokalens
@@ -80635,6 +80649,9 @@ medicinsk
 medicinska
 medicinsks
 medicinskt
+medieexperter
+mediepersoner
+mediepersonerna
 medier
 medierna
 mediernas
@@ -81318,6 +81335,7 @@ migränen
 migränens
 migräns
 migranter
+migrantkaravan
 Mikael
 Mikaela
 Mikaelas
@@ -83904,6 +83922,7 @@ murbrukens
 murbruket
 murbrukets
 murbruks
+murbygget
 muren
 murens
 murken
@@ -85198,6 +85217,7 @@ nedanstående
 nedanståendes
 nedantill
 nedåt
+nedbantad
 nedböjd
 nedböjda
 nedböjds
@@ -85397,6 +85417,7 @@ nedstämmer
 nedstäms
 nedstämt
 nedstämts
+nedstängning
 nedstiga
 nedstigande
 nedstigandet
@@ -86001,6 +86022,9 @@ nödig
 nödiga
 nödigs
 nödigt
+nödläge
+nödläge
+nödläget
 nödlidande
 nödlidandes
 nödlösning
@@ -86127,6 +86151,8 @@ nollställt
 nollställts
 nolltid
 nolltids
+nolltolerans
+nolltoleransen
 nomad
 nomader
 nomaderna
@@ -89417,6 +89443,7 @@ omhändertogs
 ömheten
 ömhetens
 ömhets
+ömhetsbevis
 ömhudad
 ömhudade
 ömhudades
@@ -96963,6 +96990,7 @@ presidentvalens
 presidentvalet
 presidentvalets
 presidentvals
+presidentvalskampanjen
 press
 pressa
 pressad
@@ -97580,6 +97608,7 @@ programkod
 programkoden
 programkodens
 programkods
+programledaren
 programmen
 programmens
 programmera
@@ -100008,6 +100037,7 @@ realpolitisks
 realpolitiskt
 reals
 realt
+realtid
 realting
 realts
 rean
@@ -100917,6 +100947,7 @@ rekordens
 rekordet
 rekordets
 rekordhög
+rekordlång
 rekords
 rekordtid
 rekordtids
@@ -102459,6 +102490,7 @@ ringhet
 ringheten
 ringhetens
 ringhets
+ringhörnans
 ringklocka
 ringklockan
 ringklockans
@@ -104298,6 +104330,7 @@ ryssen
 ryssens
 Ryssland
 Rysslands
+ryssutredningen
 ryst
 ryste
 ryt
@@ -105637,6 +105670,7 @@ sändningars
 sändningen
 sändningens
 sändnings
+sändningstid
 Sandra
 Sandras
 sands
@@ -106653,6 +106687,7 @@ sentimentals
 sentimentalt
 separat
 separata
+separationerna
 separatistledare
 separats
 separera
@@ -109559,6 +109594,7 @@ skogsvandringens
 skogsvandrings
 skoj
 skoja
+skojade
 skojig
 skojiga
 skojigare
@@ -115754,6 +115790,8 @@ ståtligt
 statminister
 stats
 ståts
+statsapparaten
+statsapparaten
 statsbidrag
 statsbidragen
 statsbidragens
@@ -119420,6 +119458,7 @@ systrarnas
 systrars
 sytt
 sytts
+syvende
 T#d628|d1731|d1732|d3930|d3931|d4260|d4347|d4625|d4705|t0|t621|t1199|t2247|t4650|t5291|t5765|t5851
 T0N#d2639
 T0T#t5685
@@ -125644,6 +125683,8 @@ tuvor
 tuvorna
 tuvornas
 tuvors
+tv
+tv
 två
 tvåa
 tvåan
@@ -129146,6 +129187,10 @@ uthuggna
 utifrån
 utlåning
 utlåning
+utlovade
+utlysa
+utlysa
+utlyst
 utmaningar
 utmattning
 utmattning
@@ -129158,6 +129203,7 @@ utrustning
 utrymme
 utsatta
 utsikt
+utspel
 utspelet
 uttalandet
 uttryckte
@@ -129183,6 +129229,7 @@ valet
 välfärd
 välja
 väljer
+valrörelsen
 valt
 våningen
 vanligt
@@ -129219,6 +129266,7 @@ veckan
 veckor
 veckorna
 vem
+verbala
 verkar
 verkligen
 verksamhet
@@ -129229,6 +129277,7 @@ vi
 via
 vid
 vidare
+vikt
 vikten
 viktiga
 viktiga
@@ -129238,6 +129287,7 @@ vilket
 vill
 ville
 ville
+vinkel
 vis
 visa
 visa
