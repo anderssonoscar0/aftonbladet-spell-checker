@@ -209,35 +209,39 @@ function updateArticleError (args, addToDictionary) {
   args.shift(); // Remove the first item in args (The article ID)
   Article.findOne({ '_id': articleId }, function (err, doc) {
     if (err) throw err;
-    let words = [];
-    let sentences = [];
-    let addedWords = 0;
-    let ignoredWords = 0;
-    for (var i = 0; i < doc.words.length; i++) {
-      if (args.includes(i.toString())) {
-        if (addToDictionary === true) {
+    if (doc) {
+      let words = [];
+      let sentences = [];
+      let addedWords = 0;
+      let ignoredWords = 0;
+      for (var i = 0; i < doc.words.length; i++) {
+        if (args.includes(i.toString())) {
+          if (addToDictionary === true) {
           // Add the word to the dictionary
-          try {
-            fs.appendFileSync('./dict/sv-SE.dic', '\n' + doc.words[i]);
-          } catch (err) {
-          /* Handle the error */
-            throw err;
-          }
-          addedWords = addedWords + 1;
-        } else {
+            try {
+              fs.appendFileSync('./dict/sv-SE.dic', '\n' + doc.words[i]);
+            } catch (err) {
+            /* Handle the error */
+              throw err;
+            }
+            addedWords = addedWords + 1;
+          } else {
           // Dont add it to the dictionary (Ignore the article error)
-          ignoredWords = ignoredWords + 1;
+            ignoredWords = ignoredWords + 1;
+          }
+        } else {
+          words.push(doc.words[i]);
+          sentences.push(doc.sentences[i]);
         }
-      } else {
-        words.push(doc.words[i]);
-        sentences.push(doc.sentences[i]);
       }
+      doc.words = words;
+      doc.sentences = sentences;
+      doc.save();
+      addedWords ? client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId) : client.channels.get(config.discordChannelId).send('Ignored ' + ignoredWords + ' words for article: ' + articleId);
+      sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId, doc.authorEmail);
+    } else {
+      client.channels.get(config.discordChannelId).send("Can't find any article with that ID " + articleId);
     }
-    doc.words = words;
-    doc.sentences = sentences;
-    doc.save();
-    addedWords ? client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId) : client.channels.get(config.discordChannelId).send('Ignored ' + ignoredWords + ' words for article: ' + articleId);
-    sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId, doc.authorEmail);
   });
 }
 
