@@ -111,7 +111,7 @@ function readRRS () {
               } else {
                 authorName = authorName.rawText.toLowerCase().replace(' ', '.'); // Replace first space with a dot
                 authorName = authorName.replace(' ', ''); // Remove second space
-                const invalidChars = /[ ÅÄÖåäö]/;
+                const invalidChars = /[ ÅÄÖåäöé]/;
                 if (invalidChars.test(authorName)) {
                   authorName = authorName.replace('å', 'a');
                   authorName = authorName.replace('ä', 'a');
