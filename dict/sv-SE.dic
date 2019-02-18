@@ -1908,6 +1908,7 @@ akutast
 akutaste
 akuten
 akutens
+akutmottagningen
 akuts
 akvarell
 akvarellen
@@ -2052,6 +2053,7 @@ albums
 åldersfördelningen
 åldersfördelningens
 åldersfördelnings
+åldersgräns
 ålderstigen
 ålderstigens
 ålderstiget
@@ -2556,6 +2558,7 @@ allt
 alltefter
 allteftersom
 alltemellanåt
+alltfler
 alltför
 alltfort
 alltid
@@ -8195,6 +8198,7 @@ Atens
 återblickens
 återblicks
 återbörda
+återbördade
 återfå
 återfann
 återfanns
@@ -16967,6 +16971,7 @@ bilrutorna
 bilrutornas
 bilrutors
 bils
+biltrafiken
 bilvänlig
 bilvänliga
 bilvänligare
@@ -26036,6 +26041,7 @@ dödskalles
 dödskjutningarna
 dödsmisshandeln
 dödsmisshandeln
+dödsoffer
 dödsoffren
 dödsorsak
 dödsorsaken
@@ -26048,6 +26054,7 @@ dödspolarnas
 dödssiffran
 dödsskjutning
 dödsskjutningar
+dödsskjutningen
 dödssynd
 dödssynden
 dödssyndens
@@ -28387,6 +28394,7 @@ egenheters
 egenhets
 egenmäktig
 egenmäktiga
+egenmäktighet
 egenmäktigs
 egenmäktigt
 egennamn
@@ -40981,6 +40989,7 @@ förtrutit
 förtrutits
 förtryck
 förtrycka
+förtryckande
 förtryckare
 förtryckaren
 förtryckarens
@@ -42901,6 +42910,7 @@ friheterna
 friheternas
 friheters
 frihets
+frihetsberövandet
 frihetsberövas
 friidrott
 friidrottare
@@ -47527,6 +47537,7 @@ gråterskorna
 gråterskornas
 gråterskors
 gratis
+gratisresor
 gråtit
 gråtits
 gråtögd
@@ -52686,6 +52697,7 @@ hjärtstillestånd
 hjärtstilleståndet
 hjärtstilleståndets
 hjärtstillestånds
+hjärtstopp
 hjässa
 hjässan
 hjässans
@@ -57135,6 +57147,7 @@ infrastrukturer
 infrastrukturerna
 infrastrukturernas
 infrastrukturers
+infrastrukturprojekt
 infrastrukturs
 infria
 infriad
@@ -58456,6 +58469,7 @@ inriktningars
 inriktningen
 inriktningens
 inriktnings
+inringarna
 inringt
 inrista
 inristad
@@ -59486,6 +59500,7 @@ internerats
 internerna
 internernas
 interners
+internet
 interns
 internt
 interpellation
@@ -62536,6 +62551,8 @@ kalibreringars
 kalibreringen
 kalibreringens
 kalibrerings
+kalifat
+kalifatet
 Kalix
 kalk
 kalka
@@ -67834,6 +67851,7 @@ kommuner
 kommunerna
 kommunernas
 kommuners
+kommunfullmäktige
 kommunicera
 kommunicerade
 kommunicerande
@@ -69030,6 +69048,8 @@ konstverket
 konstverkets
 konstverks
 konsul
+konsulär
+konsulära
 konsulat
 konsulaten
 konsulatens
@@ -76758,6 +76778,7 @@ ljuder
 ljudet
 ljudets
 ljudfiler
+ljudfilerna
 ljudinspelning
 ljudit
 ljudlig
@@ -80516,6 +80537,7 @@ mattorna
 mattornas
 mattors
 måttos
+mattransporter
 matts
 måtts
 mätts
@@ -84221,6 +84243,7 @@ mustiga
 mustigs
 mustigt
 musts
+mutat
 mutation
 mutationen
 mutationens
@@ -89081,6 +89104,7 @@ oljeförbrukningen
 oljeförbrukningens
 oljeförbruknings
 oljepriset
+oljeprogrammet
 oljud
 oljudet
 oljudets
@@ -90465,6 +90489,7 @@ operationerna
 operationernas
 operationers
 operations
+operationssalen
 operativ
 operativa
 operativs
@@ -94404,6 +94429,7 @@ patetiska
 patetisks
 patetiskt
 patient
+patientdatalagen
 patienten
 patientens
 patienter
@@ -96323,6 +96349,7 @@ pols
 pöls
 polsk
 polska
+polske
 polsks
 polskt
 polymer
@@ -99113,6 +99140,7 @@ radikala
 radikalare
 radikalast
 radikalaste
+radikaliserade
 radikalism
 radikalismen
 radikalismens
@@ -99962,6 +99990,7 @@ rättrogna
 ratts
 råtts
 rätts
+rättsäkert
 rättsboken
 rättsförfarande
 rättsförfarandes
@@ -103383,6 +103412,7 @@ röns
 rönt
 rönte
 röntgen
+röntgenbilder
 röntgens
 röntgenstrålar
 röntgenstrålarna
@@ -104774,6 +104804,7 @@ såhär
 Sahlin
 Sahlins
 såja
+sajten
 sak
 saken
 sakens
@@ -110895,6 +110926,7 @@ skyggast
 skyggaste
 skyggs
 skyggt
+skyhög
 skyl
 skyla
 skylande
@@ -111794,6 +111826,7 @@ sluta
 slutad
 slutade
 slutades
+slutändan
 slutar
 slutas
 slutat
@@ -121190,7 +121223,9 @@ terrorists
 terrorn
 terrorns
 terrorplan
+terrorrörelse
 terrors
+terrortekniker
 tes
 tesen
 tesens
@@ -125649,6 +125684,7 @@ tullar
 tullarna
 tullarnas
 tullars
+tullbrott
 tullen
 tullens
 tulls
@@ -126798,6 +126834,7 @@ underlättar
 underlättas
 underlättat
 underlättats
+underleverantör
 underlig
 underliga
 underligare
@@ -129443,6 +129480,7 @@ utifrån
 utkik
 utkräva
 utlämna
+utlämning
 utlåning
 utlåning
 utlovade
@@ -129484,6 +129522,7 @@ utsikt
 utskicket
 utspel
 utspelet
+utsträckning
 uttala
 uttala
 uttala
@@ -129493,6 +129532,7 @@ uttorkad
 uttryckt
 uttryckte
 utveckla
+utveckling
 utvecklingen
 utvisa
 utvisning
@@ -129506,6 +129546,7 @@ vad
 väderlek
 väderleken
 vädervarningarna
+vädjan
 vädjar
 vädret
 väg
@@ -129521,11 +129562,13 @@ väktare
 vakterna
 val
 väl
+våld
 valde
 valdes
 väldig
 väldigt
 väldigt
+våldsamma
 våldsamt
 våldsbrott
 våldsdåd
@@ -129533,6 +129576,7 @@ valet
 välfärd
 välfärden
 välja
+väljarna
 väljer
 välkomna
 vållande
@@ -129553,16 +129597,20 @@ väntar
 väntas
 vapen
 väpnad
+väpnat
 var
 vår
 vara
+våra
 varandra
 varandras
 vårbudget
+vård
 vårdcentral
 värdefullt
 vården
 vården
+vårdentreprenören
 vårdgruppen
 vårdinstans
 vårdkedjan
@@ -129589,6 +129637,7 @@ varnas
 varningssignaler
 värnskatt
 vars
+värst
 värsta
 vart
 vårt
@@ -129672,6 +129721,7 @@ vittnesuppgifterna
 vore
 vuxit
 vuxna
+webbserver
 yrkar
 yrket
 ytor
