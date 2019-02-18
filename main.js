@@ -177,6 +177,7 @@ function cleanWord (word) {
 
 function addNewArticle (words, sentences, articleId, authorEmail, articleTitle) {
   console.log('Check for article: ' + articleId + ' has been completed. Adding to Database.');
+  if (words.length === 0) return;
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
   });
