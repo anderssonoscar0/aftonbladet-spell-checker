@@ -2087,6 +2087,7 @@ aldrig
 åldrige
 åldrigs
 åldrigt
+åldringsbrott
 äldst
 äldsta
 äldstas
@@ -2991,6 +2992,7 @@ amasonernas
 amasoners
 amasons
 amatör
+amatördomare
 amatören
 amatörens
 amatörer
@@ -4316,6 +4318,9 @@ ANHL#a2676|a2677|a2678|a2679|a2680|a2681|a2682|a2683|a2704|a2705|a2706|a2707|a27
 ANHM#i2136|i2137|i2138|i2139|i2140|i2153|i2154|i2155|i2156|i2187|i2188|i2189|i2190|i2191|i2192|i2193|i2194|i2195|i2196|i2197
 ANHN#a2684|a2685|a2686|a2687|a2688|a2689|a2698|a2699|a2700|a2701|a2702|a2703|e1403|i2126|i2127|i2128|i2129|i2130|i2131|i2132|i2133
 anhöll
+anhölls
+anhölls
+anhölls
 anhopning
 anhopningar
 anhopningarna
@@ -8452,6 +8457,7 @@ Atens
 återvägens
 återvänd
 återvända
+återvändare
 återvändas
 återvände
 återvänder
@@ -9043,6 +9049,7 @@ automater
 automaterna
 automaternas
 automaters
+automatgevär
 automatik
 automatiken
 automatikens
@@ -12391,6 +12398,8 @@ bankirers
 bankirs
 bankkonto
 bankkontos
+bankkort
+bankkort
 banklån
 banklånen
 banklånens
@@ -13235,6 +13244,7 @@ bebisarnas
 bebisars
 bebisen
 bebisens
+bebisgråt
 beblanda
 beblandad
 beblandade
@@ -13377,6 +13387,7 @@ bedrägeriers
 bedrägeriet
 bedrägeriets
 bedrägeris
+bedrägeritypen
 bedraget
 bedragit
 bedragits
@@ -18953,6 +18964,8 @@ bomber
 bomberna
 bombernas
 bombers
+bombhot
+bombhotade
 bombning
 bombningar
 bombningarna
@@ -19604,6 +19617,7 @@ böter
 böterna
 böternas
 böters
+bötesstraff
 bötfälla
 bötfällas
 bötfälld
@@ -20086,6 +20100,7 @@ branscher
 branscherna
 branschernas
 branschers
+branschorganisationer
 bränsle
 bränslen
 bränslena
@@ -21885,6 +21900,7 @@ byttorna
 byttornas
 byttors
 bytts
+byvind
 byxa
 byxan
 byxans
@@ -22368,6 +22384,7 @@ cheferna
 chefernas
 chefers
 chefs
+chefsåklagaren
 chic
 chica
 Chicago
@@ -23214,6 +23231,7 @@ dammigast
 dammigaste
 dammigs
 dammigt
+dammraset
 damms
 dammsög
 dammsögs
@@ -23224,6 +23242,7 @@ dammsugarens
 dammsugares
 dammsugarna
 dammsugarnas
+dammsugartillverkare
 dammsugas
 dammsugen
 dammsugens
@@ -25309,6 +25328,7 @@ direkta
 direktare
 direktast
 direktaste
+direktdemokratisk
 direkten
 direktion
 direktionen
@@ -26026,6 +26046,7 @@ dödspolares
 dödspolarna
 dödspolarnas
 dödssiffran
+dödsskjutning
 dödsskjutningar
 dödssynd
 dödssynden
@@ -26301,6 +26322,7 @@ domstolars
 domstolen
 domstolens
 domstols
+domstolsbeslut
 dömt
 dömts
 don
@@ -28505,6 +28527,7 @@ eklövs
 Eklund
 Eklunds
 eko
+ekobrott
 ekollon
 ekollonen
 ekollonens
@@ -29372,6 +29395,7 @@ endivers
 endivs
 endokrin
 endokrina
+endokrinmottagningen
 endokrins
 endokrint
 endräktig
@@ -30387,6 +30411,7 @@ etapperna
 etappernas
 etappers
 etapps
+etc
 etcetera
 eten
 etenen
@@ -30490,6 +30515,7 @@ ettåriga
 ettårige
 ettårigs
 ettårigt
+ettårsbudget
 ettas
 ettdera
 etter
@@ -31298,6 +31324,7 @@ fackens
 facket
 fackets
 fackförbund
+fackförbundet
 fackförening
 fackföreningar
 fackföreningarna
@@ -31336,6 +31363,8 @@ fackspråk
 fackspråket
 fackspråkets
 fackspråks
+facktoppar
+facktopparna
 facto
 fadäs
 fadäsen
@@ -33074,6 +33103,7 @@ feltolkningars
 feltolkningen
 feltolkningens
 feltolknings
+felutskicket
 fem
 femårig
 femåriga
@@ -34213,6 +34243,7 @@ fiskeriets
 fiskeris
 fisket
 fiskets
+fiskexperten
 fiskgjusar
 fiskgjusarna
 fiskgjusarnas
@@ -34333,6 +34364,7 @@ fjällhög
 fjällhöga
 fjällhögs
 fjällhögt
+fjällräddarna
 fjälls
 fjällskivling
 fjällskivlingen
@@ -34350,6 +34382,7 @@ fjälltrast
 fjälltrasten
 fjälltrastens
 fjälltrasts
+fjällvärlden
 fjällvråk
 fjällvråks
 fjälster
@@ -35500,6 +35533,8 @@ flyktingars
 flyktingen
 flyktingens
 flyktingfrågan
+flyktingläger
+flyktinglägret
 flyktingmottagande
 flyktings
 flyktplan
@@ -36582,6 +36617,7 @@ förbindningen
 förbindningens
 förbindnings
 förbinds
+förbipasserade
 förbisåg
 förbisågs
 förbise
@@ -36790,6 +36826,7 @@ förbundsrepublikerna
 förbundsrepublikernas
 förbundsrepublikers
 förbundsrepubliks
+förbundssekreteraren
 förbundsstyrelse
 förbundsstyrelsen
 förbundsstyrelsens
@@ -38586,6 +38623,7 @@ förlossningars
 förlossningen
 förlossningens
 förlossnings
+förlossningsvård
 förlöst
 förlöste
 förlöstes
@@ -39857,6 +39895,7 @@ forskningars
 forskningen
 forskningens
 forsknings
+forskningsledaren
 forskningsprojekt
 forskningsrapport
 forskningsstudier
@@ -42862,6 +42901,7 @@ friheterna
 friheternas
 friheters
 frihets
+frihetsberövas
 friidrott
 friidrottare
 friidrottaren
@@ -42977,6 +43017,7 @@ friske
 friskes
 frisks
 friskt
+frisläppta
 frisör
 frisören
 frisörens
@@ -43399,6 +43440,7 @@ frysens
 fryser
 fryses
 fryst
+frysta
 fryste
 frystes
 frysts
@@ -48327,6 +48369,8 @@ gruvans
 gruvar
 gruvas
 gruvat
+gruvbolaget
+gruvdamm
 gruvlig
 gruvliga
 gruvligare
@@ -51164,6 +51208,7 @@ haveriernas
 haveriers
 haveriet
 haveriets
+haverikommission
 haveris
 häves
 havet
@@ -51829,6 +51874,7 @@ hemresornas
 hemresors
 hems
 hemsida
+hemsidor
 hemsk
 hemska
 hemskare
@@ -53462,6 +53508,7 @@ honung
 honungen
 honungens
 honungs
+honungsbin
 honungslen
 honungslens
 honungsskivling
@@ -53674,6 +53721,8 @@ hörluren
 hörlurens
 hörlurs
 hormon
+hormonbehandling
+hormonbehandling
 hormonell
 hormonella
 hormonells
@@ -55368,6 +55417,7 @@ idrottslig
 idrottsliga
 idrottsligs
 idrottsligt
+idrottsplats
 ids
 idyll
 idyllen
@@ -59261,6 +59311,7 @@ integritet
 integriteten
 integritetens
 integritets
+integritetskänsliga
 intellekt
 intellekten
 intellektens
@@ -59662,6 +59713,7 @@ intresseföreningars
 intresseföreningen
 intresseföreningens
 intresseförenings
+intressegrupper
 intressen
 intressena
 intressenas
@@ -62056,6 +62108,7 @@ juryn
 juryns
 jurys
 just
+juste
 justera
 justerad
 justerade
@@ -63364,6 +63417,8 @@ käpphästars
 käpphästen
 käpphästens
 käpphästs
+kappkörning
+kappkört
 kapplöpning
 kapplöpningar
 kapplöpningarna
@@ -68588,6 +68643,8 @@ konkursmässigs
 konkursmässigt
 kons
 köns
+könsbekräftande
+könsdysfori
 konsekutiv
 konsekutiva
 konsekutivs
@@ -68682,6 +68739,7 @@ könsfördelning
 könsfördelningen
 könsfördelningens
 könsfördelnings
+könsidentiteten
 konsilier
 konsilierna
 konsiliernas
@@ -68696,6 +68754,9 @@ konsistensens
 konsistent
 konsistenta
 konsistents
+könskorrigerande
+könskorrigering
+könskorrigering
 könsnormer
 konsolidera
 konsoliderad
@@ -71067,6 +71128,7 @@ kristallerna
 kristallernas
 kristallers
 kristalls
+kristdemokratiskt
 kristen
 kristendom
 kristendomen
@@ -71416,6 +71478,7 @@ kroppars
 kroppen
 kroppens
 kropps
+kroppsdelar
 kroppshydda
 kroppshyddan
 kroppshyddans
@@ -71745,6 +71808,7 @@ kryssen
 kryssens
 krysset
 kryssets
+kryssningsfartyg
 krysta
 krystade
 krystades
@@ -72549,6 +72613,7 @@ kustartilleri
 kustartilleriet
 kustartilleriets
 kustartilleris
+kustbevakningsfartyg
 kusten
 kustens
 kuster
@@ -74070,6 +74135,7 @@ landningars
 landningen
 landningens
 landnings
+landningsförsöket
 landområde
 landområden
 landområdena
@@ -75049,6 +75115,7 @@ lättköpts
 lättläst
 lättlästa
 lättlästs
+lättlurad
 lättnad
 lättnaden
 lättnadens
@@ -76494,6 +76561,7 @@ livlighetens
 livlighets
 livligs
 livligt
+livlina
 livlös
 livlösa
 livlöses
@@ -76689,6 +76757,7 @@ ljudens
 ljuder
 ljudet
 ljudets
+ljudfiler
 ljudinspelning
 ljudit
 ljudlig
@@ -78016,6 +78085,7 @@ luften
 luftens
 luftfart
 luftfarts
+luftfartslagen
 luftfartsverket
 luftfartsverkets
 luftflottan
@@ -78947,6 +79017,7 @@ maktlysten
 maktlystens
 maktlystet
 maktlystna
+maktmissbruk
 maktposition
 maktpositionen
 maktpositionens
@@ -79026,6 +79097,7 @@ målfyllig
 målfylliga
 målfylligs
 målfylligt
+målgrupp
 Malin
 målinriktad
 målinriktads
@@ -79120,6 +79192,7 @@ mamma
 mamman
 mammans
 mammas
+mammor
 mammorna
 mammors
 man
@@ -79439,6 +79512,7 @@ människolikt
 människor
 människorna
 människornas
+människorov
 människors
 människotillverkad
 människotillverkade
@@ -80019,6 +80093,7 @@ massas
 mässas
 mässen
 mässens
+massevakueringar
 massgrav
 massgravar
 massgravarna
@@ -80270,6 +80345,7 @@ matlagning
 matlagningen
 matlagningens
 matlagnings
+matleveransföretaget
 matning
 mätning
 matningar
@@ -80543,6 +80619,7 @@ medborgarens
 medborgares
 medborgarna
 medborgarnas
+medborgarskap
 medborgerliga
 meddela
 meddelad
@@ -80610,6 +80687,7 @@ medelvärdenas
 medelvärdes
 medelvärdet
 medelvärdets
+medelvind
 medfångar
 medfångarna
 medfångarnas
@@ -80627,6 +80705,7 @@ medfödda
 medfödds
 medfölj
 medfölja
+medföljande
 medföljas
 medföljde
 medföljdes
@@ -80649,6 +80728,7 @@ medges
 medgett
 medgiva
 medgivande
+medgivanden
 medgivandet
 medgivandets
 medgiven
@@ -80689,6 +80769,7 @@ medicinska
 medicinsks
 medicinskt
 medieexperter
+mediejättar
 mediepersoner
 mediepersonerna
 medier
@@ -81480,6 +81561,7 @@ miljöministrarnas
 miljöministrars
 miljon
 miljön
+miljonbelopp
 miljonen
 miljonens
 miljoner
@@ -83040,6 +83122,7 @@ morgonsamlingars
 morgonsamlingen
 morgonsamlingens
 morgonsamlings
+morgonsång
 morgonstund
 morgonstunden
 morgonstundens
@@ -84531,6 +84614,7 @@ nämnarnas
 nämnas
 nämnd
 nämnde
+nämndeman
 nämndemän
 nämnden
 nämndens
@@ -84589,6 +84673,7 @@ nämnvärdast
 nämnvärdaste
 nämnvärds
 nämnvärt
+nån
 Nancy
 Nancys
 nånsin
@@ -85014,6 +85099,8 @@ nattjänstgöring
 nattjänstgöringen
 nattjänstgöringens
 nattjänstgörings
+nattklubben
+nattklubben
 nattlampa
 nattlampan
 nattlampans
@@ -88093,6 +88180,7 @@ oexploaterad
 oexploaterade
 oexploaterades
 oexploaterat
+of
 ofantlig
 ofantliga
 ofantligs
@@ -88350,6 +88438,7 @@ oförsonligt
 oförstådd
 oförstådda
 oförstådds
+oförståeligt
 oförstående
 Oförståendes
 oförstånd
@@ -90200,6 +90289,7 @@ onkel
 onkeln
 onkelns
 onkels
+onlinespelet
 onödan
 onödig
 onödiga
@@ -90429,6 +90519,7 @@ opinionerna
 opinionernas
 opinioners
 opinions
+opinionsläget
 opinionsmätning
 opinionsmätningar
 opinionsmätningarna
@@ -92338,6 +92429,7 @@ Ove
 överhands
 överhandtagande
 överhandtagandes
+överhängande
 överhet
 överheten
 överhetens
@@ -93400,6 +93492,7 @@ paketets
 pakets
 Pakistan
 Pakistans
+pakistansk
 påklädd
 påklädda
 påklädds
@@ -94000,6 +94093,7 @@ parlamentens
 parlamentet
 parlamentets
 parlaments
+parlamentsval
 pärlan
 pärlande
 pärlans
@@ -94064,6 +94158,7 @@ partiernas
 partiers
 partiet
 partiets
+partigrupp
 partikel
 partikeln
 partikelns
@@ -94315,7 +94410,9 @@ patienter
 patienterna
 patienternas
 patienters
+patientgrupper
 patients
+patientsäkerheten
 patina
 patinas
 patologisk
@@ -96185,6 +96282,7 @@ polisministeriums
 polisministern
 polisministerns
 polisministers
+polispatrull
 polispatruller
 polisskyddet
 polisstyrka
@@ -96199,6 +96297,7 @@ polistjänstgöringen
 polistjänstgöringens
 polistjänstgörings
 polistjänsts
+polisutredningen
 polisväsende
 polisväsendes
 polisväsendet
@@ -97062,6 +97161,8 @@ pressmeddelandet
 pressmeddelandets
 pressrelease
 pressreleases
+presstjänst
+presstjänst
 presstopp
 presstoppen
 presstoppens
@@ -97626,6 +97727,7 @@ profilerats
 profilerna
 profilernas
 profilers
+profilfråga
 profils
 profit
 profiten
@@ -98906,9 +99008,12 @@ räddning
 räddningen
 räddningens
 räddnings
+räddningsarbete
 räddningsarbetet
 räddningshundar
+räddningsinsats
 räddningsmyndighet
+räddningspersonal
 räddningspersonalen
 räddningsplanka
 räddningsplankan
@@ -99264,6 +99369,7 @@ räkor
 räkorna
 räkornas
 räkors
+räkpaket
 raks
 rakt
 rallare
@@ -99676,6 +99782,7 @@ raspar
 raspat
 råsprit
 råsprits
+rasrisk
 rassel
 rassels
 rassla
@@ -100593,6 +100700,7 @@ regeringskansliers
 regeringskansliet
 regeringskansliets
 regeringskanslis
+regeringskris
 regeringsmakten
 regeringsposter
 regeringsprocessen
@@ -100710,6 +100818,7 @@ reglerad
 reglerade
 reglerades
 reglerar
+regleras
 reglerat
 reglerats
 reglering
@@ -102400,6 +102509,7 @@ riksmöte
 riksmötes
 riksmötet
 riksmötets
+riksmuseet
 riksmuseets
 riksomfattande
 riksomfattandes
@@ -103058,6 +103168,7 @@ rödgardisternas
 rödgardisters
 rödgardists
 rödgröna
+rödhakar
 rödhårig
 rödhåriga
 rödhårigas
@@ -103281,6 +103392,7 @@ röntgenstråle
 röntgenstrålen
 röntgenstrålens
 röntgenstråles
+röntgenundersökning
 rop
 ropa
 ropad
@@ -104324,6 +104436,7 @@ rymmande
 rymmandet
 rymmandets
 rymmas
+rymmen
 rymmer
 ryms
 rymt
@@ -104682,6 +104795,7 @@ säkerhetshål
 säkerhetskonferensen
 säkerhetsläget
 säkerhetspolisen
+säkerhetsrisk
 säkerhetstjänst
 säkerligen
 sakerna
@@ -105755,6 +105869,8 @@ Sandström
 Sandströms
 Sandviken
 Sandvikens
+sanerat
+sanering
 sång
 säng
 sängar
@@ -105805,6 +105921,7 @@ sångtexterna
 sångtexternas
 sångtexters
 sångtexts
+sångvanor
 såning
 såningen
 såningens
@@ -106373,6 +106490,7 @@ segelbåtens
 segelbåts
 segelflyg
 segelflygplan
+segelflygplanet
 segels
 seger
 segerglädje
@@ -106663,6 +106781,7 @@ senat
 senaten
 senatens
 senator
+senatorer
 senatorn
 senatorns
 senators
@@ -107827,6 +107946,7 @@ självsvåldighets
 självsvåldigs
 självsvåldigt
 självt
+självutropade
 självvald
 självvalda
 självvalds
@@ -107894,6 +108014,7 @@ sjöfåglar
 sjöfåglarna
 sjöfåglarnas
 sjöfåglars
+sjöfallet
 sjöfart
 sjöfarten
 sjöfartens
@@ -107998,6 +108119,7 @@ sjukdomars
 sjukdomen
 sjukdomens
 sjukdoms
+sjukdomsdrabbade
 sjukdomsrisken
 sjuke
 sjukersättning
@@ -108797,6 +108919,7 @@ skärmarnas
 skärmars
 skärmas
 skärmat
+skärmdump
 skärmen
 skärmens
 skärms
@@ -109552,6 +109675,7 @@ skjutsar
 skjutsas
 skjutsat
 skjutsats
+skjutvapen
 skjutvapenvåld
 SKK#s1285|s3146|s3635|s3636|s4029|s4030|s4052|s4697|s4967|s4968|s5138|s5463
 SKKB#s4707|s4708|s4709|s4710|s4711|s4712|s4713|s4714
@@ -109945,6 +110069,8 @@ sköte
 skötena
 skötenas
 sköter
+skoteråkare
+skoterförare
 sköterska
 sköterskan
 sköterskans
@@ -110009,6 +110135,9 @@ skottningens
 skottnings
 skotts
 skötts
+skottskada
+skottskadad
+skottskadade
 Skövde
 Skövdes
 skovel
@@ -112184,6 +112313,7 @@ smitas
 smiter
 smitit
 smitits
+smitningsolycka
 smits
 smitt
 smitta
@@ -112551,6 +112681,7 @@ snatta
 snattade
 snattar
 snattat
+snatteri
 snäv
 snava
 snäva
@@ -112801,6 +112932,7 @@ snösmältning
 snösmältningen
 snösmältningens
 snösmältnings
+snösörjan
 snöstorm
 snöstormar
 snöstormarna
@@ -113381,6 +113513,7 @@ sommartidens
 sommartids
 sommarvarm
 sommarvarma
+sommarvärmen
 sommarvarms
 sommarvarmt
 sömmen
@@ -113806,6 +113939,7 @@ sovjetiska
 sovjetisks
 sovjetiskt
 Sovjets
+sovmorgon
 sovplats
 sovplatsen
 sovplatsens
@@ -116755,6 +116889,7 @@ stöpas
 stöper
 stopet
 stopets
+stöpis
 stopp
 stoppa
 stoppade
@@ -117168,6 +117303,7 @@ straffrättsliga
 straffrättsligs
 straffrättsligt
 straffs
+straffskala
 stråk
 stråke
 stråken
@@ -117732,6 +117868,7 @@ studierektor
 studierektorn
 studierektorns
 studierektors
+studieresor
 studierna
 studiernas
 studiers
@@ -117963,6 +118100,7 @@ styrkas
 styrker
 styrketår
 styrketårs
+styrkor
 styrks
 styrkt
 styrkta
@@ -118159,6 +118297,7 @@ sugande
 sugandet
 sugandets
 sugas
+sugen
 suger
 suget
 sugets
@@ -121034,6 +121173,12 @@ territoriets
 territorium
 territoriums
 terror
+terroraktiviteter
+terrorbrott
+terrordåd
+terrordådet
+terrorgruppen
+terrorgruppens
 terrorist
 terroristen
 terroristens
@@ -121587,6 +121732,8 @@ tillfälligs
 tillfälligt
 tillfälligtvis
 tillfallit
+tillfångatagits
+tillfångatagna
 tillflöde
 tillflödes
 tillflödet
@@ -121942,6 +122089,7 @@ tillsatserna
 tillsatsernas
 tillsatsers
 tillsatt
+tillsatta
 tillsätta
 tillsättande
 tillsättandes
@@ -122063,6 +122211,7 @@ tilltag
 tilltagen
 tilltagens
 tilltager
+tilltaget
 tilltags
 tilltal
 tilltala
@@ -122500,6 +122649,7 @@ tjänsteåliggande
 tjänsteåligganden
 tjänsteåliggandens
 tjänsteåliggandes
+tjänstebilar
 tjänstefel
 tjänstefelen
 tjänstefelens
@@ -123588,6 +123738,7 @@ totaliteten
 totalitetens
 totalitets
 totals
+totalsumman
 totalt
 töväder
 töväders
@@ -123734,6 +123885,7 @@ trafikanterna
 trafikanternas
 trafikanters
 trafikants
+trafikbrott
 trafiken
 trafikens
 trafikera
@@ -123761,6 +123913,7 @@ trafikolyckor
 trafikolyckorna
 trafikolyckornas
 trafikolyckors
+trafikolycksplats
 trafiks
 trafikskola
 trafikskolan
@@ -124109,6 +124262,8 @@ transmitters
 transparent
 transparenta
 transparents
+transpersoner
+transpersoner
 transponera
 transponerad
 transponerade
@@ -124532,6 +124687,7 @@ tricket
 trickets
 tricks
 triggar
+triggas
 trigonometrisk
 trigonometriska
 trigonometrisks
@@ -124733,6 +124889,8 @@ troféer
 troféerna
 troféernas
 troféers
+troféjägare
+troféjägaren
 trofén
 troféns
 trofés
@@ -126081,6 +126239,8 @@ tvunget
 tvungit
 tvungits
 tvungna
+twitter
+twittrat
 TWN#T3
 TWNS#T4
 TXFR#d737|d738|d739|d740|d741|d742|d743
@@ -126911,6 +127071,7 @@ undre
 undret
 undrets
 undsätta
+undsättas
 undsättning
 undsättningen
 undsättningens
@@ -129280,6 +129441,8 @@ uthugget
 uthuggna
 utifrån
 utkik
+utkräva
+utlämna
 utlåning
 utlåning
 utlovade
@@ -129296,66 +129459,94 @@ utmattningssyndrom
 utökade
 utökats
 utomhus
+utomlands
 utöva
+uträkning
 utreda
 utreda
 utredd
+utreder
 utredning
 utredningar
 utredningen
+utretts
 utrikesminister
 utrotning
 utrustning
 utrustning
+utryckning
+utrymdes
 utrymme
 utsatta
 utsatthet
 utsatts
 utsikt
+utskicket
 utspel
 utspelet
 uttala
 uttala
 uttala
+uttalande
 uttalandet
+uttorkad
+uttryckt
 uttryckte
 utveckla
 utvecklingen
+utvisa
+utvisning
+utvisningen
 väcka
 väcker
+väckt
 väckts
 vad
 vad
 väderlek
 väderleken
+vädervarningarna
+vädjar
+vädret
 väg
 vågar
 vägar
 vägarna
 vägen
+vägrade
+vägrar
+vägrat
 vägval
 väktare
+vakterna
 val
 väl
+valde
 valdes
 väldig
 väldigt
 väldigt
 våldsamt
+våldsbrott
+våldsdåd
 valet
 välfärd
 välfärden
 välja
 väljer
+välkomna
 vållande
 välmående
+valprånet
 valrörelsen
 valt
+valuta
 våningen
 vanliga
 vanligaste
 vanligt
 vänner
+vansinnesfärden
 vänta
 väntade
 väntar
@@ -129368,6 +129559,15 @@ vara
 varandra
 varandras
 vårbudget
+vårdcentral
+värdefullt
+vården
+vården
+vårdgruppen
+vårdinstans
+vårdkedjan
+vårdköerna
+vårdköerna
 vårdnadshavarna
 vårdslöshet
 varenda
@@ -129377,37 +129577,49 @@ varje
 varken
 världen
 världens
+världskända
 världsklass
 världskriget
 varma
+värme
+varmt
+varna
 varnar
 varnas
+varningssignaler
 värnskatt
 vars
 värsta
+vart
 vårt
 varuhuset
 väsentligt
 väska
 väska
 väst
+väster
 västra
+västvärlden
 vatten
+vattentät
 vattnet
 växa
 växel
 växelvis
 växer
+vd
 vecka
 veckan
 veckor
 veckorna
+veckors
 velat
 vem
 verbala
 verkar
 verkligen
 verksamhet
+verksamheten
 vet
 veta
 vetenskap
@@ -129431,6 +129643,9 @@ vill
 villa
 ville
 ville
+villkor
+vindmätningarna
+vindvarningar
 vinkel
 vinna
 vinter
@@ -129446,11 +129661,15 @@ viss
 viss
 vissa
 visst
+visste
 vit
 vita
+vittnar
 vittnen
 vittnesmål
 vittnesuppgifter
+vittnesuppgifterna
+vore
 vuxit
 vuxna
 yrkar
