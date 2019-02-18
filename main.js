@@ -79,10 +79,14 @@ client.on('message', message => {
 
   if (command === 'clear') {
     if (message.member.hasPermission('MANAGE_MESSAGES')) {
-      message.channel.fetchMessages()
-        .then(function (list) {
-          message.channel.bulkDelete(list);
-        }, function (err) { throw err; });
+      var i;
+      for (i = 0; i < 5; i++) {
+        message.channel.fetchMessages()
+          .then(function (list) {
+            console.log('cleaning');
+            message.channel.bulkDelete(list);
+          }, function (err) { throw err; });
+      } 
     }
   }
 });
@@ -237,7 +241,7 @@ function updateArticleError (args, addToDictionary) {
       doc.words = words;
       doc.sentences = sentences;
       doc.save();
-      addedWords ? client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId) : client.channels.get(config.discordChannelId).send('Ignored ' + ignoredWords + ' words for article: ' + articleId);
+      addedWords ? client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId) : client.channels.get(config.discordChannelId).send('Ignored/alerted ' + ignoredWords + ' words for article: ' + articleId);
       sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId, doc.authorEmail);
     } else {
       client.channels.get(config.discordChannelId).send("Can't find any article with that ID " + articleId);
@@ -313,6 +317,7 @@ function alertAftonbladet (args) {
         html: '<p><b>"' + doc.words[wordId] + '"</b> stavas egentligen såhär "<b>' + args[2] + '</b>"</p><br><a href="https://www.aftonbladet.se' + args[0] + '">' + doc.articleTitle + '</a>'
       };
       mailer.mail(mailOptions);
+      updateArticleError(args, 'alert');
     } else {
       client.channels.get(config.discordChannelId).send("Can't find article with id: " + articleId);
     }
