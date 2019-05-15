@@ -47,7 +47,7 @@ client.on('message', message => {
     } else if (isNaN(args[1])) {
       message.channel.send('The misspelled word must be an integer')
     } else {
-      alertAftonbladet(args)
+      alertAftonbladet(args, message)
     }
   }
 
@@ -301,7 +301,7 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
     })
 }
 
-function alertAftonbladet (args) {
+function alertAftonbladet (args, message) {
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
   })
@@ -319,6 +319,8 @@ function alertAftonbladet (args) {
       }
       mailer.mail(mailOptions)
       updateArticleError(args, 'alert')
+      console.log(args)
+      client.channels.get(config.alertChannelId).send(message.author + ' - sent an alert for article ' + articleId + ' . Misspelled word was: (' + doc.words[wordId] + ') and the correct spelling is (' + args[1] + ')')
     } else {
       client.channels.get(config.discordChannelId).send("Can't find article with id: " + articleId)
     }
