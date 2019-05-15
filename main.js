@@ -313,7 +313,7 @@ function alertAftonbladet (args) {
     if (doc) {
       let mailOptions = {
         from: config.mailAdress,
-        to: doc.authorEmail,
+        to: 'anderssonoscar0@gmail.com', // doc.authorEmail
         subject: 'Hej! Jag har hittat ett misstag i en artikel',
         html: '<p><b>"' + doc.words[wordId] + '"</b> stavas egentligen såhär "<b>' + args[2] + '</b>"</p><br><a href="https://www.aftonbladet.se' + args[0] + '">' + doc.articleTitle + '</a>'
       }
