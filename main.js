@@ -51,10 +51,6 @@ client.on('message', message => {
     }
   }
 
-  if (command === 'deny') {
-    message.channel.send('Denying!')
-  }
-
   if (command === 'addword') {
     const invalidChars = /[ a-z!✓•▪►”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/
     if (args.length < 2) {
