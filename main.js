@@ -213,6 +213,7 @@ function updateArticleError (args, addToDictionary) {
       let sentences = []
       let addedWords = 0
       let ignoredWords = 0
+      if (args[0] === 'all') { args = Array(doc.words.length).fill().map((x, i) => i.toString()) }
       for (var i = 0; i < doc.words.length; i++) {
         if (args.includes(i.toString())) {
           if (addToDictionary === true) {
