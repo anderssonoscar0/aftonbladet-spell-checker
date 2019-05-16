@@ -130,7 +130,6 @@ function readRRS () {
 }
 
 function checkSpelling (html, authorEmail, articleId, articleTitle) {
-  console.log('------------------------------------')
   let wordArray = html.split(' ')
   console.log('Starting check for article: ' + articleId)
   var misspelledWords = []
@@ -159,7 +158,6 @@ function checkSpelling (html, authorEmail, articleId, articleTitle) {
   }
   console.log('Found ' + misspelledWords.length + ' misspelled words in article: ' + articleTitle)
   addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle) // Add the misspelled words to MongoDB
-  console.log('------------------------------------')
 }
 
 function cleanWord (word) {
@@ -238,7 +236,9 @@ function updateArticleError (args, addToDictionary) {
       doc.words = words
       doc.sentences = sentences
       doc.save()
-      addedWords ? client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId) : client.channels.get(config.discordChannelId).send('Ignored/alerted ' + ignoredWords + ' words for article: ' + articleId)
+      addToDictionary === 'alert' && !addedWords ? client.channels.get(config.discordChannelId).send('Alerted ' + addedWords + ' word for article: ' + articleId)
+        : addToDictionary ? client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId)
+          : client.channels.get(config.discordChannelId).send('Ignored ' + addedWords + ' words for article: ' + articleId)
       sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId, doc.authorEmail)
     } else {
       client.channels.get(config.discordChannelId).send("Can't find any article with that ID " + articleId)
@@ -315,7 +315,6 @@ function alertAftonbladet (args, message) {
       }
       mailer.mail(mailOptions)
       updateArticleError(args, 'alert')
-      console.log(args)
       client.channels.get(config.alertChannelId).send(message.author + ' - sent an alert for article ' + articleId + ' . Misspelled word was: (' + doc.words[wordId] + ') and the correct spelling is (' + args[1] + ')')
     } else {
       client.channels.get(config.discordChannelId).send("Can't find article with id: " + articleId)
