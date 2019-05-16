@@ -34,7 +34,7 @@ client.login(config.discordToken)
 // Discord listen
 client.on('message', message => {
   if (!message.content.startsWith(config.discordPrefix)) return
-  if (!message.channel.id === config.discordChannelId) return
+  if (message.channel.id !== config.discordChannelId) return
   const args = message.content.slice(config.discordPrefix.length).trim().split(/ +/g)
   const command = args.shift().toLowerCase()
 
