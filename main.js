@@ -237,7 +237,7 @@ function updateArticleError (args, addToDictionary) {
       doc.words = words
       doc.sentences = sentences
       doc.save()
-      addToDictionary === 'alert' && !addedWords ? client.channels.get(config.discordChannelId).send('Alerted ' + addedWords + ' word for article: ' + articleId)
+      addToDictionary === 'alert' && !addedWords ? client.channels.get(config.discordChannelId).send('Alerted ' + ignoredWords + ' word for article: ' + articleId)
         : addToDictionary ? client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId)
           : client.channels.get(config.discordChannelId).send('Ignored ' + ignoredWords + ' words for article: ' + articleId)
       sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId, doc.authorEmail)
