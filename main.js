@@ -137,7 +137,7 @@ function checkSpelling (html, authorEmail, articleId, articleTitle) {
 
   for (var i = 0; i < wordArray.length; i++) {
     const cleanedWord = cleanWord(wordArray[i])
-    if (cleanedWord === undefined) {
+    if (cleanedWord === undefined || encodeURI(wordArray[i]) === '%E2%81%A0') {
       // Word got 'removed' at cleaning. SKIPPING
     } else {
       var isWordInDictionary = myDictionary.spellCheck(cleanedWord)
