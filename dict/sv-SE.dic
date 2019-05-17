@@ -3150,6 +3150,7 @@ ambulansernas
 ambulansers
 ambulanshelikopter
 ambulanshelikoptern
+ambulanspersonal
 ambulera
 ambulerade
 ambulerar
@@ -9552,6 +9553,7 @@ avfyrar
 avfyras
 avfyrat
 avfyrats
+avfyrt
 avgå
 avgående
 avgåendet
@@ -26234,6 +26236,7 @@ dödsfalls
 dödshjälp
 dödshjälpmaskin
 dödshot
+dödshotat
 dödskallar
 dödskallarna
 dödskallarnas
@@ -29348,6 +29351,7 @@ elström
 elströmmen
 elströmmens
 elströms
+elutrustningen
 eluttag
 eluttagen
 eluttagens
@@ -36897,6 +36901,7 @@ förbigick
 förbind
 förbinda
 förbindas
+forbindelse
 förbindelse
 förbindelsen
 förbindelsens
@@ -50194,6 +50199,7 @@ halvtio
 halvtolv
 halvtre
 halvtvå
+halvvägs
 Hambraeus
 Hamburg
 hamburgare
@@ -77294,6 +77300,7 @@ livslevande
 livslevandes
 livsmedel
 livsmedels
+livsmedelsbrist
 livsmedlen
 livsmedlens
 livsmedlet
@@ -78081,6 +78088,7 @@ lökar
 lökarna
 lökarnas
 lökars
+lokdelen
 loken
 löken
 lokens
@@ -85757,6 +85765,7 @@ näthoten
 nation
 national
 nationala
+nationaldag
 nationalekonomi
 nationalekonomin
 nationalekonomins
@@ -95151,6 +95160,8 @@ passagerares
 passagerarings
 passagerarna
 passagerarnas
+passagerartåg
+passagerartåg
 passages
 passande
 passandes
@@ -100015,6 +100026,7 @@ räddningsplankas
 räddningstjänst
 räddningstjänsten
 räddningstjänsten
+räddningstjänstens
 rädds
 raden
 råden
@@ -103782,6 +103794,7 @@ rispar
 rispas
 rispat
 rispats
+risproduktion
 rist
 rista
 ristad
@@ -104320,6 +104333,7 @@ rökta
 rökte
 röktes
 rökts
+rökutveckling
 rökutveckling
 rökutvecklingen
 rökverk
@@ -106141,6 +106155,8 @@ saluterna
 saluternas
 saluters
 saluts
+salutskjutning
+salutskott
 salva
 Salvador
 Salvadors
@@ -108184,6 +108200,7 @@ sextontusens
 sextusen
 sextusens
 sexualbrott
+sexualbrottet
 sexualbrottmål
 sexualiserat
 sexualitet
@@ -111074,6 +111091,7 @@ skolornas
 skolors
 skolpersonal
 skolprotesterna
+skolskjutning
 skolstrejk
 skolstrejkar
 skoltid
@@ -121205,6 +121223,7 @@ tågtidtabellerna
 tågtidtabellernas
 tågtidtabellers
 tågtidtabells
+tågtrafiken
 tågtunnel
 Taiwan
 Taiwans
@@ -124792,6 +124811,7 @@ tonåringen
 tonåringens
 tonårings
 tonårs
+tonårsflicka
 tonårsförälder
 tonårsföräldrar
 tonart
@@ -130934,6 +130954,7 @@ utöva
 utövar
 utövats
 utöver
+utplånat
 uträkning
 utreda
 utreda
@@ -131073,6 +131094,8 @@ väggen
 väglag
 vägledning
 väglöst
+vagnar
+vagnarna
 vägnätet
 vagnen
 vägrade
@@ -131330,6 +131353,7 @@ våta
 våtdräkt
 vatten
 vattenkällor
+vattenmassorna
 vattennivåer
 vattentät
 vattnet
@@ -131348,6 +131372,7 @@ vd
 vecka
 veckan
 veckans
+veckas
 veckolön
 veckor
 veckorna
@@ -131521,28 +131546,3 @@ ytterst
 yttersta
 yttre
 yxa
-salutskjutning
-salutskott
-ambulanspersonal
-nationaldag
-halvvägs
-forbindelse
-avfyrt
-tonårsflicka
-sexualbrottet
-dödshotat
-skolskjutning
-veckas
-risproduktion
-vattenmassorna
-livsmedelsbrist
-utplånat
-passagerartåg
-passagerartåg
-lokdelen
-vagnar
-vagnarna
-tågtrafiken
-räddningstjänstens
-elutrustningen
-rökutveckling
