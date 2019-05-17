@@ -28,6 +28,9 @@ client.on('ready', () => {
   console.log('Startup Sucess!')
   readRRS()
   // alertSchedule();
+  mongoose.connect(config.mongodbURI, {
+    useNewUrlParser: true
+  })
 })
 client.login(config.discordToken)
 
@@ -94,9 +97,6 @@ function readRRS () {
       const string = item.link
       let articleId = string.substr(0, string.lastIndexOf('/')).substr(33)
 
-      mongoose.connect(config.mongodbURI, {
-        useNewUrlParser: true
-      })
       Article.findOne({ '_id': articleId }, function (err, doc) {
         if (err) throw err
         if (doc === null) {
@@ -172,9 +172,6 @@ function cleanWord (word) {
 function addNewArticle (words, sentences, articleId, authorEmail, articleTitle) {
   if (words.length === 0) return
   console.log('Check for article: ' + articleId + ' has been completed. Adding to Database.')
-  mongoose.connect(config.mongodbURI, {
-    useNewUrlParser: true
-  })
 
   client.channels.get(config.discordChannelId).send(articleId + ' was just checked. THIS MESSAGE SHOULD UPDATE SOON')
   client.channels.get(config.discordChannelId).fetchMessages({ limit: 1 }).then(messages => {
@@ -299,10 +296,6 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
 }
 
 function alertAftonbladet (args, message) {
-  mongoose.connect(config.mongodbURI, {
-    useNewUrlParser: true
-  })
-
   const articleId = args[0]
   const wordId = args[1]
   Article.findOne({ '_id': articleId }, function (err, doc) {
