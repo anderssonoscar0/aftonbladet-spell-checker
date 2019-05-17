@@ -150,8 +150,10 @@ function checkSpelling (html, authorEmail, articleId, articleTitle) {
         if (invalidChars.test(sentence)) {
           // Sentence contains invalid characters. SKIPPING
         } else {
-          misspelledWords.push(cleanedWord)
-          sentences.push(sentence)
+          if (!(misspelledWords.indexOf(cleanedWord) > -1)) {
+            misspelledWords.push(cleanedWord)
+            sentences.push(sentence)
+          }
         }
       }
     }
