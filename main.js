@@ -78,14 +78,11 @@ client.on('message', message => {
 
   if (command === 'clear') {
     if (message.member.hasPermission('MANAGE_MESSAGES')) {
-      var i
-      for (i = 0; i < 5; i++) {
-        message.channel.fetchMessages()
-          .then(function (list) {
-            console.log('cleaning')
-            message.channel.bulkDelete(list)
-          }, function (err) { throw err })
-      }
+      message.channel.fetchMessages()
+        .then(function (list) {
+          console.log('cleaning')
+          message.channel.bulkDelete(list)
+        }, function (err) { throw err })
     }
   }
 })
