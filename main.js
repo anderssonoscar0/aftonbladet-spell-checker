@@ -27,7 +27,7 @@ var Article = require('./schemas/article.js')
 client.on('ready', () => {
   console.log('Startup Sucess!')
   readRRS()
-  // alertSchedule();
+  checkErrorVotes()
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
   })
@@ -50,7 +50,7 @@ client.on('message', message => {
     } else if (isNaN(args[1])) {
       message.channel.send('The misspelled word must be an integer')
     } else {
-      alertAftonbladet(args, message)
+      sendDiscordVote(args, message)
     }
   }
 
@@ -233,9 +233,9 @@ function updateArticleError (args, addToDictionary) {
       doc.words = words
       doc.sentences = sentences
       doc.save()
-      addToDictionary === 'alert' && !addedWords ? client.channels.get(config.discordChannelId).send('Alerted ' + ignoredWords + ' word for article: ' + articleId)
-        : addToDictionary ? client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId)
-          : client.channels.get(config.discordChannelId).send('Ignored ' + ignoredWords + ' words for article: ' + articleId)
+      if (addToDictionary) {
+        client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId)
+      }
       sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId, doc.authorEmail)
     } else {
       client.channels.get(config.discordChannelId).send("Can't find any article with that ID " + articleId)
@@ -287,28 +287,62 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
     .then(message => {
       if (sendWords.length === 0) {
         message.delete()
-        client.channels.get(config.discordChannelId).send(articleId + ' has no errors remaining!')
       } else {
         message.edit('Link to article ' + config.aftonbladetBaseUrl + articleId, { embed })
       }
     })
 }
 
-function alertAftonbladet (args, message) {
+function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail) {
+  let mailOptions = {
+    from: config.mailAdress,
+    to: 'anderssonoscar0@gmail.com, saveljeffjonatan@gmail.com', // authorEmail
+    subject: 'Hej! Jag har hittat ett misstag i en artikel',
+    html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a>'
+  }
+  mailer.mail(mailOptions)
+  client.channels.get(config.alertChannelId).send('Article ' + articleId + ' received 5 votes. Misspelled word was: (' + misspelledWord + ') and the correct spelling is (' + correctWord + ')')
+}
+
+function sendDiscordVote (args, message) {
   const articleId = args[0]
   const wordId = args[1]
+  const correctWord = args[2]
+
   Article.findOne({ '_id': articleId }, function (err, doc) {
     if (err) throw err
     if (doc) {
-      let mailOptions = {
-        from: config.mailAdress,
-        to: 'anderssonoscar0@gmail.com', // doc.authorEmail
-        subject: 'Hej! Jag har hittat ett misstag i en artikel',
-        html: '<p><b>"' + doc.words[wordId] + '"</b> stavas egentligen såhär "<b>' + args[2] + '</b>"</p><br><a href="https://www.aftonbladet.se' + args[0] + '">' + doc.articleTitle + '</a>'
+      const embed = {
+        'embed': {
+          'title': doc.authorEmail,
+          'url': 'https://aftonbladet.se' + doc._id,
+          'color': 16711710,
+          'author': {
+            'name': doc.articleTitle,
+            'url': 'https://aftonbladet.se' + doc._id
+          },
+          'timestamp': doc.date,
+          'footer': {
+            'text': doc._id
+          },
+          'fields': [
+            {
+              'name': 'Misspelled word:',
+              'value': doc.words[wordId]
+            },
+            {
+              'name': 'Correct word:',
+              'value': correctWord
+            }
+          ]
+        }
       }
-      mailer.mail(mailOptions)
-      updateArticleError(args, 'alert')
-      client.channels.get(config.alertChannelId).send(message.author + ' - sent an alert for article ' + articleId + ' . Misspelled word was: (' + doc.words[wordId] + ') and the correct spelling is (' + args[1] + ')')
+      client.channels.get(config.voteChannelId).send('', embed).then(message => {
+        message.react('⭐')
+        message.react('❌')
+      })
+      args.splice(-1, 1)
+      updateArticleError(args, false)
     } else {
       client.channels.get(config.discordChannelId).send("Can't find article with id: " + articleId)
     }
@@ -325,3 +359,39 @@ schedule.scheduleJob('*/1 * * * *', function () {
   console.log('Run Normalizer...')
   normalize()
 })
+
+schedule.scheduleJob('*/5 * * * *', function () {
+  console.log('Check for votes...')
+  checkErrorVotes()
+})
+
+function checkErrorVotes () {
+  client.channels.get(config.voteChannelId).fetchMessages()
+    .then(function (list) {
+      const listOfMessages = list.array()
+      for (var i = 0; i < listOfMessages.length;) {
+        const reactions = listOfMessages[i].reactions.array()
+        if (reactions.length > 0) {
+          const reactionArray = reactions[0].message.reactions.array()
+          const starCount = reactionArray[0].count
+          const crossCount = reactionArray[1].count
+
+          // Get article stuffs
+          const articleId = reactionArray[0].message.embeds[0].footer.text
+          const articleTitle = reactionArray[0].message.embeds[0].author.name
+          const articleUrl = reactionArray[0].message.embeds[0].url
+          const authorEmail = reactionArray[0].message.embeds[0].title
+          const misspelledWord = reactionArray[0].message.embeds[0].fields[0].value
+          const correctWord = reactionArray[0].message.embeds[0].fields[1].value
+          if (starCount > 5) {
+            alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail)
+            listOfMessages[i].delete()
+          }
+          if (crossCount > 2) {
+            listOfMessages[i].delete()
+          }
+        }
+        i++
+      }
+    }, function (err) { throw err })
+}

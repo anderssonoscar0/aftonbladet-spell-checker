@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var mongoose = require('mongoose')
+var Schema = mongoose.Schema
 
 var newArticleSchema = new Schema({
   _id: { type: String, unique: true },
@@ -9,6 +9,6 @@ var newArticleSchema = new Schema({
   date: { type: Date, default: Date.now },
   discordMessageId: { type: String },
   articleTitle: { type: String }
-}, { runSettersOnQuery: true });
+}, { runSettersOnQuery: true })
 
-module.exports = mongoose.model('articles', newArticleSchema);
+module.exports = mongoose.model('articles', newArticleSchema)
