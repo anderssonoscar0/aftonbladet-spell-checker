@@ -21,11 +21,12 @@ SpellChecker.getDictionary('sv-SE', './dict', function (err, result) {
 const fetch = require('node-fetch')
 const config = require('./config.js')
 const mailer = require('./mailer.js')
+const logger = require('./logger.js')
 var Article = require('./schemas/article.js')
 
 // Discord startup
 client.on('ready', () => {
-  console.log('Startup Sucess!')
+  logger.log('Startup success')
   readRRS()
   checkErrorVotes()
   mongoose.connect(config.mongodbURI, {
@@ -80,7 +81,7 @@ client.on('message', message => {
     if (message.member.hasPermission('MANAGE_MESSAGES')) {
       message.channel.fetchMessages()
         .then(function (list) {
-          console.log('cleaning')
+          logger.log('Cleaned channel')
           message.channel.bulkDelete(list)
         }, function (err) { throw err })
     }
@@ -104,7 +105,7 @@ function readRRS () {
               let authorName = parsedBody.querySelector('._38DY_')
               const articleTitle = parsedBody.querySelector('._11S-G').rawText
               if (authorName === null) {
-                console.log(articleId + ' is an + article. SKIPPING')
+                logger.log(articleId + ' Skipping because + article')
               } else {
                 authorName = authorName.rawText.toLowerCase().replace(' ', '.') // Replace first space with a dot
                 authorName = authorName.replace(' ', '') // Remove second space
@@ -128,7 +129,6 @@ function readRRS () {
 
 function checkSpelling (html, authorEmail, articleId, articleTitle) {
   let wordArray = html.split(' ')
-  console.log('Starting check for article: ' + articleId)
   var misspelledWords = []
   var sentences = []
 
@@ -155,7 +155,7 @@ function checkSpelling (html, authorEmail, articleId, articleTitle) {
       }
     }
   }
-  console.log('Found ' + misspelledWords.length + ' misspelled words in article: ' + articleTitle)
+  logger.log(articleId + ' has ' + misspelledWords.length + ' misspelled words')
   addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle) // Add the misspelled words to MongoDB
 }
 
@@ -170,8 +170,6 @@ function cleanWord (word) {
 
 function addNewArticle (words, sentences, articleId, authorEmail, articleTitle) {
   if (words.length === 0) return
-  console.log('Check for article: ' + articleId + ' has been completed. Adding to Database.')
-
   client.channels.get(config.discordChannelId).send(articleId + ' was just checked. THIS MESSAGE SHOULD UPDATE SOON')
   client.channels.get(config.discordChannelId).fetchMessages({ limit: 1 }).then(messages => {
     const messageId = messages.first().id
@@ -186,7 +184,7 @@ function addNewArticle (words, sentences, articleId, authorEmail, articleTitle) 
     newArticle.save(function (err) {
       if (err) {
         if (err.code === 11000) {
-          console.log(articleId + ' has already been checked for errors.')
+          logger.log(articleId + ' already checked.')
         } else {
           throw err
         }
@@ -200,7 +198,6 @@ function addNewArticle (words, sentences, articleId, authorEmail, articleTitle) 
 function updateArticleError (args, addToDictionary) {
   // Adding word to Dictionary
   const articleId = args[0]
-  console.log('Updating articleId: ' + articleId)
   args.shift() // Remove the first item in args (The article ID)
   Article.findOne({ '_id': articleId }, function (err, doc) {
     if (err) throw err
@@ -246,7 +243,7 @@ function updateArticleError (args, addToDictionary) {
 function normalize () {
   SpellChecker.normalizeDictionary('./dict/sv-SE.dic', './dict/sv-SE.dic', function (err, success) {
     if (success) {
-      console.log('The file was normalized')
+      logger.log('Normalized dictionary')
     }
     if (err) {
       throw err
@@ -351,17 +348,17 @@ function sendDiscordVote (args, message) {
 
 // Scheudule article search every 5 minutes
 schedule.scheduleJob('*/5 * * * *', function () {
-  console.log('Run RrsReader...')
+  logger.log('Running RRS reader')
   readRRS()
 })
 
 schedule.scheduleJob('*/1 * * * *', function () {
-  console.log('Run Normalizer...')
+  logger.log('Running normalizer')
   normalize()
 })
 
 schedule.scheduleJob('*/5 * * * *', function () {
-  console.log('Check for votes...')
+  logger.log('Running vote checker')
   checkErrorVotes()
 })
 
