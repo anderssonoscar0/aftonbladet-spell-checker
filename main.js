@@ -336,7 +336,10 @@ function sendDiscordVote (args, message) {
       }
       client.channels.get(config.voteChannelId).send('', embed).then(message => {
         message.react('⭐')
-        message.react('❌')
+        client.channels.get(config.voteChannelId).fetchMessage(message.id)
+          .then(message => {
+            message.react('❌')
+          })
       })
       args.splice(-1, 1)
       updateArticleError(args, false)
@@ -380,11 +383,11 @@ function checkErrorVotes () {
           const authorEmail = reactionArray[0].message.embeds[0].title
           const misspelledWord = reactionArray[0].message.embeds[0].fields[0].value
           const correctWord = reactionArray[0].message.embeds[0].fields[1].value
-          if (starCount > 5) {
+          if (starCount > 2) {
             alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail)
             listOfMessages[i].delete()
           }
-          if (crossCount > 2) {
+          if (crossCount > 1) {
             listOfMessages[i].delete()
           }
         }
