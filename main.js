@@ -63,7 +63,7 @@ client.on('message', message => {
     } else if (!invalidChars.test(args[0])) {
       message.channel.send('Command is ".addword <ArticleId> <Number>"')
     } else {
-      updateArticleError(args, true) // Update the article AND add the words
+      updateArticleError(args, true, message) // Update the article AND add the words
     }
   }
 
@@ -74,7 +74,7 @@ client.on('message', message => {
     } else if (!invalidChars.test(args[0])) {
       message.channel.send('Command is ".ignore <ArticleId> <Number>"')
     } else {
-      updateArticleError(args, false) // Update the article and IGNORE the words
+      updateArticleError(args, false, message) // Update the article and IGNORE the words
     }
   }
 
@@ -136,7 +136,6 @@ function checkSpelling (html, authorEmail, articleId, articleTitle) {
   let wordArray = html.split(' ')
   var misspelledWords = []
   var sentences = []
-
   for (var i = 0; i < wordArray.length; i++) {
     const cleanedWord = cleanWord(wordArray[i])
     if (cleanedWord === undefined || encodeURI(wordArray[i]) === '%E2%81%A0') {
@@ -200,7 +199,7 @@ function addNewArticle (words, sentences, articleId, authorEmail, articleTitle) 
   })
 }
 
-function updateArticleError (args, addToDictionary) {
+function updateArticleError (args, addToDictionary, message) {
   // Adding word to Dictionary
   const articleId = args[0]
   args.shift() // Remove the first item in args (The article ID)
@@ -209,6 +208,7 @@ function updateArticleError (args, addToDictionary) {
     if (doc) {
       let words = []
       let sentences = []
+      let wordsAdded = []
       let addedWords = 0
       let ignoredWords = 0
       if (args[0] === 'all') { args = Array(doc.words.length).fill().map((x, i) => i.toString()) }
@@ -223,6 +223,7 @@ function updateArticleError (args, addToDictionary) {
               throw err
             }
             addedWords = addedWords + 1
+            wordsAdded.push(doc.words[i])
           } else {
           // Dont add it to the dictionary (Ignore the article error)
             ignoredWords = ignoredWords + 1
@@ -236,6 +237,7 @@ function updateArticleError (args, addToDictionary) {
       doc.sentences = sentences
       doc.save()
       if (addToDictionary) {
+        logger.log(articleId + ' (' + message.author.username + ') Added ' + addedWords + ' words for article: ' + wordsAdded)
         client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId)
       }
       sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId, doc.authorEmail)
@@ -347,7 +349,7 @@ function sendDiscordVote (args, message) {
           })
       })
       args.splice(-1, 1)
-      updateArticleError(args, false)
+      updateArticleError(args, false, message)
     } else {
       client.channels.get(config.discordChannelId).send("Can't find article with id: " + articleId)
     }
@@ -411,10 +413,10 @@ function removeOldArticles () {
       const messageList = list.array()
       for (var i = 0; i < messageList.length;) {
         if (messageList[i].embeds.length > 0) {
-        const messageTimestamp = messageList[i].embeds[0].message.editedTimestamp
-        if (moment(messageTimestamp).isBefore(moment().subtract(1, 'hours'))) {
-          messageList[i].delete()
-        }
+          const messageTimestamp = messageList[i].embeds[0].message.editedTimestamp
+          if (moment(messageTimestamp).isBefore(moment().subtract(1, 'hours'))) {
+            messageList[i].delete()
+          }
         }
         i++
       }
