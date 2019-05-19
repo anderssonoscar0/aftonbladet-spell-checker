@@ -87,6 +87,10 @@ client.on('message', message => {
         }, function (err) { throw err })
     }
   }
+
+  if (command === 'checkvotes') {
+    checkErrorVotes()
+  }
 })
 
 function readRRS () {
