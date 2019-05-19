@@ -8,6 +8,8 @@ let parser = new Parser()
 const fs = require('fs')
 var SpellChecker = require('simple-spellchecker')
 var myDictionary = null
+var moment = require('moment')
+moment().format()
 
 // Load dictionary.
 SpellChecker.getDictionary('sv-SE', './dict', function (err, result) {
@@ -28,7 +30,6 @@ var Article = require('./schemas/article.js')
 client.on('ready', () => {
   logger.log('Startup success')
   readRRS()
-  checkErrorVotes()
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
   })
@@ -365,6 +366,11 @@ schedule.scheduleJob('*/5 * * * *', function () {
   checkErrorVotes()
 })
 
+schedule.scheduleJob('*/5 * * * *', function () {
+  logger.log('Running delete old articles')
+  removeOldArticles()
+})
+
 function checkErrorVotes () {
   client.channels.get(config.voteChannelId).fetchMessages()
     .then(function (list) {
@@ -393,4 +399,18 @@ function checkErrorVotes () {
         i++
       }
     }, function (err) { throw err })
+}
+
+function removeOldArticles () {
+  client.channels.get(config.discordChannelId).fetchMessages()
+    .then(function (list) {
+      const messageList = list.array()
+      for (var i = 0; i < messageList.length;) {
+        const messageTimestamp = messageList[i].embeds[0].message.editedTimestamp
+        if (moment(messageTimestamp).isBefore(moment().subtract(1, 'hours'))) {
+          messageList[i].delete()
+        }
+        i++
+      }
+    })
 }
