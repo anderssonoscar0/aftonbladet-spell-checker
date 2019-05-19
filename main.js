@@ -356,22 +356,22 @@ function sendDiscordVote (args, message) {
 
 // Scheudule article search every 5 minutes
 schedule.scheduleJob('*/5 * * * *', function () {
-  logger.log('Running RRS reader')
+  logger.log('(SCHEDULE-JOB) - Running RRS reader')
   readRRS()
 })
 
 schedule.scheduleJob('*/1 * * * *', function () {
-  logger.log('Running normalizer')
+  logger.log('(SCHEDULE-JOB) - Running normalizer')
   normalize()
 })
 
 schedule.scheduleJob('*/5 * * * *', function () {
-  logger.log('Running vote checker')
+  logger.log('(SCHEDULE-JOB) - Running vote checker')
   checkErrorVotes()
 })
 
-schedule.scheduleJob('*/5 * * * *', function () {
-  logger.log('Running delete old articles')
+schedule.scheduleJob('*/15 * * * *', function () {
+  logger.log('(SCHEDULE-JOB) - Running delete old articles')
   removeOldArticles()
 })
 
