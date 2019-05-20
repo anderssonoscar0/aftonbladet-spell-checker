@@ -30,7 +30,6 @@ var Article = require('./schemas/article.js')
 client.on('ready', () => {
   logger.log('Startup success')
   readRRS()
-  checkErrorVotes()
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
   })
