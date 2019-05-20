@@ -385,16 +385,17 @@ function checkErrorVotes () {
         const reactions = listOfMessages[i].reactions.array()
         if (reactions.length > 0) {
           const reactionArray = reactions[0].message.reactions.array()
-          const starCount = reactionArray[0].count
-          const crossCount = reactionArray[1].count
+          const crossCount = reactionArray[0]._emoji.name === '❌' ? reactionArray[0].count : reactionArray[1].count
+          const starCount = reactionArray[1]._emoji.name === '⭐' ? reactionArray[1].count : reactionArray[0].count
           if (starCount > 2) {
             // Get article stuffs
-            const articleId = reactionArray[0].message.embeds[0].footer.text
-            const articleTitle = reactionArray[0].message.embeds[0].author.name
-            const articleUrl = reactionArray[0].message.embeds[0].url
-            const authorEmail = reactionArray[0].message.embeds[0].title
-            const misspelledWord = reactionArray[0].message.embeds[0].fields[0].value
-            const correctWord = reactionArray[0].message.embeds[0].fields[1].value
+            const embedInfo = reactionArray[0].message.embeds[0]
+            const articleId = embedInfo.footer.text
+            const articleTitle = embedInfo.author.name
+            const articleUrl = embedInfo.url
+            const authorEmail = embedInfo.title
+            const misspelledWord = embedInfo.fields[0].value
+            const correctWord = embedInfo.fields[1].value
             alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail)
             listOfMessages[i].delete()
           }
