@@ -79,7 +79,7 @@ client.on('message', message => {
   }
 
   if (command === 'clear') {
-    cleanChannel()
+    cleanChannel() // Clean #aftonbladet
   }
   if (command === 'checkvotes') {
     checkErrorVotes()
@@ -350,22 +350,22 @@ function sendDiscordVote (args, message) {
 }
 
 // Scheudule article search every 5 minutes
-schedule.scheduleJob('*/5 * * * *', function () {
+schedule.scheduleJob('*/3 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running RRS reader')
   readRRS()
 })
 
-schedule.scheduleJob('*/1 * * * *', function () {
+schedule.scheduleJob('*/5 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running normalizer')
   normalize()
 })
 
-schedule.scheduleJob('*/5 * * * *', function () {
+schedule.scheduleJob('*/15 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running vote checker')
   checkErrorVotes()
 })
 
-schedule.scheduleJob('*/15 * * * *', function () {
+schedule.scheduleJob('*/10 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running cleaning of #aftonbladet')
   cleanChannel()
 })
@@ -418,4 +418,5 @@ function cleanChannel () {
         i++
       }
     })
+  logger.log('Cleaned #aftonbladet')
 }
