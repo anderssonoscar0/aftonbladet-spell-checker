@@ -402,6 +402,7 @@ function checkErrorVotes () {
 }
 
 function cleanChannel () {
+  logger.log('Cleaning #aftonbladet')
   client.channels.get(config.discordChannelId).fetchMessages()
     .then(function (list) {
       const messageList = list.array()
