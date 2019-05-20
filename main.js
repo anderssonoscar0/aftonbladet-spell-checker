@@ -30,6 +30,7 @@ var Article = require('./schemas/article.js')
 client.on('ready', () => {
   logger.log('Startup success')
   readRRS()
+  checkErrorVotes()
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
   })
@@ -414,7 +415,7 @@ function removeOldArticles () {
       const messageList = list.array()
       for (var i = 0; i < messageList.length;) {
         if (messageList[i].embeds.length > 0) {
-          const messageTimestamp = messageList[i].embeds[0].message.editedTimestamp
+          const messageTimestamp = messageList[i].embeds[0].message.createdTimestamp
           if (moment(messageTimestamp).isBefore(moment().subtract(1, 'hours'))) {
             messageList[i].delete()
           }
