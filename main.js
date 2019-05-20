@@ -79,7 +79,7 @@ client.on('message', message => {
   }
 
   if (command === 'clear') {
-    cleanChannel()
+    cleanChannel() // Clean #aftonbladet
   }
   if (command === 'checkvotes') {
     checkErrorVotes()
