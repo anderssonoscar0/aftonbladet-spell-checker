@@ -360,7 +360,7 @@ schedule.scheduleJob('*/1 * * * *', function () {
   normalize()
 })
 
-schedule.scheduleJob('*/5 * * * *', function () {
+schedule.scheduleJob('*/15 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running vote checker')
   checkErrorVotes()
 })
