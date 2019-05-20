@@ -417,4 +417,5 @@ function cleanChannel () {
         i++
       }
     })
+  logger.log('Cleaned #aftonbladet')
 }
