@@ -365,7 +365,7 @@ schedule.scheduleJob('*/5 * * * *', function () {
   checkErrorVotes()
 })
 
-schedule.scheduleJob('*/15 * * * *', function () {
+schedule.scheduleJob('*/10 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running cleaning of #aftonbladet')
   cleanChannel()
 })
