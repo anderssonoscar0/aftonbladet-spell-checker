@@ -366,7 +366,7 @@ schedule.scheduleJob('*/5 * * * *', function () {
 })
 
 schedule.scheduleJob('*/15 * * * *', function () {
-  logger.log('(SCHEDULE-JOB) - Running delete old articles')
+  logger.log('(SCHEDULE-JOB) - Running cleaning of #aftonbladet')
   cleanChannel()
 })
 
