@@ -79,15 +79,8 @@ client.on('message', message => {
   }
 
   if (command === 'clear') {
-    if (message.member.hasPermission('MANAGE_MESSAGES')) {
-      message.channel.fetchMessages()
-        .then(function (list) {
-          logger.log('Cleaned channel')
-          message.channel.bulkDelete(list)
-        }, function (err) { throw err })
-    }
+    cleanChannel()
   }
-
   if (command === 'checkvotes') {
     checkErrorVotes()
   }
@@ -374,7 +367,7 @@ schedule.scheduleJob('*/5 * * * *', function () {
 
 schedule.scheduleJob('*/15 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running delete old articles')
-  removeOldArticles()
+  cleanChannel()
 })
 
 function checkErrorVotes () {
@@ -408,7 +401,7 @@ function checkErrorVotes () {
     }, function (err) { throw err })
 }
 
-function removeOldArticles () {
+function cleanChannel () {
   client.channels.get(config.discordChannelId).fetchMessages()
     .then(function (list) {
       const messageList = list.array()
@@ -418,6 +411,8 @@ function removeOldArticles () {
           if (moment(messageTimestamp).isBefore(moment().subtract(1, 'hours'))) {
             messageList[i].delete()
           }
+        } else {
+          messageList[i].delete()
         }
         i++
       }
