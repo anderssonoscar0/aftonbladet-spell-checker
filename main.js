@@ -80,15 +80,8 @@ client.on('message', message => {
   }
 
   if (command === 'clear') {
-    if (message.member.hasPermission('MANAGE_MESSAGES')) {
-      message.channel.fetchMessages()
-        .then(function (list) {
-          logger.log('Cleaned channel')
-          message.channel.bulkDelete(list)
-        }, function (err) { throw err })
-    }
+    cleanChannel() // Clean #aftonbladet
   }
-
   if (command === 'checkvotes') {
     checkErrorVotes()
   }
@@ -361,7 +354,7 @@ function sendDiscordVote (args, message) {
 }
 
 // Scheudule article search every 5 minutes
-schedule.scheduleJob('*/5 * * * *', function () {
+schedule.scheduleJob('*/3 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running RRS reader')
   readRRS()
 })
@@ -371,9 +364,9 @@ schedule.scheduleJob('*/5 * * * *', function () {
   checkErrorVotes()
 })
 
-schedule.scheduleJob('*/15 * * * *', function () {
-  logger.log('(SCHEDULE-JOB) - Running delete old articles')
-  removeOldArticles()
+schedule.scheduleJob('*/10 * * * *', function () {
+  logger.log('(SCHEDULE-JOB) - Running cleaning of #aftonbladet')
+  cleanChannel()
 })
 
 function checkErrorVotes () {
@@ -407,7 +400,8 @@ function checkErrorVotes () {
     }, function (err) { throw err })
 }
 
-function removeOldArticles () {
+function cleanChannel () {
+  logger.log('Cleaning #aftonbladet')
   client.channels.get(config.discordChannelId).fetchMessages()
     .then(function (list) {
       const messageList = list.array()
@@ -417,8 +411,11 @@ function removeOldArticles () {
           if (moment(messageTimestamp).isBefore(moment().subtract(1, 'hours'))) {
             messageList[i].delete()
           }
+        } else {
+          messageList[i].delete()
         }
         i++
       }
     })
+  logger.log('Cleaned #aftonbladet')
 }
