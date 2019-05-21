@@ -34,6 +34,7 @@ client.on('ready', () => {
     useNewUrlParser: true
   })
 })
+normalize()
 client.login(config.discordToken)
 
 // Discord listen
@@ -236,6 +237,9 @@ function updateArticleError (args, addToDictionary, message) {
       doc.words = words
       doc.sentences = sentences
       doc.save()
+        .then(() => {
+          normalize()
+        })
       if (addToDictionary) {
         logger.log(articleId + ' (' + message.author.username + ') Added ' + addedWords + ' words for article: ' + wordsAdded)
         client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId)
@@ -360,11 +364,6 @@ function sendDiscordVote (args, message) {
 schedule.scheduleJob('*/5 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running RRS reader')
   readRRS()
-})
-
-schedule.scheduleJob('*/1 * * * *', function () {
-  logger.log('(SCHEDULE-JOB) - Running normalizer')
-  normalize()
 })
 
 schedule.scheduleJob('*/5 * * * *', function () {
