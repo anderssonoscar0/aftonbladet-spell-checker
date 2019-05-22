@@ -372,7 +372,7 @@ function sendDiscordVote (args, message) {
 }
 
 // Scheudule article search every 5 minutes
-schedule.scheduleJob('*/3 * * * *', function () {
+schedule.scheduleJob('*/10 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running RRS reader')
   readRRS()
 })
