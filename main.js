@@ -97,7 +97,7 @@ function readRRS () {
       Article.findOne({ '_id': articleId }, function (err, doc) {
         if (err) throw err
         if (doc === null) {
-          fetch(config.aftonbladetBaseUrl + articleId)
+          fetch(item.link)
             .then(res => res.text())
             .then(htmlbody => {
               let parsedBody = HTMLParser.parse(htmlbody)
