@@ -89,7 +89,7 @@ client.on('message', message => {
 
 function readRRS () {
   (async () => {
-    let feed = await parser.parseURL('https://www.aftonbladet.se/nyheter/rss.xml')
+    let feed = await parser.parseURL('https://www.aftonbladet.se/rss.xml')
     feed.items.forEach(item => {
       const string = item.link
       let articleId = string.substr(0, string.lastIndexOf('/')).substr(33)
@@ -108,12 +108,13 @@ function readRRS () {
               } else {
                 authorName = authorName.rawText.toLowerCase().replace(' ', '.') // Replace first space with a dot
                 authorName = authorName.replace(' ', '') // Remove second space
-                const invalidChars = /[ ÅÄÖåäöé]/
+                const invalidChars = /[ ÅÄÖåäöé,]/
                 if (invalidChars.test(authorName)) {
                   authorName = authorName.replace('å', 'a')
                   authorName = authorName.replace('ä', 'a')
                   authorName = authorName.replace('ö', 'o')
                   authorName = authorName.replace('é', 'e')
+                  authorName = authorName.replace(',', '')
                 }
                 const authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se' // If authorName 'TT' -> newsroom is the author
                 let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
