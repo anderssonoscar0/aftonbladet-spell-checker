@@ -207,7 +207,7 @@ function updateArticleError (args, addToDictionary, message) {
     if (doc) {
       let words = []
       let sentences = []
-      let wordsAdded = []
+      let wordsAdded = ''
       let addedWords = 0
       let ignoredWords = 0
       if (args[0] === 'all') { args = Array(doc.words.length).fill().map((x, i) => i.toString()) }
@@ -222,7 +222,7 @@ function updateArticleError (args, addToDictionary, message) {
               throw err
             }
             addedWords = addedWords + 1
-            wordsAdded.push(doc.words[i])
+            wordsAdded = wordsAdded + doc.words[i] + '\n'
           } else {
           // Dont add it to the dictionary (Ignore the article error)
             ignoredWords = ignoredWords + 1
@@ -241,6 +241,19 @@ function updateArticleError (args, addToDictionary, message) {
       if (addToDictionary) {
         logger.log(articleId + ' (' + message.author.username + ') Added ' + addedWords + ' words for article: ' + wordsAdded)
         client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId)
+        const addedWordsEmbed = {
+          'embed': {
+            'color': 1376000,
+            'timestamp': new Date(),
+            'fields': [
+              {
+                'name': message.author.username + ' - added ' + addedWords + ' words',
+                'value': '```' + wordsAdded + '```'
+              }
+            ]
+          }
+        }
+        client.channels.get(config.addwordChannelId).send(addedWordsEmbed)
       }
       sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId, doc.authorEmail)
     } else {

@@ -3,6 +3,7 @@ module.exports = {
   discordChannelId: '123',
   alertChannelId: '123',
   voteChannelId: '123',
+  addwordChannelId: '123',
   discordPrefix: '.',
   aftonbladetBaseUrl: 'https://aftonbladet.se',
   mailPort: 465,
