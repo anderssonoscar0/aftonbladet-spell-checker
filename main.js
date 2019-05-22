@@ -238,7 +238,7 @@ function updateArticleError (args, addToDictionary, message) {
           normalize()
         })
       if (addToDictionary) {
-        logger.log(articleId + ' (' + message.author.username + ') Added ' + addedWords + ' words for article: ' + wordsAdded)
+        logger.log(articleId + ' (' + message.author.username + ') Added ' + addedWords + ' words')
         message.react('✅')
         const addedWordsEmbed = {
           'embed': {
