@@ -93,7 +93,6 @@ function readRRS () {
     feed.items.forEach(item => {
       const string = item.link
       let articleId = string.substr(0, string.lastIndexOf('/')).substr(33)
-
       Article.findOne({ '_id': articleId }, function (err, doc) {
         if (err) throw err
         if (doc === null) {
@@ -167,9 +166,8 @@ function cleanWord (word) {
   const invalidChars = /[ A-ZÅÄÖ!✓▪•►”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?1234567890]/
   if (invalidChars.test(word) || word === '') {
     return undefined // The word contains invalid characters, returning undefined and skipping it later.
-  } else {
-    return word
   }
+  return word
 }
 
 function addNewArticle (words, sentences, articleId, authorEmail, articleTitle) {
@@ -265,12 +263,8 @@ function updateArticleError (args, addToDictionary, message) {
 
 function normalize () {
   SpellChecker.normalizeDictionary('./dict/sv-SE.dic', './dict/sv-SE.dic', function (err, success) {
-    if (success) {
-      logger.log('Normalized dictionary')
-    }
-    if (err) {
-      throw err
-    }
+    if (success) logger.log('Normalized dictionary')
+    if (err) throw err
   })
 }
 
@@ -305,11 +299,9 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
 
   client.channels.get(config.discordChannelId).fetchMessage(discordMessageId)
     .then(message => {
-      if (sendWords.length === 0) {
-        message.delete()
-      } else {
-        message.edit('Link to article ' + config.aftonbladetBaseUrl + articleId, { embed })
-      }
+      sendWords.length === 0
+        ? message.delete()
+        : message.edit('Link to article ' + config.aftonbladetBaseUrl + articleId, { embed })
     })
 }
 
@@ -410,9 +402,7 @@ function checkErrorVotes () {
             alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail)
             listOfMessages[i].delete()
           }
-          if (crossCount > 1) {
-            listOfMessages[i].delete()
-          }
+          if (crossCount > 1) listOfMessages[i].delete()
         }
         i++
       }
