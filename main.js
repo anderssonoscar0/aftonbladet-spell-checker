@@ -130,7 +130,12 @@ function checkSpelling (html, authorEmail, articleId, articleTitle) {
   let wordArray = html.split(' ')
   var misspelledWords = []
   var sentences = []
+  const breakOnReadMore = /[LÄS]+[OCKSÅ]+/
+  const breakOnArticleAbout = /[ARTIKELN ]+[HANDLAR ]+[OM]+/
   for (var i = 0; i < wordArray.length; i++) {
+    if (breakOnReadMore.test(wordArray[i] + wordArray[i + 1]) || breakOnArticleAbout.test(wordArray[i] + wordArray[i + 1] + wordArray[i + 2])) {
+      break
+    }
     const cleanedWord = cleanWord(wordArray[i])
     if (cleanedWord === undefined || encodeURI(wordArray[i]) === '%E2%81%A0') {
       // Word got 'removed' at cleaning. SKIPPING
