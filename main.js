@@ -241,7 +241,7 @@ function updateArticleError (args, addToDictionary, message) {
         })
       if (addToDictionary) {
         logger.log(articleId + ' (' + message.author.username + ') Added ' + addedWords + ' words for article: ' + wordsAdded)
-        client.channels.get(config.discordChannelId).send('Added ' + addedWords + ' words for article: ' + articleId)
+        message.react('✅')
         const addedWordsEmbed = {
           'embed': {
             'color': 1376000,
@@ -258,7 +258,7 @@ function updateArticleError (args, addToDictionary, message) {
       }
       sendDiscordAlert(doc._id, doc.date, words, sentences, doc.discordMessageId, doc.authorEmail)
     } else {
-      client.channels.get(config.discordChannelId).send("Can't find any article with that ID " + articleId)
+      message.react('❌')
     }
   })
 }
@@ -367,7 +367,7 @@ function sendDiscordVote (args, message) {
       args.splice(-1, 1)
       updateArticleError(args, false, message)
     } else {
-      client.channels.get(config.discordChannelId).send("Can't find article with id: " + articleId)
+      message.react('❌')
     }
   })
 }
