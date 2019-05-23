@@ -91,8 +91,7 @@ function readRRS () {
   (async () => {
     let feed = await parser.parseURL('https://www.aftonbladet.se/rss.xml')
     feed.items.forEach(item => {
-      const string = item.link
-      let articleId = string.substr(0, string.lastIndexOf('/')).substr(33)
+      let articleId = item.link.substr(0, item.link.lastIndexOf('/')).slice(-9)
       Article.findOne({ '_id': articleId }, function (err, doc) {
         if (err) throw err
         if (doc === null) {
@@ -102,9 +101,7 @@ function readRRS () {
               let parsedBody = HTMLParser.parse(htmlbody)
               let authorName = parsedBody.querySelector('._38DY_')
               const articleTitle = parsedBody.querySelector('._11S-G').rawText
-              if (authorName === null) {
-                logger.log(articleId + ' Skipping because + article')
-              } else {
+              if (authorName !== null) {
                 authorName = authorName.rawText.toLowerCase().replace(' ', '.') // Replace first space with a dot
                 authorName = authorName.replace(' ', '') // Remove second space
                 const invalidChars = /[ ÅÄÖåäöé,]/
@@ -117,7 +114,7 @@ function readRRS () {
                 }
                 const authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se' // If authorName 'TT' -> newsroom is the author
                 let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
-                checkSpelling(articleBody, authorEmail, articleId, articleTitle)
+                checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
               }
             })
         }
@@ -126,7 +123,7 @@ function readRRS () {
   })()
 }
 
-function checkSpelling (html, authorEmail, articleId, articleTitle) {
+function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
   let wordArray = html.split(' ')
   var misspelledWords = []
   var sentences = []
@@ -159,7 +156,7 @@ function checkSpelling (html, authorEmail, articleId, articleTitle) {
     }
   }
   logger.log(articleId + ' has ' + misspelledWords.length + ' misspelled words')
-  addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle) // Add the misspelled words to MongoDB
+  addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle, url) // Add the misspelled words to MongoDB
 }
 
 function cleanWord (word) {
@@ -170,7 +167,7 @@ function cleanWord (word) {
   return word
 }
 
-function addNewArticle (words, sentences, articleId, authorEmail, articleTitle) {
+function addNewArticle (words, sentences, articleId, authorEmail, articleTitle, url) {
   if (words.length === 0) return
   client.channels.get(config.discordChannelId).send(articleId + ' was just checked. THIS MESSAGE SHOULD UPDATE SOON')
   client.channels.get(config.discordChannelId).fetchMessages({ limit: 1 }).then(messages => {
@@ -178,6 +175,7 @@ function addNewArticle (words, sentences, articleId, authorEmail, articleTitle) 
     const newArticle = new Article({
       _id: articleId,
       words: words,
+      articleUrl: url,
       sentences: sentences,
       authorEmail: authorEmail,
       discordMessageId: messageId,
@@ -327,11 +325,11 @@ function sendDiscordVote (args, message) {
       const embed = {
         'embed': {
           'title': doc.authorEmail,
-          'url': 'https://aftonbladet.se' + doc._id,
+          'url': doc.articleUrl,
           'color': 16711710,
           'author': {
             'name': doc.articleTitle,
-            'url': 'https://aftonbladet.se' + doc._id
+            'url': doc.articleUrl
           },
           'timestamp': doc.date,
           'footer': {
