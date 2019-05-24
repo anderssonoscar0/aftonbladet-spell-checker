@@ -413,7 +413,7 @@ function cleanChannel () {
       for (var i = 0; i < messageList.length;) {
         if (messageList[i].embeds.length > 0) {
           const messageTimestamp = messageList[i].embeds[0].message.createdTimestamp
-          if (moment(messageTimestamp).isBefore(moment().subtract(1, 'hours'))) {
+          if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours'))) {
             messageList[i].delete()
           }
         } else {
