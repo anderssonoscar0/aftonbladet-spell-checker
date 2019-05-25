@@ -154,8 +154,6 @@ function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
         }
       }
     }
-  }
-  logger.log(articleId + ' has ' + misspelledWords.length + ' misspelled words')
   addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle, url) // Add the misspelled words to MongoDB
 }
 
@@ -189,6 +187,7 @@ function addNewArticle (words, sentences, articleId, authorEmail, articleTitle, 
           throw err
         }
       } else {
+        logger.log(articleId + ' has ' + words.length + ' misspelled words')
         sendDiscordAlert(articleId, new Date(), words, sentences, messageId, authorEmail)
       }
     })
