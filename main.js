@@ -246,7 +246,7 @@ function updateArticleError (args, addToDictionary, message) {
             'fields': [
               {
                 'name': message.author.username + ' - added ' + addedWords + ' words',
-                'value': '```' + wordsAdded + '```'
+                'value': '```\n' + wordsAdded + '```'
               }
             ]
           }
