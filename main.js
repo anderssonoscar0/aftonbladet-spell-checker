@@ -380,8 +380,12 @@ function checkErrorVotes () {
         const reactions = listOfMessages[i].reactions.array()
         if (reactions.length > 0) {
           const reactionArray = reactions[0].message.reactions.array()
-          const crossCount = reactionArray[0]._emoji.name === '❌' ? reactionArray[0].count : reactionArray[1].count
-          const starCount = reactionArray[1]._emoji.name === '⭐' ? reactionArray[1].count : reactionArray[0].count
+          const crossCount = reactionArray[0]._emoji.name === '❌'
+            ? reactionArray[0].count
+            : reactionArray[1].count
+          const starCount = reactionArray[1]._emoji.name === '⭐'
+            ? reactionArray[1].count
+            : reactionArray[0].count
           if (starCount > 2) {
             // Get article stuffs
             const embedInfo = reactionArray[0].message.embeds[0]
