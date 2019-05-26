@@ -136,10 +136,6 @@ function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
         const sentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
         wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3]
         // Check if the sentence contains invalid characters
-        const invalidChars = /[!•►✓▪”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?1234567890]/
-        if (invalidChars.test(sentence)) {
-          // Sentence contains invalid characters. SKIPPING
-        } else {
           if (!(misspelledWords.indexOf(cleanedWord) > -1)) {
             misspelledWords.push(cleanedWord)
             sentences.push(sentence)
@@ -151,7 +147,7 @@ function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
 }
 
 function cleanWord (word) {
-  const invalidChars = /[ A-ZÅÄÖ!✓▪•►”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?1234567890]/
+  const invalidChars = /[ A-Z!✓▪•►”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?1234567890]/
   if (invalidChars.test(word) || word === '') {
     return undefined // The word contains invalid characters, returning undefined and skipping it later.
   }
