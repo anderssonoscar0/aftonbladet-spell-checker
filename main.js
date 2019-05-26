@@ -11,14 +11,7 @@ var myDictionary = null
 var moment = require('moment')
 moment().format()
 
-// Load dictionary.
-SpellChecker.getDictionary('sv-SE', './dict', function (err, result) {
-  if (!err) {
-    myDictionary = result
-  } else {
-    console.log(err)
-  }
-})
+getUpdatedDictionary()
 
 const fetch = require('node-fetch')
 const config = require('./config.js')
@@ -378,6 +371,11 @@ schedule.scheduleJob('*/10 * * * *', function () {
   cleanChannel()
 })
 
+schedule.scheduleJob('*/30 * * * *', function () {
+  logger.log('(SCHEDULE-JOB) - Update dictionary')
+  getUpdatedDictionary()
+})
+
 function checkErrorVotes () {
   client.channels.get(config.voteChannelId).fetchMessages()
     .then(function (list) {
@@ -425,4 +423,14 @@ function cleanChannel () {
       }
     })
   logger.log('Cleaned #aftonbladet')
+}
+
+function getUpdatedDictionary () {
+  SpellChecker.getDictionary('sv-SE', './dict', function (err, result) {
+    if (!err) {
+      myDictionary = result
+    } else {
+      console.log(err)
+    }
+  })
 }
