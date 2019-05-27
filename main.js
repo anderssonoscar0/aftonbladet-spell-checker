@@ -292,7 +292,7 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
     })
 }
 
-function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail) {
+function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, message) {
   let mailOptions = {
     from: config.mailAdress,
     to: 'anderssonoscar0@gmail.com, saveljeffjonatan@gmail.com', // authorEmail
@@ -300,7 +300,19 @@ function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle
     html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a>'
   }
   mailer.mail(mailOptions)
-  client.channels.get(config.alertChannelId).send('Article ' + articleId + ' received 5 votes. Misspelled word was: (' + misspelledWord + ') and the correct spelling is (' + correctWord + ')')
+  const addedWordsEmbed = {
+    'embed': {
+      'color': 1376000,
+      'timestamp': new Date(),
+      'fields': [
+        {
+          'name': 'I have reported one word',
+          'value': '```\n' + 'Misspelled word: ' + misspelledWord + '\n\n' + 'Correct spelling: ' + correctWord + '```'
+        }
+      ]
+    }
+  }
+  client.channels.get(config.alertChannelId).send(addedWordsEmbed)
 }
 
 function sendDiscordVote (args, message) {
