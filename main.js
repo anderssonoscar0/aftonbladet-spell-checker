@@ -136,13 +136,13 @@ function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
         const sentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
         wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3]
         // Check if the sentence contains invalid characters
-          if (!(misspelledWords.indexOf(cleanedWord) > -1)) {
-            misspelledWords.push(cleanedWord)
-            sentences.push(sentence)
-          }
+        if (!(misspelledWords.indexOf(cleanedWord) > -1)) {
+          misspelledWords.push(cleanedWord)
+          sentences.push(sentence)
         }
       }
     }
+  }
   addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle, url) // Add the misspelled words to MongoDB
 }
 
