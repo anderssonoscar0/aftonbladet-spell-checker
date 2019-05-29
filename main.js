@@ -295,7 +295,7 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
 function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, message) {
   let mailOptions = {
     from: config.mailAdress,
-    to: 'anderssonoscar0@gmail.com, saveljeffjonatan@gmail.com', // authorEmail
+    to: authorEmail,
     subject: 'Hej! Jag har hittat ett misstag i en artikel',
     html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a>'
   }
