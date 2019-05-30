@@ -147,7 +147,7 @@ function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
 }
 
 function cleanWord (word) {
-  const invalidChars = /[ A-Z!✓▪•►”–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?1234567890]/
+  const invalidChars = /[ A-Z!✓▪•►”’–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?1234567890]/
   if (invalidChars.test(word) || word === '') {
     return undefined // The word contains invalid characters, returning undefined and skipping it later.
   }
