@@ -76,7 +76,7 @@ client.on('message', message => {
     let clean = false
     if (args.length > 0) {
       clean = true
-  }
+    }
     cleanChannel(clean) // Clean #aftonbladet
   }
   if (command === 'checkvotes') {
@@ -103,11 +103,11 @@ function readRRS () {
               try {
                 let authorName = parsedBody.querySelector('._2atUs.abRedLink._1zkyS').rawAttributes.href
                 const authorEmail = authorName.substring(7, authorName.indexOf('?')).split(',')
-              const articleTitle = parsedBody.querySelector('._11S-G').rawText
+                const articleTitle = parsedBody.querySelector('._11S-G').rawText
                 if (authorEmail.length > 1) authorEmail.shift()
                 let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
                 checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)  
-                }
+              } 
               catch {
                 try {
                   const getAuthorlink = config.aftonbladetBaseUrl +  parsedBody.querySelector('._38DY_').rawAttributes.href
@@ -115,11 +115,15 @@ function readRRS () {
                     .then(res => res.text())
                     .then(authorHtmlBody => {
                       let parsedAuthorBody = HTMLParser.parse(authorHtmlBody)
-                      let authorName = parsedAuthorBody.querySelector('._1xwBj.abIconMail.abRedLink').rawAttributes.href
-                      const authorEmail = authorName.substring(7).split(',')
-                let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
-                      const articleTitle = parsedBody.querySelector('._11S-G').rawText
-                checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
+                      if (parsedAuthorBody.querySelector('._1xwBj.abIconMail.abRedLink') !== null){
+                        let authorName = parsedAuthorBody.querySelector('._1xwBj.abIconMail.abRedLink').rawAttributes.href
+                        const authorEmail = authorName.substring(7).split(',')
+                        let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
+                        const articleTitle = parsedBody.querySelector('._11S-G').rawText
+                        checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
+                      } else {
+                        console.log("Can't find article author with the following link: " + getAuthorlink)
+                      }
                     })
                 }
                 catch {
@@ -415,7 +419,7 @@ function checkErrorVotes () {
           const starCount = reactionArray[1]._emoji.name === '⭐'
             ? reactionArray[1].count
             : reactionArray[0].count
-          if (starCount > 2) {
+          if (starCount > 1) {
             // Get article stuffs
             const embedInfo = reactionArray[0].message.embeds[0]
             const articleId = embedInfo.footer.text
@@ -443,14 +447,14 @@ function cleanChannel (deleteAll) {
         if (deleteAll) {
           messageList[i].delete()
         } else {
-        if (messageList[i].embeds.length > 0) {
-          const messageTimestamp = messageList[i].embeds[0].message.createdTimestamp
-          if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours'))) {
+          if (messageList[i].embeds.length > 0) {
+            const messageTimestamp = messageList[i].embeds[0].message.createdTimestamp
+            if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours'))) {
+              messageList[i].delete()
+            }
+          } else {
             messageList[i].delete()
           }
-        } else {
-          messageList[i].delete()
-        }
         }
         i++
       }
