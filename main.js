@@ -88,6 +88,10 @@ function readRRS () {
   (async () => {
     let feed = await parser.parseURL('https://www.aftonbladet.se/rss.xml')
     feed.items.forEach(item => {
+      const skipTvArticles = /[t][v]./
+      const skipDebattArticles = /\Wdebatt\W/
+      if (skipTvArticles.test(item.link)) return
+      if (skipDebattArticles.test(item.link)) return
       let articleId = item.link.substr(0, item.link.lastIndexOf('/')).slice(-9)
       Article.findOne({ '_id': articleId }, function (err, doc) {
         if (err) throw err
@@ -96,22 +100,31 @@ function readRRS () {
             .then(res => res.text())
             .then(htmlbody => {
               let parsedBody = HTMLParser.parse(htmlbody)
-              let authorName = parsedBody.querySelector('._38DY_')
+              try {
+                let authorName = parsedBody.querySelector('._2atUs.abRedLink._1zkyS').rawAttributes.href
+                const authorEmail = authorName.substring(7, authorName.indexOf('?')).split(',')
               const articleTitle = parsedBody.querySelector('._11S-G').rawText
-              if (authorName !== null) {
-                authorName = authorName.rawText.toLowerCase().replace(' ', '.') // Replace first space with a dot
-                authorName = authorName.replace(' ', '') // Remove second space
-                const invalidChars = /[ ÅÄÖåäöé,]/
-                if (invalidChars.test(authorName)) {
-                  authorName = authorName.replace('å', 'a')
-                  authorName = authorName.replace('ä', 'a')
-                  authorName = authorName.replace('ö', 'o')
-                  authorName = authorName.replace('é', 'e')
-                  authorName = authorName.replace(',', '')
-                }
-                const authorEmail = authorName === 'tt' ? 'webbnyheter@aftonbladet.se' : authorName + '@aftonbladet.se' // If authorName 'TT' -> newsroom is the author
+                if (authorEmail.length > 1) authorEmail.shift()
                 let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
+                checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)  
+                }
+              catch {
+                try {
+                  const getAuthorlink = config.aftonbladetBaseUrl +  parsedBody.querySelector('._38DY_').rawAttributes.href
+                  fetch(getAuthorlink)
+                    .then(res => res.text())
+                    .then(authorHtmlBody => {
+                      let parsedAuthorBody = HTMLParser.parse(authorHtmlBody)
+                      let authorName = parsedAuthorBody.querySelector('._1xwBj.abIconMail.abRedLink').rawAttributes.href
+                      const authorEmail = authorName.substring(7).split(',')
+                let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
+                      const articleTitle = parsedBody.querySelector('._11S-G').rawText
                 checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
+                    })
+                }
+                catch {
+                  return // Skipping because + article
+                }   
               }
             })
         }
@@ -168,7 +181,7 @@ function addNewArticle (words, sentences, articleId, authorEmail, articleTitle, 
       words: words,
       articleUrl: url,
       sentences: sentences,
-      authorEmail: authorEmail,
+      authorEmail: authorEmail.toString(),
       discordMessageId: messageId,
       articleTitle: articleTitle
     })
@@ -181,7 +194,7 @@ function addNewArticle (words, sentences, articleId, authorEmail, articleTitle, 
         }
       } else {
         logger.log(articleId + ' has ' + words.length + ' misspelled words')
-        sendDiscordAlert(articleId, new Date(), words, sentences, messageId, authorEmail)
+        sendDiscordAlert(articleId, new Date(), words, sentences, messageId, authorEmail.toString())
       }
     })
   })
