@@ -73,7 +73,11 @@ client.on('message', message => {
   }
 
   if (command === 'clear') {
-    cleanChannel() // Clean #aftonbladet
+    let clean = false
+    if (args.length > 0) {
+      clean = true
+  }
+    cleanChannel(clean) // Clean #aftonbladet
   }
   if (command === 'checkvotes') {
     checkErrorVotes()
@@ -376,7 +380,7 @@ schedule.scheduleJob('*/5 * * * *', function () {
 
 schedule.scheduleJob('*/10 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running cleaning of #aftonbladet')
-  cleanChannel()
+  cleanChannel(false)
 })
 
 schedule.scheduleJob('*/30 * * * *', function () {
@@ -417,12 +421,15 @@ function checkErrorVotes () {
     }, function (err) { throw err })
 }
 
-function cleanChannel () {
+function cleanChannel (deleteAll) {
   logger.log('Cleaning #aftonbladet')
   client.channels.get(config.discordChannelId).fetchMessages()
     .then(function (list) {
       const messageList = list.array()
       for (var i = 0; i < messageList.length;) {
+        if (deleteAll) {
+          messageList[i].delete()
+        } else {
         if (messageList[i].embeds.length > 0) {
           const messageTimestamp = messageList[i].embeds[0].message.createdTimestamp
           if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours'))) {
@@ -430,6 +437,7 @@ function cleanChannel () {
           }
         } else {
           messageList[i].delete()
+        }
         }
         i++
       }
