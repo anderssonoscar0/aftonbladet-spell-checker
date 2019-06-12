@@ -176,23 +176,26 @@ async function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
                 sentences.push(sentence)
               }
             } else {
-              if (!(addWords.indexOf(cleanedWord) > -1)) {
-                addWords.push(cleanedWord)
-                logger.log(articleId + ' Adding to DICT: ' + cleanedWord)
-              try {
+              if (await !(addWords.indexOf(cleanedWord) > -1)) {
+                await addWords.push(cleanedWord)
+                await logger.log(articleId + ' Adding to DICT: ' + cleanedWord)
+                try {
                   await fs.appendFileSync('./dict/sv-SE.dic', '\n' + cleanedWord)
-              } catch (err) {
-                /* Handle the error */
-                throw err
+                } catch (err) {
+                  /* Handle the error */
+                  throw err
+                }
               }
-            }
             }
           })
 
       }
     }
   }
-  addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle, url) // Add the misspelled words to MongoDB
+
+  if (addWords.length > 0) await normalize()
+  if (misspelledWords.length > 0) await addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle, url) // Add the misspelled words to MongoDB
+
 }
 
 function cleanWord(word) {
@@ -204,7 +207,6 @@ function cleanWord(word) {
 }
 
 function addNewArticle(words, sentences, articleId, authorEmail, articleTitle, url) {
-  if (words.length === 0) return
   client.channels.get(config.discordChannelId).send(articleId + ' was just checked. THIS MESSAGE SHOULD UPDATE SOON')
   client.channels.get(config.discordChannelId).fetchMessages({ limit: 1 }).then(messages => {
     const messageId = messages.first().id
