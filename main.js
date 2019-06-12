@@ -115,15 +115,21 @@ function readRRS() {
                     .then(res => res.text())
                     .then(authorHtmlBody => {
                       let parsedAuthorBody = HTMLParser.parse(authorHtmlBody)
+                      let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
+                      const articleTitle = parsedBody.querySelector('._11S-G').rawText
+                      let authorName
+                      let authorEmail
                       if (parsedAuthorBody.querySelector('._1xwBj.abIconMail.abRedLink') !== null) {
-                        let authorName = parsedAuthorBody.querySelector('._1xwBj.abIconMail.abRedLink').rawAttributes.href
-                        const authorEmail = authorName.substring(7).split(',')
-                        let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
-                        const articleTitle = parsedBody.querySelector('._11S-G').rawText
-                        checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
+                        authorName = parsedAuthorBody.querySelector('._1xwBj.abIconMail.abRedLink').rawAttributes.href
+                        authorEmail = authorName.substring(7).split(',')
+                      } else if (getAuthorlink === 'https://aftonbladet.se/av/4084705b-51ad-4918-b2d3-58a7b1fb9459') {
+                        authorName = 'Aftonbladet'
+                        authorEmail = 'webbnyheter@aftonbladet.se'
                       } else {
                         console.log("Can't find article author with the following link: " + getAuthorlink)
+                        return
                       }
+                      checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
                     })
                 }
                 catch {
