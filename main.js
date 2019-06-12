@@ -122,7 +122,6 @@ function readRRS() {
                       if (parsedAuthorBody.querySelector('._1xwBj.abIconMail.abRedLink') !== null) {
                         authorName = parsedAuthorBody.querySelector('._1xwBj.abIconMail.abRedLink').rawAttributes.href
                         authorEmail = authorName.substring(7).split(',')
-
                       } else if (getAuthorlink === 'https://aftonbladet.se/av/4084705b-51ad-4918-b2d3-58a7b1fb9459') {
                         authorName = 'Aftonbladet'
                         authorEmail = 'webbnyheter@aftonbladet.se'
@@ -144,7 +143,7 @@ function readRRS() {
   })()
 }
 
-function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
+async function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
   let wordArray = html.split(' ')
   var misspelledWords = []
   var sentences = []
@@ -154,13 +153,32 @@ function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
     if (breakOnReadMore.test(wordArray[i] + wordArray[i + 1]) || breakOnArticleAbout.test(wordArray[i] + wordArray[i + 1] + wordArray[i + 2])) {
       break
     }
-    const cleanedWord = cleanWord(wordArray[i])
+    const cleanedWord = await cleanWord(wordArray[i])
     if (cleanedWord === undefined || encodeURI(wordArray[i]) === '%E2%81%A0') {
       // Word got 'removed' at cleaning. SKIPPING
     } else {
-      var isWordInDictionary = myDictionary.spellCheck(cleanedWord)
-      var isWordMisspelled = myDictionary.isMisspelled(cleanedWord)
+      var isWordInDictionary = await myDictionary.spellCheck(cleanedWord)
+      var isWordMisspelled = await myDictionary.isMisspelled(cleanedWord)
       if (isWordInDictionary === false && isWordMisspelled === true) {
+        await fetch('https://svenska.se/tri/f_saol.php?sok=' + encodeURI(cleanedWord))
+          .then(async res => {
+            htmlbody = await res.textConverted()
+            let parsedBody = await HTMLParser.parse(htmlbody)
+            const test = await parsedBody.structuredText
+            if (await test.includes('gav inga svar')) {
+              console.log('NOT IN DICT: ' + cleanedWord)
+            } else {
+              console.log('WORD IN DICT: Adding to our DICT' + cleanedWord)
+              try {
+                fs.appendFileSync('./dict/sv-SE.dic', '\n' + cleanedWord)
+              } catch (err) {
+                /* Handle the error */
+                throw err
+              }
+            }
+          })
+
+
         const sentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
           wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3]
         // Check if the sentence contains invalid characters
