@@ -126,7 +126,7 @@ function readRRS() {
                         authorName = 'Aftonbladet'
                         authorEmail = 'webbnyheter@aftonbladet.se'
                       } else {
-                        console.log("Can't find article author with the following link: " + getAuthorlink)
+                        logger.log("Can't find article author with the following link: " + getAuthorlink)
                         return
                       }
                       checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
@@ -147,6 +147,7 @@ async function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
   let wordArray = html.split(' ')
   var misspelledWords = []
   var sentences = []
+  var addWords = []
   const breakOnReadMore = /[LÄS]+[OCKSÅ]+/
   const breakOnArticleAbout = /[ARTIKELN ]+[HANDLAR ]+[OM]+/
   for (var i = 0; i < wordArray.length; i++) {
@@ -166,26 +167,28 @@ async function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
             let parsedBody = await HTMLParser.parse(htmlbody)
             const test = await parsedBody.structuredText
             if (await test.includes('gav inga svar')) {
-              console.log('NOT IN DICT: ' + cleanedWord)
+              logger.log('NOT IN DICT: ' + cleanedWord)
+              const sentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
+                wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3]
+              // Check if the sentence contains invalid characters
+              if (!(misspelledWords.indexOf(cleanedWord) > -1)) {
+                misspelledWords.push(cleanedWord)
+                sentences.push(sentence)
+              }
             } else {
-              console.log('WORD IN DICT: Adding to our DICT' + cleanedWord)
+              if (!(addWords.indexOf(cleanedWord) > -1)) {
+                addWords.push(cleanedWord)
+                logger.log(articleId + ' Adding to DICT: ' + cleanedWord)
               try {
-                fs.appendFileSync('./dict/sv-SE.dic', '\n' + cleanedWord)
+                  await fs.appendFileSync('./dict/sv-SE.dic', '\n' + cleanedWord)
               } catch (err) {
                 /* Handle the error */
                 throw err
               }
             }
+            }
           })
 
-
-        const sentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
-          wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3]
-        // Check if the sentence contains invalid characters
-        if (!(misspelledWords.indexOf(cleanedWord) > -1)) {
-          misspelledWords.push(cleanedWord)
-          sentences.push(sentence)
-        }
       }
     }
   }
