@@ -351,7 +351,7 @@ function alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle,
     from: config.mailAdress,
     to: authorEmail,
     subject: 'Hej! Jag har hittat ett misstag i en artikel',
-    html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a>'
+    html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a><br><br>Ha en fortsatt bra dag!<br><br>Med vänliga hälsningar<br>Teamet bakom AftonbladetSpellchecker'
   }
   mailer.mail(mailOptions)
   const addedWordsEmbed = {
