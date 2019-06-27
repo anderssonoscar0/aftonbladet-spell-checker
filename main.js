@@ -202,7 +202,7 @@ async function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
 }
 
 function cleanWord(word) {
-  const invalidChars = /[ A-ZÄÅÖ!✓▪•►”’–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?1234567890]/
+  const invalidChars = /[ A-ZÄÅÖ!✓▪…•►”’–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?1234567890]/
   if (invalidChars.test(word) || word === '') {
     return undefined // The word contains invalid characters, returning undefined and skipping it later.
   }
@@ -354,19 +354,35 @@ function alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle,
     html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a><br><br>Ha en fortsatt bra dag!<br><br>Med vänliga hälsningar<br>Teamet bakom AftonbladetSpellchecker'
   }
   mailer.mail(mailOptions)
-  const addedWordsEmbed = {
+
+  const embed = {
     'embed': {
+      'title': authorEmail,
+      'url': articleUrl,
       'color': 1376000,
+      'author': {
+        'name': articleTitle,
+        'url': articleUrl
+      },
       'timestamp': new Date(),
+      'footer': {
+        'text': articleId
+      },
       'fields': [
         {
-          'name': 'I have reported one word',
-          'value': '```\n' + 'Misspelled word: ' + misspelledWord + '\n\n' + 'Correct spelling: ' + correctWord + '```'
+          'name': 'Misspelled word:',
+          'value': misspelledWord
+        },
+        {
+          'name': 'Correct word:',
+          'value': correctWord
         }
       ]
     }
   }
-  client.channels.get(config.alertChannelId).send(addedWordsEmbed)
+  client.channels.get(config.notFixedWordChannelID).send('', embed).then(message => {
+    message.react('🚨')
+  })
 }
 
 function sendDiscordVote(args, message) {
