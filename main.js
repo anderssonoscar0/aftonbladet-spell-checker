@@ -434,7 +434,7 @@ function sendDiscordVote(args, message) {
 }
 
 // Scheudule article search every 5 minutes
-schedule.scheduleJob('*/10 * * * *', function () {
+schedule.scheduleJob('*/5 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Running RRS reader')
   readRRS()
 })
@@ -449,7 +449,7 @@ schedule.scheduleJob('*/10 * * * *', function () {
   cleanChannel(false)
 })
 
-schedule.scheduleJob('*/30 * * * *', function () {
+schedule.scheduleJob('*/10 * * * *', function () {
   logger.log('(SCHEDULE-JOB) - Update dictionary')
   getUpdatedDictionary()
 })
@@ -488,7 +488,6 @@ function checkErrorVotes() {
 }
 
 function cleanChannel(deleteAll) {
-  logger.log('Cleaning #aftonbladet')
   client.channels.get(config.discordChannelId).fetchMessages()
     .then(function (list) {
       const messageList = list.array()
@@ -508,7 +507,6 @@ function cleanChannel(deleteAll) {
         i++
       }
     })
-  logger.log('Cleaned #aftonbladet')
 }
 
 function getUpdatedDictionary() {
