@@ -230,7 +230,7 @@ function addNewArticle(words, sentences, articleId, authorEmail, articleTitle, u
           throw err
         }
       } else {
-        logger.log(articleId + ' has ' + words.length + ' misspelled words')
+        logger.log('(' + articleId + ') - Contains ' + words.length + ' misspelled words')
         sendDiscordAlert(articleId, new Date(), words, sentences, messageId, authorEmail.toString())
       }
     })
@@ -310,6 +310,7 @@ function normalize() {
 }
 
 function sendDiscordAlert(articleId, articleDate, words, sentences, discordMessageId, authorEmail) {
+  logger.log('(' + articleId + ') - Sending discord embed with misspelled words')
   let sendWords = ''
   let sendSentences = ''
   for (var i = 0; i < words.length; i++) {
@@ -347,6 +348,7 @@ function sendDiscordAlert(articleId, articleDate, words, sentences, discordMessa
 }
 
 function alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, message) {
+  logger.log('(' + articleId + ') - Alerting Aftonbladet')
   let mailOptions = {
     from: config.mailAdress,
     to: authorEmail,
@@ -389,7 +391,7 @@ function sendDiscordVote(args, message) {
   const articleId = args[0]
   const wordId = args[1]
   const correctWord = args[2]
-
+  logger.log('(' + articleId + ')Sending discord voting embed...')
   Article.findOne({ '_id': articleId }, function (err, doc) {
     if (err) throw err
     if (doc) {
