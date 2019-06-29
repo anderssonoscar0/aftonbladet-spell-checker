@@ -1,9 +1,9 @@
-var nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer')
 
 // Import config
 const config = require('./config.js')
 
-var transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: config.mailAdress,
@@ -12,7 +12,7 @@ var transporter = nodemailer.createTransport({
 })
 
 function mail (mailOptions) {
-  transporter.sendMail(mailOptions, function (error, info) {
+  transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error)
     } else {

@@ -1,14 +1,16 @@
-var HTMLParser = require('node-html-parser')
+/* eslint-disable import/no-nodejs-modules */
+/* eslint-disable no-sync */
+const HTMLParser = require('node-html-parser')
 const Discord = require('discord.js')
-var mongoose = require('mongoose')
-var schedule = require('node-schedule')
+const mongoose = require('mongoose')
+const schedule = require('node-schedule')
 const client = new Discord.Client()
-let Parser = require('rss-parser')
-let parser = new Parser()
+const Parser = require('rss-parser')
+const parser = new Parser()
 const fs = require('fs')
-var SpellChecker = require('simple-spellchecker')
-var myDictionary = null
-var moment = require('moment')
+const SpellChecker = require('simple-spellchecker')
+let myDictionary = null
+const moment = require('moment')
 moment().format()
 
 getUpdatedDictionary()
@@ -17,12 +19,11 @@ const fetch = require('node-fetch')
 const config = require('./config.js')
 const mailer = require('./mailer.js')
 const logger = require('./logger.js')
-var Article = require('./schemas/article.js')
+const Article = require('./schemas/article.js')
 
 // Global variables
 const breakOnReadMore = /[LÄS]+[OCKSÅ]+/
 const breakOnArticleAbout = /[ARTIKELN ]+[HANDLAR ]+[OM]+/
-
 
 // Discord startup
 client.on('ready', () => {
@@ -89,38 +90,37 @@ client.on('message', message => {
   }
 })
 
-function readRRS() {
+function readRRS () {
   (async () => {
-    let feed = await parser.parseURL('https://www.aftonbladet.se/rss.xml')
+    const feed = await parser.parseURL('https://www.aftonbladet.se/rss.xml')
     feed.items.forEach(item => {
       const skipTvArticles = /[t][v]./
       const skipDebattArticles = /\Wdebatt\W/
       if (skipTvArticles.test(item.link)) return
       if (skipDebattArticles.test(item.link)) return
-      let articleId = item.link.substr(0, item.link.lastIndexOf('/')).slice(-9)
-      Article.findOne({ '_id': articleId }, function (err, doc) {
+      const articleId = item.link.substr(0, item.link.lastIndexOf('/')).slice(-9)
+      Article.findOne({ '_id': articleId }, (err, doc) => {
         if (err) throw err
         if (doc === null) {
           fetch(item.link)
             .then(res => res.text())
             .then(htmlbody => {
-              let parsedBody = HTMLParser.parse(htmlbody)
+              const parsedBody = HTMLParser.parse(htmlbody)
               try {
-                let authorName = parsedBody.querySelector('._2atUs.abRedLink._1zkyS').rawAttributes.href
+                const authorName = parsedBody.querySelector('._2atUs.abRedLink._1zkyS').rawAttributes.href
                 const authorEmail = authorName.substring(7, authorName.indexOf('?')).split(',')
                 const articleTitle = parsedBody.querySelector('._11S-G').rawText
                 if (authorEmail.length > 1) authorEmail.shift()
-                let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
+                const articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
                 checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
-              }
-              catch {
+              } catch {
                 try {
                   const getAuthorlink = config.aftonbladetBaseUrl + parsedBody.querySelector('._38DY_').rawAttributes.href
                   fetch(getAuthorlink)
                     .then(res => res.text())
                     .then(authorHtmlBody => {
-                      let parsedAuthorBody = HTMLParser.parse(authorHtmlBody)
-                      let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
+                      const parsedAuthorBody = HTMLParser.parse(authorHtmlBody)
+                      const articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
                       const articleTitle = parsedBody.querySelector('._11S-G').rawText
                       let authorName
                       let authorEmail
@@ -134,14 +134,13 @@ function readRRS() {
                         authorName = 'TT'
                         authorEmail = 'webbnyheter@aftonbladet.se'
                       } else {
-                        logger.log(articleId, "Can't find article author with the following link: " + getAuthorlink)
+                        logger.log(articleId, 'Can\'t find article author with the following link: ' + getAuthorlink)
                         return
                       }
                       checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
                     })
-                }
-                catch {
-                  return // Skipping because + article
+                } catch {
+                  // Skipping because + article
                 }
               }
             })
@@ -151,12 +150,12 @@ function readRRS() {
   })()
 }
 
-async function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
-  let wordArray = html.split(' ')
-  var misspelledWords = []
-  var sentences = []
-  var addWords = []
-  for (var i = 0; i < wordArray.length; i++) {
+async function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
+  const wordArray = html.split(' ')
+  const misspelledWords = []
+  const sentences = []
+  const addWords = []
+  for (let i = 0; i < wordArray.length; i++) {
     if (breakOnReadMore.test(wordArray[i] + wordArray[i + 1]) || breakOnArticleAbout.test(wordArray[i] + wordArray[i + 1] + wordArray[i + 2])) {
       break
     }
@@ -164,13 +163,13 @@ async function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
     if (cleanedWord === undefined || encodeURI(wordArray[i]) === '%E2%81%A0') {
       // Word got 'removed' at cleaning. SKIPPING
     } else {
-      var isWordInDictionary = await myDictionary.spellCheck(cleanedWord)
-      var isWordMisspelled = await myDictionary.isMisspelled(cleanedWord)
+      const isWordInDictionary = await myDictionary.spellCheck(cleanedWord)
+      const isWordMisspelled = await myDictionary.isMisspelled(cleanedWord)
       if (isWordInDictionary === false && isWordMisspelled === true) {
         await fetch('https://svenska.se/tri/f_saol.php?sok=' + encodeURI(cleanedWord))
           .then(async res => {
-            htmlbody = await res.textConverted()
-            let parsedBody = await HTMLParser.parse(htmlbody)
+            const htmlbody = await res.textConverted()
+            const parsedBody = await HTMLParser.parse(htmlbody)
             const test = await parsedBody.structuredText
             if (await test.includes('gav inga svar')) {
               logger.log(articleId, 'NOT IN DICT: ' + cleanedWord)
@@ -181,30 +180,21 @@ async function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
                 misspelledWords.push(cleanedWord)
                 sentences.push(sentence)
               }
-            } else {
-              if (await !(addWords.indexOf(cleanedWord) > -1)) {
-                await addWords.push(cleanedWord)
-                await logger.log(articleId, 'Adding to DICT: ' + cleanedWord)
-                try {
-                  await fs.appendFileSync('./dict/sv-SE.dic', '\n' + cleanedWord)
-                } catch (err) {
-                  /* Handle the error */
-                  throw err
-                }
-              }
+            } else if (await !(addWords.indexOf(cleanedWord) > -1)) {
+              await addWords.push(cleanedWord)
+              await logger.log(articleId, 'Adding to DICT: ' + cleanedWord)
+              await fs.appendFileSync('./dict/sv-SE.dic', '\n' + cleanedWord)
             }
           })
-
       }
     }
   }
 
   if (addWords.length > 0) await normalize()
   if (misspelledWords.length > 0) await addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle, url) // Add the misspelled words to MongoDB
-
 }
 
-function cleanWord(word) {
+function cleanWord (word) {
   const invalidChars = /[ A-ZÄÅÖ!✓▪…•►”’–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?1234567890]/
   if (invalidChars.test(word) || word === '') {
     return undefined // The word contains invalid characters, returning undefined and skipping it later.
@@ -212,20 +202,20 @@ function cleanWord(word) {
   return word
 }
 
-function addNewArticle(words, sentences, articleId, authorEmail, articleTitle, url) {
+function addNewArticle (words, sentences, articleId, authorEmail, articleTitle, url) {
   client.channels.get(config.discordChannelId).send(articleId + ' was just checked. THIS MESSAGE SHOULD UPDATE SOON')
   client.channels.get(config.discordChannelId).fetchMessages({ limit: 1 }).then(messages => {
     const messageId = messages.first().id
     const newArticle = new Article({
       _id: articleId,
-      words: words,
+      words,
       articleUrl: url,
-      sentences: sentences,
+      sentences,
       authorEmail: authorEmail.toString(),
       discordMessageId: messageId,
-      articleTitle: articleTitle
+      articleTitle
     })
-    newArticle.save(function (err) {
+    newArticle.save((err) => {
       if (err) {
         if (err.code === 11000) {
           logger.log(articleId, 'Is already checked.')
@@ -240,35 +230,28 @@ function addNewArticle(words, sentences, articleId, authorEmail, articleTitle, u
   })
 }
 
-function updateArticleError(args, addToDictionary, message) {
+function updateArticleError (args, addToDictionary, message) {
   // Adding word to Dictionary
   const articleId = args[0]
   args.shift() // Remove the first item in args (The article ID)
-  Article.findOne({ '_id': articleId }, function (err, doc) {
+  Article.findOne({ '_id': articleId }, (err, doc) => {
     if (err) throw err
     if (doc) {
-      let words = []
-      let sentences = []
+      const words = []
+      const sentences = []
       let wordsAdded = ''
       let addedWords = 0
-      let ignoredWords = 0
       if (args[0] === 'all') { args = Array(doc.words.length).fill().map((x, i) => i.toString()) }
       if (doc.words.length < 1) return
-      for (var i = 0; i < doc.words.length; i++) {
+      for (let i = 0; i < doc.words.length; i++) {
         if (args.includes(i.toString())) {
           if (addToDictionary === true) {
             // Add the word to the dictionary
-            try {
-              fs.appendFileSync('./dict/sv-SE.dic', '\n' + doc.words[i])
-            } catch (err) {
-              /* Handle the error */
-              throw err
-            }
-            addedWords = addedWords + 1
+
+            fs.appendFileSync('./dict/sv-SE.dic', '\n' + doc.words[i])
+
+            addedWords += 1
             wordsAdded = wordsAdded + doc.words[i] + '\n'
-          } else {
-            // Dont add it to the dictionary (Ignore the article error)
-            ignoredWords = ignoredWords + 1
           }
         } else {
           words.push(doc.words[i])
@@ -305,18 +288,18 @@ function updateArticleError(args, addToDictionary, message) {
   })
 }
 
-function normalize() {
-  SpellChecker.normalizeDictionary('./dict/sv-SE.dic', './dict/sv-SE.dic', function (err, success) {
+function normalize () {
+  SpellChecker.normalizeDictionary('./dict/sv-SE.dic', './dict/sv-SE.dic', (err, success) => {
     if (success) logger.log('NORMALIZER', 'Normalized dictionary')
     if (err) throw err
   })
 }
 
-function sendDiscordAlert(articleId, articleDate, words, sentences, discordMessageId, authorEmail) {
+function sendDiscordAlert (articleId, articleDate, words, sentences, discordMessageId, authorEmail) {
   logger.log(articleId, 'Sending discord embed with misspelled words')
   let sendWords = ''
   let sendSentences = ''
-  for (var i = 0; i < words.length; i++) {
+  for (let i = 0; i < words.length; i++) {
     sendWords = sendWords + '(' + [i] + ') - ' + words[i] + '\n'
     sendSentences = sendSentences + '(' + [i] + ') - ' + sentences[i] + '\n'
   }
@@ -350,11 +333,11 @@ function sendDiscordAlert(articleId, articleDate, words, sentences, discordMessa
     })
 }
 
-function alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, message) {
+function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, message) {
   logger.log(articleId, 'Sending email alert to Aftonbladet')
-  let mailOptions = {
+  const mailOptions = {
     from: config.mailAdress,
-    to: 'anderssonoscar0@gmail.com',
+    to: authorEmail,
     subject: 'Hej! Jag har hittat ett misstag i en artikel',
     html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a><br><br>Ha en fortsatt bra dag!<br><br>Med vänliga hälsningar<br>Teamet bakom AftonbladetSpellchecker'
   }
@@ -385,17 +368,15 @@ function alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle,
       ]
     }
   }
-  client.channels.get(config.notFixedWordChannelID).send('', embed).then(message => {
-    message.react('🚨')
-  })
+  client.channels.get(config.notFixedWordChannelID).send('', embed)
 }
 
-function sendDiscordVote(args, message) {
+function sendDiscordVote (args, message) {
   const articleId = args[0]
   const wordId = args[1]
   const correctWord = args[2]
   logger.log(articleId, 'Sending discord voting embed...')
-  Article.findOne({ '_id': articleId }, function (err, doc) {
+  Article.findOne({ '_id': articleId }, (err, doc) => {
     if (err) throw err
     if (doc) {
       const embed = {
@@ -439,36 +420,36 @@ function sendDiscordVote(args, message) {
 }
 
 // Scheudule article search every 5 minutes
-schedule.scheduleJob('*/5 * * * *', function () {
+schedule.scheduleJob('*/5 * * * *', () => {
   logger.log('(SCHEDULE-JOB)', 'Running RRS reader')
   readRRS()
 })
 
-schedule.scheduleJob('*/5 * * * *', function () {
+schedule.scheduleJob('*/5 * * * *', () => {
   logger.log('(SCHEDULE-JOB)', 'Running vote checker')
   checkErrorVotes()
 })
 
-schedule.scheduleJob('*/10 * * * *', function () {
+schedule.scheduleJob('*/10 * * * *', () => {
   logger.log('(SCHEDULE-JOB)', 'Running cleaning of #aftonbladet')
   cleanChannel(false)
 })
 
-schedule.scheduleJob('*/10 * * * *', function () {
+schedule.scheduleJob('*/10 * * * *', () => {
   logger.log('(SCHEDULE-JOB)', 'Update dictionary')
   getUpdatedDictionary()
 })
 
-schedule.scheduleJob('*/10 * * * *', function () {
+schedule.scheduleJob('*/10 * * * *', () => {
   logger.log('(SCHEDULE-JOB)', 'Checking for fixed errors')
   checkForArticleFixes()
 })
 
-function checkErrorVotes() {
+function checkErrorVotes () {
   client.channels.get(config.voteChannelId).fetchMessages()
-    .then(function (list) {
+    .then((list) => {
       const listOfMessages = list.array()
-      for (var i = 0; i < listOfMessages.length;) {
+      for (let i = 0; i < listOfMessages.length;) {
         const reactions = listOfMessages[i].reactions.array()
         if (reactions.length > 0) {
           const reactionArray = reactions[0].message.reactions.array()
@@ -494,39 +475,37 @@ function checkErrorVotes() {
         }
         i++
       }
-    }, function (err) { throw err })
+    }, (err) => { throw err })
 }
 
-function cleanChannel(deleteAll) {
+function cleanChannel (deleteAll) {
   client.channels.get(config.discordChannelId).fetchMessages()
-    .then(function (list) {
+    .then((list) => {
       const messageList = list.array()
-      for (var i = 0; i < messageList.length;) {
+      for (let i = 0; i < messageList.length;) {
         if (deleteAll) {
           messageList[i].delete()
-        } else {
-          if (messageList[i].embeds.length > 0) {
-            const messageTimestamp = messageList[i].embeds[0].message.createdTimestamp
-            if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours'))) {
-              messageList[i].delete()
-            }
-          } else {
+        } else if (messageList[i].embeds.length > 0) {
+          const messageTimestamp = messageList[i].embeds[0].message.createdTimestamp
+          if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours'))) {
             messageList[i].delete()
           }
+        } else {
+          messageList[i].delete()
         }
         i++
       }
     })
 }
 
-function checkForArticleFixes() {
+function checkForArticleFixes () {
   client.channels.get(config.notFixedWordChannelID).fetchMessages()
-    .then(function (list) {
+    .then((list) => {
       const messageList = list.array()
       for (let y = 0; y < messageList.length; y++) {
         const embedInfo = messageList[y].embeds[0]
         const timestamp = embedInfo.message.createdTimestamp
-        if (!moment(timestamp).isBefore(moment().subtract(3, 'hours'))) continue // Skip if not older then 1h
+        if (!moment(timestamp).isBefore(moment().subtract(3, 'hours'))) continue // Skip if not older then 3h
 
         const articleId = embedInfo.footer.text
         const articleTitle = embedInfo.author.name
@@ -536,15 +515,15 @@ function checkForArticleFixes() {
         const correctWord = embedInfo.fields[1].value
 
         fetch(articleUrl)
-          .then( res => res.text())
-          .then( htmlbody => {
-            let parsedBody = HTMLParser.parse(htmlbody)
-            let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
-            wordArray = articleBody.split(' ')
+          .then(res => res.text())
+          .then(htmlbody => {
+            const parsedBody = HTMLParser.parse(htmlbody)
+            const articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
+            const wordArray = articleBody.split(' ')
             let fixed = true
-            for (var i = 0; i < wordArray.length; i++) {              
+            for (let i = 0; i < wordArray.length; i++) {
               if (misspelledWord === wordArray[i]) {
-                logger.log(articleId,  "'" + wordArray[i] + "' is not fixed!!!")
+                logger.log(articleId, '\'' + wordArray[i] + '\' is not fixed!!!')
                 fixed = false
                 continue
               }
@@ -586,12 +565,8 @@ function checkForArticleFixes() {
     })
 }
 
-
-
-
-
-function getUpdatedDictionary() {
-  SpellChecker.getDictionary('sv-SE', './dict', function (err, result) {
+function getUpdatedDictionary () {
+  SpellChecker.getDictionary('sv-SE', './dict', (err, result) => {
     if (!err) {
       myDictionary = result
     } else {
