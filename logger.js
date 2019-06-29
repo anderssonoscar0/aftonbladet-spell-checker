@@ -3,8 +3,8 @@ const opts = {
 }
 const logger = require('simple-node-logger').createSimpleLogger(opts)
 
-function log (logMessage) {
-  logger.info(logMessage)
+function log (info, logMessage) {
+  logger.info(info + ' - ' + logMessage)
 }
 
 module.exports = {
