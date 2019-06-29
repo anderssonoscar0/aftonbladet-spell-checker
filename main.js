@@ -80,14 +80,10 @@ client.on('message', message => {
 
   if (command === 'clear') {
     let clean = false
-    if (args.length > 0) {
-      clean = true
-    }
+    if (args.length > 0) clean = true
     cleanChannel(clean) // Clean #aftonbladet
   }
-  if (command === 'checkvotes') {
-    checkErrorVotes()
-  }
+  if (command === 'checkvotes') checkErrorVotes()
 })
 
 function readRRS () {
@@ -156,9 +152,7 @@ async function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
   const sentences = []
   const addWords = []
   for (let i = 0; i < wordArray.length; i++) {
-    if (breakOnReadMore.test(wordArray[i] + wordArray[i + 1]) || breakOnArticleAbout.test(wordArray[i] + wordArray[i + 1] + wordArray[i + 2])) {
-      break
-    }
+    if (breakOnReadMore.test(wordArray[i] + wordArray[i + 1]) || breakOnArticleAbout.test(wordArray[i] + wordArray[i + 1] + wordArray[i + 2])) break
     const cleanedWord = await cleanWord(wordArray[i])
     if (cleanedWord === undefined || encodeURI(wordArray[i]) === '%E2%81%A0') {
       // Word got 'removed' at cleaning. SKIPPING
@@ -196,9 +190,7 @@ async function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
 
 function cleanWord (word) {
   const invalidChars = /[ A-ZÄÅÖ!✓▪…•►”’–@#$%^&*()_+\-=[\]{};':"\\|,.<>/?1234567890]/
-  if (invalidChars.test(word) || word === '') {
-    return undefined // The word contains invalid characters, returning undefined and skipping it later.
-  }
+  if (invalidChars.test(word) || word === '') return undefined // The word contains invalid characters, returning undefined and skipping it later.
   return word
 }
 
@@ -247,9 +239,7 @@ function updateArticleError (args, addToDictionary, message) {
         if (args.includes(i.toString())) {
           if (addToDictionary === true) {
             // Add the word to the dictionary
-
             fs.appendFileSync('./dict/sv-SE.dic', '\n' + doc.words[i])
-
             addedWords += 1
             wordsAdded = wordsAdded + doc.words[i] + '\n'
           }
@@ -404,12 +394,9 @@ function sendDiscordVote (args, message) {
           ]
         }
       }
-      client.channels.get(config.voteChannelId).send('', embed).then(message => {
-        message.react('⭐')
-        client.channels.get(config.voteChannelId).fetchMessage(message.id)
-          .then(message => {
-            message.react('❌')
-          })
+      client.channels.get(config.voteChannelId).send('', embed).then(async message => {
+        await message.react('⭐')
+        await message.react('❌')
       })
       args.splice(-1, 1)
       updateArticleError(args, false, message)
@@ -425,7 +412,7 @@ schedule.scheduleJob('*/5 * * * *', () => {
   readRRS()
 })
 
-schedule.scheduleJob('*/5 * * * *', () => {
+schedule.scheduleJob('*/1 * * * *', () => {
   logger.log('(SCHEDULE-JOB)', 'Running vote checker')
   checkErrorVotes()
 })
@@ -528,7 +515,7 @@ function checkForArticleFixes () {
                 continue
               }
               if (fixed && i === wordArray.length - 1) {
-                logger.log(articleId, 'Is fixed, moving to fixed errors log')
+                logger.log(articleId, 'has fixed the misspelled word, moving embed to fixed errors log')
 
                 const embed = {
                   'embed': {
@@ -555,7 +542,6 @@ function checkForArticleFixes () {
                     ]
                   }
                 }
-
                 client.channels.get(config.alertChannelId).send('', embed)
                 messageList[y].delete()
               }
@@ -570,7 +556,7 @@ function getUpdatedDictionary () {
     if (!err) {
       myDictionary = result
     } else {
-      logger.log('DICTIONARY', 'UPDATING DICTIONARY')
+      logger.log('DICTIONARY', 'Grabbing latest version of dictionary')
     }
   })
 }
