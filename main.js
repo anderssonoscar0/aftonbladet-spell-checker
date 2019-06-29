@@ -21,7 +21,7 @@ var Article = require('./schemas/article.js')
 
 // Discord startup
 client.on('ready', () => {
-  logger.log('Startup success')
+  logger.log('STARTUP', 'Success')
   readRRS()
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
@@ -170,7 +170,7 @@ async function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
             let parsedBody = await HTMLParser.parse(htmlbody)
             const test = await parsedBody.structuredText
             if (await test.includes('gav inga svar')) {
-              logger.log('NOT IN DICT: ' + cleanedWord)
+              logger.log(articleId, 'NOT IN DICT: ' + cleanedWord)
               const sentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
                 wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3]
               // Check if the sentence contains invalid characters
@@ -181,7 +181,7 @@ async function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
             } else {
               if (await !(addWords.indexOf(cleanedWord) > -1)) {
                 await addWords.push(cleanedWord)
-                await logger.log(articleId + ' Adding to DICT: ' + cleanedWord)
+                await logger.log(articleId, 'Adding to DICT: ' + cleanedWord)
                 try {
                   await fs.appendFileSync('./dict/sv-SE.dic', '\n' + cleanedWord)
                 } catch (err) {
@@ -225,12 +225,12 @@ function addNewArticle(words, sentences, articleId, authorEmail, articleTitle, u
     newArticle.save(function (err) {
       if (err) {
         if (err.code === 11000) {
-          logger.log(articleId + ' already checked.')
+          logger.log(articleId, 'Is already checked.')
         } else {
           throw err
         }
       } else {
-        logger.log('(' + articleId + ') - Contains ' + words.length + ' misspelled words')
+        logger.log(articleId, 'Contains ' + words.length + ' misspelled words')
         sendDiscordAlert(articleId, new Date(), words, sentences, messageId, authorEmail.toString())
       }
     })
@@ -279,7 +279,7 @@ function updateArticleError(args, addToDictionary, message) {
           normalize()
         })
       if (addToDictionary) {
-        logger.log(articleId + ' (' + message.author.username + ') Added ' + addedWords + ' words')
+        logger.log(articleId, message.author.username + ' Added ' + addedWords + ' words')
         message.react('✅')
         const addedWordsEmbed = {
           'embed': {
@@ -304,13 +304,13 @@ function updateArticleError(args, addToDictionary, message) {
 
 function normalize() {
   SpellChecker.normalizeDictionary('./dict/sv-SE.dic', './dict/sv-SE.dic', function (err, success) {
-    if (success) logger.log('Normalized dictionary')
+    if (success) logger.log('NORMALIZER', 'Normalized dictionary')
     if (err) throw err
   })
 }
 
 function sendDiscordAlert(articleId, articleDate, words, sentences, discordMessageId, authorEmail) {
-  logger.log('(' + articleId + ') - Sending discord embed with misspelled words')
+  logger.log(articleId, 'Sending discord embed with misspelled words')
   let sendWords = ''
   let sendSentences = ''
   for (var i = 0; i < words.length; i++) {
@@ -348,7 +348,7 @@ function sendDiscordAlert(articleId, articleDate, words, sentences, discordMessa
 }
 
 function alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, message) {
-  logger.log('(' + articleId + ') - Alerting Aftonbladet')
+  logger.log(articleId, 'Sending email alert to Aftonbladet')
   let mailOptions = {
     from: config.mailAdress,
     to: authorEmail,
@@ -391,7 +391,7 @@ function sendDiscordVote(args, message) {
   const articleId = args[0]
   const wordId = args[1]
   const correctWord = args[2]
-  logger.log('(' + articleId + ')Sending discord voting embed...')
+  logger.log(articleId, 'Sending discord voting embed...')
   Article.findOne({ '_id': articleId }, function (err, doc) {
     if (err) throw err
     if (doc) {
@@ -437,22 +437,22 @@ function sendDiscordVote(args, message) {
 
 // Scheudule article search every 5 minutes
 schedule.scheduleJob('*/5 * * * *', function () {
-  logger.log('(SCHEDULE-JOB) - Running RRS reader')
+  logger.log('(SCHEDULE-JOB)', 'Running RRS reader')
   readRRS()
 })
 
 schedule.scheduleJob('*/5 * * * *', function () {
-  logger.log('(SCHEDULE-JOB) - Running vote checker')
+  logger.log('(SCHEDULE-JOB)', 'Running vote checker')
   checkErrorVotes()
 })
 
 schedule.scheduleJob('*/10 * * * *', function () {
-  logger.log('(SCHEDULE-JOB) - Running cleaning of #aftonbladet')
+  logger.log('(SCHEDULE-JOB)', 'Running cleaning of #aftonbladet')
   cleanChannel(false)
 })
 
 schedule.scheduleJob('*/10 * * * *', function () {
-  logger.log('(SCHEDULE-JOB) - Update dictionary')
+  logger.log('(SCHEDULE-JOB)', 'Update dictionary')
   getUpdatedDictionary()
 })
 
@@ -516,7 +516,7 @@ function getUpdatedDictionary() {
     if (!err) {
       myDictionary = result
     } else {
-      console.log(err)
+      logger.log('DICTIONARY', 'UPDATING DICTIONARY')
     }
   })
 }
