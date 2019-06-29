@@ -19,6 +19,11 @@ const mailer = require('./mailer.js')
 const logger = require('./logger.js')
 var Article = require('./schemas/article.js')
 
+// Global variables
+const breakOnReadMore = /[LÄS]+[OCKSÅ]+/
+const breakOnArticleAbout = /[ARTIKELN ]+[HANDLAR ]+[OM]+/
+
+
 // Discord startup
 client.on('ready', () => {
   logger.log('STARTUP', 'Success')
@@ -129,7 +134,7 @@ function readRRS() {
                         authorName = 'TT'
                         authorEmail = 'webbnyheter@aftonbladet.se'
                       } else {
-                        logger.log("Can't find article author with the following link: " + getAuthorlink)
+                        logger.log(articleId, "Can't find article author with the following link: " + getAuthorlink)
                         return
                       }
                       checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
@@ -151,8 +156,6 @@ async function checkSpelling(html, authorEmail, articleId, articleTitle, url) {
   var misspelledWords = []
   var sentences = []
   var addWords = []
-  const breakOnReadMore = /[LÄS]+[OCKSÅ]+/
-  const breakOnArticleAbout = /[ARTIKELN ]+[HANDLAR ]+[OM]+/
   for (var i = 0; i < wordArray.length; i++) {
     if (breakOnReadMore.test(wordArray[i] + wordArray[i + 1]) || breakOnArticleAbout.test(wordArray[i] + wordArray[i + 1] + wordArray[i + 2])) {
       break
@@ -351,7 +354,7 @@ function alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle,
   logger.log(articleId, 'Sending email alert to Aftonbladet')
   let mailOptions = {
     from: config.mailAdress,
-    to: authorEmail,
+    to: 'anderssonoscar0@gmail.com',
     subject: 'Hej! Jag har hittat ett misstag i en artikel',
     html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a><br><br>Ha en fortsatt bra dag!<br><br>Med vänliga hälsningar<br>Teamet bakom AftonbladetSpellchecker'
   }
@@ -456,6 +459,11 @@ schedule.scheduleJob('*/10 * * * *', function () {
   getUpdatedDictionary()
 })
 
+schedule.scheduleJob('*/10 * * * *', function () {
+  logger.log('(SCHEDULE-JOB)', 'Checking for fixed errors')
+  checkForArticleFixes()
+})
+
 function checkErrorVotes() {
   client.channels.get(config.voteChannelId).fetchMessages()
     .then(function (list) {
@@ -510,6 +518,77 @@ function cleanChannel(deleteAll) {
       }
     })
 }
+
+function checkForArticleFixes() {
+  client.channels.get(config.notFixedWordChannelID).fetchMessages()
+    .then(function (list) {
+      const messageList = list.array()
+      for (let y = 0; y < messageList.length; y++) {
+        const embedInfo = messageList[y].embeds[0]
+        const timestamp = embedInfo.message.createdTimestamp
+        if (!moment(timestamp).isBefore(moment().subtract(3, 'hours'))) continue // Skip if not older then 1h
+
+        const articleId = embedInfo.footer.text
+        const articleTitle = embedInfo.author.name
+        const articleUrl = embedInfo.url
+        const authorEmail = embedInfo.title
+        const misspelledWord = embedInfo.fields[0].value
+        const correctWord = embedInfo.fields[1].value
+
+        fetch(articleUrl)
+          .then( res => res.text())
+          .then( htmlbody => {
+            let parsedBody = HTMLParser.parse(htmlbody)
+            let articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
+            wordArray = articleBody.split(' ')
+            let fixed = true
+            for (var i = 0; i < wordArray.length; i++) {              
+              if (misspelledWord === wordArray[i]) {
+                logger.log(articleId,  "'" + wordArray[i] + "' is not fixed!!!")
+                fixed = false
+                continue
+              }
+              if (fixed && i === wordArray.length - 1) {
+                logger.log(articleId, 'Is fixed, moving to fixed errors log')
+
+                const embed = {
+                  'embed': {
+                    'title': authorEmail,
+                    'url': articleUrl,
+                    'color': 1441536,
+                    'author': {
+                      'name': articleTitle,
+                      'url': articleUrl
+                    },
+                    'timestamp': new Date(),
+                    'footer': {
+                      'text': articleId
+                    },
+                    'fields': [
+                      {
+                        'name': 'Misspelled word:',
+                        'value': misspelledWord
+                      },
+                      {
+                        'name': 'Correct word:',
+                        'value': correctWord
+                      }
+                    ]
+                  }
+                }
+
+                client.channels.get(config.alertChannelId).send('', embed)
+                messageList[y].delete()
+              }
+            }
+          })
+      }
+    })
+}
+
+
+
+
 
 function getUpdatedDictionary() {
   SpellChecker.getDictionary('sv-SE', './dict', function (err, result) {
