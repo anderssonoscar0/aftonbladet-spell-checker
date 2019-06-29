@@ -492,8 +492,6 @@ function checkForArticleFixes () {
       for (let y = 0; y < messageList.length; y++) {
         const embedInfo = messageList[y].embeds[0]
         const timestamp = embedInfo.message.createdTimestamp
-        if (!moment(timestamp).isBefore(moment().subtract(3, 'hours'))) continue // Skip if not older then 3h
-
         const articleId = embedInfo.footer.text
         const articleTitle = embedInfo.author.name
         const articleUrl = embedInfo.url
@@ -510,8 +508,10 @@ function checkForArticleFixes () {
             let fixed = true
             for (let i = 0; i < wordArray.length; i++) {
               if (misspelledWord === wordArray[i]) {
-                logger.log(articleId, '\'' + wordArray[i] + '\' is not fixed!!!')
                 fixed = false
+                if (!moment(timestamp).isBefore(moment().subtract(3, 'hours'))) continue // Skip if not older then 3h
+                logger.log(articleId, '\'' + wordArray[i] + '\' is not fixed!!!')
+                messageList[y].react('🚨')
                 continue
               }
               if (fixed && i === wordArray.length - 1) {
