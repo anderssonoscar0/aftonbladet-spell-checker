@@ -337,7 +337,7 @@ function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle
     'embed': {
       'title': authorEmail,
       'url': articleUrl,
-      'color': 1376000,
+      'color': 13632027,
       'author': {
         'name': articleTitle,
         'url': articleUrl
