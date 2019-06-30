@@ -422,12 +422,12 @@ schedule.scheduleJob('*/10 * * * *', () => {
   cleanChannel(false)
 })
 
-schedule.scheduleJob('*/10 * * * *', () => {
+schedule.scheduleJob('*/5 * * * *', () => {
   logger.log('(SCHEDULE-JOB)', 'Update dictionary')
   getUpdatedDictionary()
 })
 
-schedule.scheduleJob('*/10 * * * *', () => {
+schedule.scheduleJob('*/5 * * * *', () => {
   logger.log('(SCHEDULE-JOB)', 'Checking for fixed errors')
   checkForArticleFixes()
 })
