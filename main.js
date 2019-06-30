@@ -323,13 +323,13 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
     })
 }
 
-function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, message) {
+function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, isReminderMessage) {
   logger.log(articleId, 'Sending email alert to Aftonbladet')
   const mailOptions = {
     from: config.mailAdress,
     to: authorEmail,
-    subject: 'Hej! Jag har hittat ett misstag i en artikel',
-    html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a><br><br>Ha en fortsatt bra dag!<br><br>Med vänliga hälsningar<br>Teamet bakom AftonbladetSpellchecker'
+    subject: (isReminderMessage ? '[REMINDER] ' : '') + 'Hej! Jag har hittat ett misstag i en artikel',
+    html: (isReminderMessage ? 'Hejsan, detta är en påminnelse att <b>"' + correctWord + '"</b> fortfarande är felstavat i din artikel.' : '') + '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a><br><br>Ha en fortsatt bra dag!<br><br>Med vänliga hälsningar<br>Teamet bakom AftonbladetSpellchecker'
   }
   mailer.mail(mailOptions)
 
@@ -358,7 +358,7 @@ function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle
       ]
     }
   }
-  client.channels.get(config.notFixedWordChannelID).send('', embed)
+  if (!isReminderMessage) client.channels.get(config.notFixedWordChannelID).send('', embed)
 }
 
 function sendDiscordVote (args, message) {
@@ -455,7 +455,7 @@ function checkErrorVotes () {
             const authorEmail = embedInfo.title
             const misspelledWord = embedInfo.fields[0].value
             const correctWord = embedInfo.fields[1].value
-            alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail)
+            alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, false) // false = if its a reminder message, or the first alert
             listOfMessages[i].delete()
           }
           if (crossCount > 1) listOfMessages[i].delete()
@@ -510,8 +510,17 @@ function checkForArticleFixes () {
               if (misspelledWord === wordArray[i]) {
                 fixed = false
                 if (!moment(timestamp).isBefore(moment().subtract(3, 'hours'))) continue // Skip if not older then 3h
-                logger.log(articleId, '\'' + wordArray[i] + '\' is not fixed!!!')
-                messageList[y].react('🚨')
+
+                try {
+                  const reactions = messageList[y].reactions.array()
+                  const reactionArray = reactions[0].message.reactions.array()
+                  const emojiiName = reactionArray[0]._emoji.name === '🚨'
+                  if (!emojiiName) logger.log(articleId, 'Unknown emojii!')
+                } catch {
+                  logger.log(articleId, 'Sending reminder for misspelled words...')
+                  messageList[y].react('🚨')
+                  alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, true)
+                }
                 continue
               }
               if (fixed && i === wordArray.length - 1) {
