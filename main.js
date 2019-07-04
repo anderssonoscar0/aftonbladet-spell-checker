@@ -459,7 +459,8 @@ function checkErrorVotes () {
             const authorEmail = embedInfo.title
             const misspelledWord = embedInfo.fields[0].value
             const correctWord = embedInfo.fields[1].value
-            alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail)
+            const timestamp = embedInfo.timestamp
+            alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, timestamp)
             listOfMessages[i].delete()
           }
           if (crossCount > 1) listOfMessages[i].delete()
@@ -495,14 +496,13 @@ function checkForArticleFixes () {
       const messageList = list.array()
       for (let y = 0; y < messageList.length; y++) {
         const embedInfo = messageList[y].embeds[0]
-        const timestamp = embedInfo.message.createdTimestamp
+        const timestamp = embedInfo.timestamp
         const articleId = embedInfo.footer.text
         const articleTitle = embedInfo.author.name
         const articleUrl = embedInfo.url
         const authorEmail = embedInfo.title
         const misspelledWord = embedInfo.fields[0].value
         const correctWord = embedInfo.fields[1].value
-
         fetch(articleUrl)
           .then(res => res.text())
           .then(htmlbody => {
@@ -529,7 +529,7 @@ function checkForArticleFixes () {
                       'name': articleTitle,
                       'url': articleUrl
                     },
-                    'timestamp': new Date(),
+                    'timestamp': embedInfo.timestamp,
                     'footer': {
                       'text': articleId
                     },
