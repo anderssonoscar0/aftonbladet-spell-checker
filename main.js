@@ -129,6 +129,9 @@ function readRRS () {
                       } else if (getAuthorlink === 'https://aftonbladet.se/av/946fc698-ba09-4c08-84fc-7109dfe301d7') {
                         authorName = 'TT'
                         authorEmail = 'webbnyheter@aftonbladet.se'
+                      } else if (getAuthorlink === 'https://aftonbladet.se/av/40177005-baf2-4153-88c2-72f602095a11') {
+                        authorName = 'NöjesBladet'
+                        authorEmail = 'noje@aftonbladet.se'
                       } else {
                         logger.log(articleId, 'Can\'t find article author with the following link: ' + getAuthorlink)
                         return
