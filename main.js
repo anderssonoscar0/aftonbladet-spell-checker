@@ -7,15 +7,15 @@ const schedule = require('node-schedule')
 const client = new Discord.Client()
 const Parser = require('rss-parser')
 const parser = new Parser()
+const fetch = require('node-fetch')
 const fs = require('fs')
 const SpellChecker = require('simple-spellchecker')
-let myDictionary = null
 const moment = require('moment')
 moment().format()
 
 getUpdatedDictionary()
 
-const fetch = require('node-fetch')
+let myDictionary = null
 const config = require('./config.js')
 const mailer = require('./mailer.js')
 const logger = require('./logger.js')
@@ -29,6 +29,7 @@ const breakOnArticleAbout = /[ARTIKELN ]+[HANDLAR ]+[OM]+/
 client.on('ready', () => {
   logger.log('STARTUP', 'Success')
   readRRS()
+  checkErrorVotes()
   checkForArticleFixes()
   mongoose.connect(config.mongodbURI, {
     useNewUrlParser: true
@@ -212,16 +213,9 @@ function addNewArticle (words, sentences, articleId, authorEmail, articleTitle, 
       articleTitle
     })
     newArticle.save((err) => {
-      if (err) {
-        if (err.code === 11000) {
-          logger.log(articleId, 'Is already checked.')
-        } else {
-          throw err
-        }
-      } else {
-        logger.log(articleId, 'Contains ' + words.length + ' misspelled words')
-        sendDiscordAlert(articleId, new Date(), words, sentences, messageId, authorEmail.toString())
-      }
+      if (err) throw err
+      logger.log(articleId, 'Contains ' + words.length + ' misspelled words')
+      sendDiscordAlert(articleId, new Date(), words, sentences, messageId, authorEmail.toString())
     })
   })
 }
@@ -327,7 +321,13 @@ function sendDiscordAlert (articleId, articleDate, words, sentences, discordMess
     })
 }
 
-function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail) {
+function alertAftonbladet (embedInfo) {
+  const articleId = embedInfo.footer.text
+  const articleTitle = embedInfo.author.name
+  const articleUrl = embedInfo.url
+  const authorEmail = embedInfo.title
+  const misspelledWord = embedInfo.fields[0].value
+  const correctWord = embedInfo.fields[1].value
   logger.log(articleId, 'Sending email alert to Aftonbladet')
   const mailOptions = {
     from: config.mailAdress,
@@ -336,33 +336,6 @@ function alertAftonbladet (misspelledWord, correctWord, articleUrl, articleTitle
     html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a><br><br>Ha en fortsatt bra dag!<br><br>Med vänliga hälsningar<br>Teamet bakom AftonbladetSpellchecker'
   }
   mailer.mail(mailOptions)
-
-  const embed = {
-    'embed': {
-      'title': authorEmail,
-      'url': articleUrl,
-      'color': 13632027,
-      'author': {
-        'name': articleTitle,
-        'url': articleUrl
-      },
-      'timestamp': new Date(),
-      'footer': {
-        'text': articleId
-      },
-      'fields': [
-        {
-          'name': 'Misspelled word:',
-          'value': misspelledWord
-        },
-        {
-          'name': 'Correct word:',
-          'value': correctWord
-        }
-      ]
-    }
-  }
-  client.channels.get(config.notFixedWordChannelID).send('', embed)
 }
 
 function sendDiscordVote (args, message) {
@@ -453,14 +426,8 @@ function checkErrorVotes () {
           if (starCount > 1) {
             // Get article stuffs
             const embedInfo = reactionArray[0].message.embeds[0]
-            const articleId = embedInfo.footer.text
-            const articleTitle = embedInfo.author.name
-            const articleUrl = embedInfo.url
-            const authorEmail = embedInfo.title
-            const misspelledWord = embedInfo.fields[0].value
-            const correctWord = embedInfo.fields[1].value
-            const timestamp = embedInfo.timestamp
-            alertAftonbladet(misspelledWord, correctWord, articleUrl, articleTitle, articleId, authorEmail, timestamp)
+            alertAftonbladet(embedInfo)
+            moveEmbed(embedInfo, 16711710, config.notFixedWordChannelID)
             listOfMessages[i].delete()
           }
           if (crossCount > 1) listOfMessages[i].delete()
@@ -479,9 +446,7 @@ function cleanChannel (deleteAll) {
           messageList[i].delete()
         } else if (messageList[i].embeds.length > 0) {
           const messageTimestamp = messageList[i].embeds[0].message.createdTimestamp
-          if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours'))) {
-            messageList[i].delete()
-          }
+          if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours'))) messageList[i].delete()
         } else {
           messageList[i].delete()
         }
@@ -496,14 +461,8 @@ function checkForArticleFixes () {
       const messageList = list.array()
       for (let y = 0; y < messageList.length; y++) {
         const embedInfo = messageList[y].embeds[0]
-        const timestamp = embedInfo.timestamp
-        const articleId = embedInfo.footer.text
-        const articleTitle = embedInfo.author.name
-        const articleUrl = embedInfo.url
-        const authorEmail = embedInfo.title
         const misspelledWord = embedInfo.fields[0].value
-        const correctWord = embedInfo.fields[1].value
-        fetch(articleUrl)
+        fetch(embedInfo.url)
           .then(res => res.text())
           .then(htmlbody => {
             const parsedBody = HTMLParser.parse(htmlbody)
@@ -513,40 +472,14 @@ function checkForArticleFixes () {
             for (let i = 0; i < wordArray.length; i++) {
               if (misspelledWord === wordArray[i]) {
                 fixed = false
-                if (!moment(timestamp).isBefore(moment().subtract(3, 'hours'))) continue // Skip if not older then 3h
-                  messageList[y].react('🚨')
+                if (!moment(embedInfo.timestamp).isBefore(moment().subtract(3, 'hours'))) continue // Skip if not older then 3h
+                messageList[y].react('🚨') // React with a siren after 3 hours
                 continue
               }
               if (fixed && i === wordArray.length - 1) {
-                logger.log(articleId, 'has fixed the misspelled word, moving embed to fixed errors log')
-
-                const embed = {
-                  'embed': {
-                    'title': authorEmail,
-                    'url': articleUrl,
-                    'color': 1441536,
-                    'author': {
-                      'name': articleTitle,
-                      'url': articleUrl
-                    },
-                    'timestamp': embedInfo.timestamp,
-                    'footer': {
-                      'text': articleId
-                    },
-                    'fields': [
-                      {
-                        'name': 'Misspelled word:',
-                        'value': misspelledWord
-                      },
-                      {
-                        'name': 'Correct word:',
-                        'value': correctWord
-                      }
-                    ]
-                  }
-                }
-                client.channels.get(config.alertChannelId).send('', embed)
+                logger.log('FIXED', 'Author has fixed the misspelled word, moving embed to fixed errors log')
                 messageList[y].delete()
+                moveEmbed(embedInfo, 1441536, config.fixedWordChannelId)
               }
             }
           })
@@ -562,4 +495,39 @@ function getUpdatedDictionary () {
       logger.log('DICTIONARY', 'Grabbing latest version of dictionary')
     }
   })
+}
+
+function moveEmbed (embedInfo, embedColor, toVoiceChannel) {
+  const articleId = embedInfo.footer.text
+  const articleTitle = embedInfo.author.name
+  const articleUrl = embedInfo.url
+  const authorEmail = embedInfo.title
+  const misspelledWord = embedInfo.fields[0].value
+  const correctWord = embedInfo.fields[1].value
+  const embed = {
+    'embed': {
+      'title': authorEmail,
+      'url': articleUrl,
+      'color': embedColor,
+      'author': {
+        'name': articleTitle,
+        'url': articleUrl
+      },
+      'timestamp': embedInfo.timestamp,
+      'footer': {
+        'text': articleId
+      },
+      'fields': [
+        {
+          'name': 'Misspelled word:',
+          'value': misspelledWord
+        },
+        {
+          'name': 'Correct word:',
+          'value': correctWord
+        }
+      ]
+    }
+  }
+  client.channels.get(toVoiceChannel).send('', embed)
 }
