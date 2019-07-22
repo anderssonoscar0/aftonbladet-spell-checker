@@ -125,18 +125,15 @@ function readRRS () {
                       if (parsedAuthorBody.querySelector('._1xwBj.abIconMail.abRedLink') !== null) {
                         authorName = parsedAuthorBody.querySelector('._1xwBj.abIconMail.abRedLink').rawAttributes.href
                         authorEmail = authorName.substring(7).split(',')
-                      } else if (getAuthorlink === 'https://aftonbladet.se/av/4084705b-51ad-4918-b2d3-58a7b1fb9459') {
-                        authorName = 'Aftonbladet'
-                        authorEmail = 'webbnyheter@aftonbladet.se'
-                      } else if (getAuthorlink === 'https://aftonbladet.se/av/946fc698-ba09-4c08-84fc-7109dfe301d7') {
-                        authorName = 'TT'
-                        authorEmail = 'webbnyheter@aftonbladet.se'
-                      } else if (getAuthorlink === 'https://aftonbladet.se/av/40177005-baf2-4153-88c2-72f602095a11') {
-                        authorName = 'NöjesBladet'
-                        authorEmail = 'noje@aftonbladet.se'
                       } else {
-                        logger.log(articleId, 'Can\'t find article author with the following link: ' + getAuthorlink)
-                        return
+                        const authorInfo = getAuthorByLink(getAuthorlink)
+                        if (authorInfo) {
+                          authorEmail = authorInfo.authorEmail
+                          authorName = authorInfo.authorName
+                        } else {
+                          logger.log(articleId, 'Can\'t find article author with the following link: ' + getAuthorlink)
+                          return
+                        }
                       }
                       checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
                     })
@@ -371,7 +368,7 @@ function sendDiscordVote (args, message) {
           ]
         }
       }
-      client.channels.get(config.voteChannelId).send('', embed).then(async message => {
+      client.channels.get(config.voteChannelId).send('Voting time! @everyone', embed).then(async message => {
         await message.react('⭐')
         await message.react('❌')
       })
@@ -492,7 +489,7 @@ function getUpdatedDictionary () {
     if (!err) {
       myDictionary = result
     } else {
-      logger.log('DICTIONARY', 'Grabbing latest version of dictionary')
+      logger.log('DICTIONARY', 'Failed to grab latest version of the dictionary')
     }
   })
 }
@@ -530,4 +527,11 @@ function moveEmbed (embedInfo, embedColor, toVoiceChannel) {
     }
   }
   client.channels.get(toVoiceChannel).send('', embed)
+}
+
+function getAuthorByLink (authorLink) {
+  const authorLinks = require('./authors.js')
+  const authorInfo = authorLinks.authors.filter(author => author.id === authorLink)[0]
+  console.log(authorInfo)
+  return authorInfo
 }
