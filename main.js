@@ -532,6 +532,5 @@ function moveEmbed (embedInfo, embedColor, toVoiceChannel) {
 function getAuthorByLink (authorLink) {
   const authorLinks = require('./authors.js')
   const authorInfo = authorLinks.authors.filter(author => author.id === authorLink)[0]
-  console.log(authorInfo)
   return authorInfo
 }
