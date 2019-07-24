@@ -198,8 +198,8 @@ function cleanWord (word) {
 
 function addNewArticle (words, sentences, articleId, authorEmail, articleTitle, url) {
   client.channels.get(config.discordChannelId).send(articleId + ' was just checked. THIS MESSAGE SHOULD UPDATE SOON')
-  client.channels.get(config.discordChannelId).fetchMessages({ limit: 1 }).then(messages => {
-    const messageId = messages.first().id
+    .then(message => {
+      const messageId = message.id
     const newArticle = new Article({
       _id: articleId,
       words,
