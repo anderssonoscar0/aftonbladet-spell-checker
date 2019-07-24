@@ -20,6 +20,11 @@ module.exports = {
       'id': 'https://aftonbladet.se/av/9e290874-b5b3-45ac-abbc-9b7c4fc5ff0f',
       'authorName': 'NöjesBladet',
       'authorEmail': 'noje@aftonbladet.se'
+    },
+    {
+      'id': 'https://aftonbladet.se/av/9fb49383-f5be-41ed-b26e-7dc654b087fc',
+      'authorName': 'TT',
+      'authorEmail': 'webbnyheter@aftonbladet.se'
     }
   ]
 }
