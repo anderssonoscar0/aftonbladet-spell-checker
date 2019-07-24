@@ -469,8 +469,7 @@ function checkForArticleFixes () {
             for (let i = 0; i < wordArray.length; i++) {
               if (misspelledWord === wordArray[i]) {
                 fixed = false
-                if (!moment(embedInfo.timestamp).isBefore(moment().subtract(3, 'hours'))) continue // Skip if not older then 3h
-                messageList[y].react('🚨') // React with a siren after 3 hours
+                if (moment(embedInfo.timestamp).isBefore(moment().subtract(3, 'hours'))) messageList[y].react('🚨') // React with a siren after 3 hours
                 continue
               }
               if (fixed && i === wordArray.length - 1) {
