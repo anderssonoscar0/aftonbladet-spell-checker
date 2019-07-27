@@ -104,6 +104,8 @@ function readRRS () {
             .then(res => res.text())
             .then(htmlbody => {
               const parsedBody = HTMLParser.parse(htmlbody)
+              const twitterNodes = parsedBody.querySelectorAll('._3sD2l')
+              if (twitterNodes.length > 0) twitterNodes.forEach(node => { node.parentNode.removeChild(node) }) // Remove twitter embeds
               try {
                 const authorName = parsedBody.querySelector('._2atUs.abRedLink._1zkyS').rawAttributes.href
                 const authorEmail = authorName.substring(7, authorName.indexOf('?')).split(',')
