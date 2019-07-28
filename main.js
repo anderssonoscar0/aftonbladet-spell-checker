@@ -421,7 +421,7 @@ function checkErrorVotes () {
           const starCount = reactionArray[1]._emoji.name === '⭐'
             ? reactionArray[1].count
             : reactionArray[0].count
-          if (starCount > 1) {
+          if (starCount > 2) {
             // Get article stuffs
             const embedInfo = reactionArray[0].message.embeds[0]
             alertAftonbladet(embedInfo)
