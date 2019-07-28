@@ -110,7 +110,6 @@ function readRRS () {
                 const authorName = parsedBody.querySelector('._2atUs.abRedLink._1zkyS').rawAttributes.href
                 const authorEmail = authorName.substring(7, authorName.indexOf('?')).split(',')
                 const articleTitle = parsedBody.querySelector('._11S-G').rawText
-                if (authorEmail.length > 1) authorEmail.shift()
                 const articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
                 checkSpelling(articleBody, authorEmail, articleId, articleTitle, item.link)
               } catch {
