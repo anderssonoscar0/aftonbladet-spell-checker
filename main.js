@@ -455,7 +455,9 @@ function cleanChannel (deleteAll) {
 }
 
 function checkForArticleFixes () {
-  client.channels.get(config.notFixedWordChannelID).fetchMessages()
+  const channelsToCheck = [config.notFixedWordChannelID, config.voteChannelId]
+  channelsToCheck.forEach(channel => {
+    client.channels.get(channel).fetchMessages()
     .then((list) => {
       const messageList = list.array()
       for (let y = 0; y < messageList.length; y++) {
@@ -483,6 +485,7 @@ function checkForArticleFixes () {
           })
       }
     })
+  })
 }
 
 function getUpdatedDictionary () {
