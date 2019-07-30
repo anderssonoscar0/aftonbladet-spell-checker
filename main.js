@@ -410,28 +410,17 @@ schedule.scheduleJob('*/5 * * * *', () => {
 function checkErrorVotes () {
   client.channels.get(config.voteChannelId).fetchMessages()
     .then((list) => {
-      const listOfMessages = list.array()
-      for (let i = 0; i < listOfMessages.length;) {
-        const reactions = listOfMessages[i].reactions.array()
-        if (reactions.length > 0) {
-          const reactionArray = reactions[0].message.reactions.array()
-          const crossCount = reactionArray[0]._emoji.name === '❌'
-            ? reactionArray[0].count
-            : reactionArray[1].count
-          const starCount = reactionArray[1]._emoji.name === '⭐'
-            ? reactionArray[1].count
-            : reactionArray[0].count
-          if (starCount > 2) {
-            // Get article stuffs
-            const embedInfo = reactionArray[0].message.embeds[0]
+      list.forEach(message => {
+        const crosss = message.reactions.filter(reaction => reaction._emoji.name === '❌').array()[0]
+        const stars = message.reactions.filter(reaction => reaction._emoji.name === '⭐').array()[0]
+        if (crosss.count > 1) message.delete()
+        if (stars.count > 1) {
+          const embedInfo = message.embeds[0] // Get embed info for moving and alerting
             alertAftonbladet(embedInfo)
             moveEmbed(embedInfo, 16711710, config.notFixedWordChannelID)
-            listOfMessages[i].delete()
-          }
-          if (crossCount > 1) listOfMessages[i].delete()
-        }
-        i++
+          message.delete()
       }
+      })
     }, (err) => { throw err })
 }
 
