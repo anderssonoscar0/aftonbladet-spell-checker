@@ -427,18 +427,12 @@ function checkErrorVotes () {
 function cleanChannel (deleteAll) {
   client.channels.get(config.discordChannelId).fetchMessages()
     .then((list) => {
-      const messageList = list.array()
-      for (let i = 0; i < messageList.length;) {
-        if (deleteAll) {
-          messageList[i].delete()
-        } else if (messageList[i].embeds.length > 0) {
-          const messageTimestamp = messageList[i].embeds[0].message.createdTimestamp
-          if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours'))) messageList[i].delete()
-        } else {
-          messageList[i].delete()
-        }
-        i++
-      }
+      list.forEach(message => {
+        if (deleteAll) message.delete()
+        if (message.embeds.length === 0) message.delete()
+        const messageTimestamp = message.createdTimestamp
+        if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours'))) message.delete()
+      })
     })
 }
 
