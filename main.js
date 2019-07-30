@@ -411,8 +411,8 @@ function checkErrorVotes () {
   client.channels.get(config.voteChannelId).fetchMessages()
     .then((list) => {
       list.forEach(message => {
-        const crosss = message.reactions.filter(reaction => reaction._emoji.name === '❌').array()[0]
-        const stars = message.reactions.filter(reaction => reaction._emoji.name === '⭐').array()[0]
+        const crosss = message.reactions.filter(reaction => reaction._emoji.name === '❌').first()
+        const stars = message.reactions.filter(reaction => reaction._emoji.name === '⭐').first()
         if (crosss.count > 1) message.delete()
         if (stars.count > 1) {
           const embedInfo = message.embeds[0] // Get embed info for moving and alerting
