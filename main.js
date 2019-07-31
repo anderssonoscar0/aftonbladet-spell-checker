@@ -157,9 +157,7 @@ async function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
   for (let i = 0; i < wordArray.length; i++) {
     if (breakOnReadMore.test(wordArray[i] + wordArray[i + 1]) || breakOnArticleAbout.test(wordArray[i] + wordArray[i + 1] + wordArray[i + 2])) break
     const cleanedWord = await cleanWord(wordArray[i])
-    if (cleanedWord === undefined || encodeURI(wordArray[i]) === '%E2%81%A0') {
-      // Word got 'removed' at cleaning. SKIPPING
-    } else {
+    if (cleanedWord === undefined || encodeURI(wordArray[i]) === '%E2%81%A0') continue // Ignore word removed at cleanedWord()
       const isWordInDictionary = await myDictionary.spellCheck(cleanedWord)
       const isWordMisspelled = await myDictionary.isMisspelled(cleanedWord)
       if (isWordInDictionary === false && isWordMisspelled === true) {
@@ -185,7 +183,6 @@ async function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
           })
       }
     }
-  }
 
   if (addWords.length > 0) await normalize()
   if (misspelledWords.length > 0) await addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle, url) // Add the misspelled words to MongoDB
