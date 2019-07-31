@@ -201,21 +201,21 @@ function addNewArticle (words, sentences, articleId, authorEmail, articleTitle, 
   client.channels.get(config.discordChannelId).send(articleId + ' was just checked. THIS MESSAGE SHOULD UPDATE SOON')
     .then(message => {
       const messageId = message.id
-    const newArticle = new Article({
-      _id: articleId,
-      words,
-      articleUrl: url,
-      sentences,
-      authorEmail: authorEmail.toString(),
-      discordMessageId: messageId,
-      articleTitle
+      const newArticle = new Article({
+        _id: articleId,
+        words,
+        articleUrl: url,
+        sentences,
+        authorEmail: authorEmail.toString(),
+        discordMessageId: messageId,
+        articleTitle
+      })
+      newArticle.save((err) => {
+        if (err) throw err
+        logger.log(articleId, 'Contains ' + words.length + ' misspelled words')
+        sendDiscordAlert(articleId, new Date(), words, sentences, messageId, authorEmail.toString())
+      })
     })
-    newArticle.save((err) => {
-      if (err) throw err
-      logger.log(articleId, 'Contains ' + words.length + ' misspelled words')
-      sendDiscordAlert(articleId, new Date(), words, sentences, messageId, authorEmail.toString())
-    })
-  })
 }
 
 function updateArticleError (args, addToDictionary, message) {
@@ -416,10 +416,10 @@ function checkErrorVotes () {
         if (crosss.count > 1) message.delete()
         if (stars.count > 1) {
           const embedInfo = message.embeds[0] // Get embed info for moving and alerting
-            alertAftonbladet(embedInfo)
-            moveEmbed(embedInfo, 16711710, config.notFixedWordChannelID)
+          alertAftonbladet(embedInfo)
+          moveEmbed(embedInfo, 16711710, config.notFixedWordChannelID)
           message.delete()
-      }
+        }
       })
     }, (err) => { throw err })
 }
@@ -440,33 +440,33 @@ function checkForArticleFixes () {
   const channelsToCheck = [config.notFixedWordChannelID, config.voteChannelId]
   channelsToCheck.forEach(channel => {
     client.channels.get(channel).fetchMessages()
-    .then((list) => {
-      const messageList = list.array()
-      for (let y = 0; y < messageList.length; y++) {
-        const embedInfo = messageList[y].embeds[0]
-        const misspelledWord = embedInfo.fields[0].value
-        fetch(embedInfo.url)
-          .then(res => res.text())
-          .then(htmlbody => {
-            const parsedBody = HTMLParser.parse(htmlbody)
-            const articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
-            const wordArray = articleBody.split(' ')
-            let fixed = true
-            for (let i = 0; i < wordArray.length; i++) {
-              if (misspelledWord === wordArray[i]) {
-                fixed = false
-                if (moment(embedInfo.timestamp).isBefore(moment().subtract(3, 'hours'))) messageList[y].react('🚨') // React with a siren after 3 hours
-                continue
+      .then((list) => {
+        const messageList = list.array()
+        for (let y = 0; y < messageList.length; y++) {
+          const embedInfo = messageList[y].embeds[0]
+          const misspelledWord = embedInfo.fields[0].value
+          fetch(embedInfo.url)
+            .then(res => res.text())
+            .then(htmlbody => {
+              const parsedBody = HTMLParser.parse(htmlbody)
+              const articleBody = parsedBody.querySelector('._3p4DP._1lEgk').rawText.replace(/\./g, ' ')
+              const wordArray = articleBody.split(' ')
+              let fixed = true
+              for (let i = 0; i < wordArray.length; i++) {
+                if (misspelledWord === wordArray[i]) {
+                  fixed = false
+                  if (moment(embedInfo.timestamp).isBefore(moment().subtract(3, 'hours'))) messageList[y].react('🚨') // React with a siren after 3 hours
+                  continue
+                }
+                if (fixed && i === wordArray.length - 1) {
+                  logger.log('FIXED', 'Author has fixed the misspelled word, moving embed to fixed errors log')
+                  messageList[y].delete()
+                  moveEmbed(embedInfo, 1441536, config.fixedWordChannelId)
+                }
               }
-              if (fixed && i === wordArray.length - 1) {
-                logger.log('FIXED', 'Author has fixed the misspelled word, moving embed to fixed errors log')
-                messageList[y].delete()
-                moveEmbed(embedInfo, 1441536, config.fixedWordChannelId)
-              }
-            }
-          })
-      }
-    })
+            })
+        }
+      })
   })
 }
 
