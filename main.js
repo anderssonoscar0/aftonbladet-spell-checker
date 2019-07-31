@@ -441,9 +441,8 @@ function checkForArticleFixes () {
   channelsToCheck.forEach(channel => {
     client.channels.get(channel).fetchMessages()
       .then((list) => {
-        const messageList = list.array()
-        for (let y = 0; y < messageList.length; y++) {
-          const embedInfo = messageList[y].embeds[0]
+        list.forEach(message => {
+          const embedInfo = message.embeds[0]
           const misspelledWord = embedInfo.fields[0].value
           fetch(embedInfo.url)
             .then(res => res.text())
@@ -455,17 +454,17 @@ function checkForArticleFixes () {
               for (let i = 0; i < wordArray.length; i++) {
                 if (misspelledWord === wordArray[i]) {
                   fixed = false
-                  if (moment(embedInfo.timestamp).isBefore(moment().subtract(3, 'hours'))) messageList[y].react('🚨') // React with a siren after 3 hours
+                  if (moment(embedInfo.timestamp).isBefore(moment().subtract(3, 'hours'))) message.react('🚨') // React with a siren after 3 hours
                   continue
                 }
                 if (fixed && i === wordArray.length - 1) {
                   logger.log('FIXED', 'Author has fixed the misspelled word, moving embed to fixed errors log')
-                  messageList[y].delete()
+                  message.delete()
                   moveEmbed(embedInfo, 1441536, config.fixedWordChannelId)
                 }
               }
             })
-        }
+        })
       })
   })
 }
