@@ -389,7 +389,7 @@ schedule.scheduleJob('*/1 * * * *', () => {
   checkErrorVotes()
 })
 
-schedule.scheduleJob('*/10 * * * *', () => {
+schedule.scheduleJob('*/3 * * * *', () => {
   logger.log('(SCHEDULE-JOB)', 'Running cleaning of #aftonbladet')
   cleanChannel(false)
 })
