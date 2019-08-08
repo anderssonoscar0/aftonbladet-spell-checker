@@ -30,6 +30,11 @@ module.exports = {
       'id': 'https://aftonbladet.se/av/37ceb4ff-f6fa-4436-88d8-91f68e901b08',
       'authorName': 'Aftonbladet',
       'authorEmail': 'webbnyheter@aftonbladet.se'
+    },
+    {
+      'id': 'https://aftonbladet.se/av/784d7e85-c655-45bb-b43d-57712d4b2d74',
+      'authorName': 'TT',
+      'authorEmail': 'redaktionen@tt.se'
     }
   ]
 }
