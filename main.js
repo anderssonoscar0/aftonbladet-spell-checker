@@ -426,9 +426,9 @@ function cleanChannel (deleteAll) {
     .then((list) => {
       list.forEach(message => {
         if (deleteAll) message.delete()
-        if (message.embeds.length === 0) message.delete()
+        if (message.embeds.length === 0 && !deleteAll) message.delete()
         const messageTimestamp = message.createdTimestamp
-        if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours'))) message.delete()
+        if (moment(messageTimestamp).isBefore(moment().subtract(3, 'hours')) && !deleteAll) message.delete()
       })
     })
 }
