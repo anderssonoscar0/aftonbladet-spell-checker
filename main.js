@@ -158,31 +158,31 @@ async function checkSpelling (html, authorEmail, articleId, articleTitle, url) {
     if (breakOnReadMore.test(wordArray[i] + wordArray[i + 1]) || breakOnArticleAbout.test(wordArray[i] + wordArray[i + 1] + wordArray[i + 2])) break
     const cleanedWord = await cleanWord(wordArray[i])
     if (cleanedWord === undefined || encodeURI(wordArray[i]) === '%E2%81%A0') continue // Ignore word removed at cleanedWord()
-      const isWordInDictionary = await myDictionary.spellCheck(cleanedWord)
-      const isWordMisspelled = await myDictionary.isMisspelled(cleanedWord)
-      if (isWordInDictionary === false && isWordMisspelled === true) {
-        await fetch('https://svenska.se/tri/f_saol.php?sok=' + encodeURI(cleanedWord))
-          .then(async res => {
-            const htmlbody = await res.textConverted()
-            const parsedBody = await HTMLParser.parse(htmlbody)
-            const test = await parsedBody.structuredText
-            if (await test.includes('gav inga svar')) {
-              logger.log(articleId, 'NOT IN DICT: ' + cleanedWord)
-              const sentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
+    const isWordInDictionary = await myDictionary.spellCheck(cleanedWord)
+    const isWordMisspelled = await myDictionary.isMisspelled(cleanedWord)
+    if (isWordInDictionary === false && isWordMisspelled === true) {
+      await fetch('https://svenska.se/tri/f_saol.php?sok=' + encodeURI(cleanedWord))
+        .then(async res => {
+          const htmlbody = await res.textConverted()
+          const parsedBody = await HTMLParser.parse(htmlbody)
+          const test = await parsedBody.structuredText
+          if (await test.includes('gav inga svar')) {
+            logger.log(articleId, 'NOT IN DICT: ' + cleanedWord)
+            const sentence = wordArray[i - 3] + ' ' + wordArray[i - 2] + ' ' + wordArray[i - 1] + ' ' +
                 wordArray[i].toUpperCase() + ' ' + wordArray[i + 1] + ' ' + wordArray[i + 2] + ' ' + wordArray[i + 3]
-              // Check if the sentence contains invalid characters
-              if (!(misspelledWords.indexOf(cleanedWord) > -1)) {
-                misspelledWords.push(cleanedWord)
-                sentences.push(sentence)
-              }
-            } else if (await !(addWords.indexOf(cleanedWord) > -1)) {
-              await addWords.push(cleanedWord)
-              await logger.log(articleId, 'Adding to DICT: ' + cleanedWord)
-              await fs.appendFileSync('./dict/sv-SE.dic', '\n' + cleanedWord)
+            // Check if the sentence contains invalid characters
+            if (!(misspelledWords.indexOf(cleanedWord) > -1)) {
+              misspelledWords.push(cleanedWord)
+              sentences.push(sentence)
             }
-          })
-      }
+          } else if (await !(addWords.indexOf(cleanedWord) > -1)) {
+            await addWords.push(cleanedWord)
+            await logger.log(articleId, 'Adding to DICT: ' + cleanedWord)
+            await fs.appendFileSync('./dict/sv-SE.dic', '\n' + cleanedWord)
+          }
+        })
     }
+  }
 
   if (addWords.length > 0) await normalize()
   if (misspelledWords.length > 0) await addNewArticle(misspelledWords, sentences, articleId, authorEmail, articleTitle, url) // Add the misspelled words to MongoDB
