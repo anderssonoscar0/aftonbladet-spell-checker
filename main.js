@@ -80,12 +80,8 @@ client.on('message', message => {
     }
   }
 
-  if (command === 'clear') {
-    let clean = false
-    if (args.length > 0) clean = true
-    cleanChannel(clean) // Clean #aftonbladet
-  }
-  if (command === 'checkvotes') checkErrorVotes()
+  if (command === 'clear') cleanChannel(args.length > 0) // Clean #aftonbladet
+  if (command === 'checkvotes') checkErrorVotes() // Force vote checker
 })
 
 function readRRS () {
