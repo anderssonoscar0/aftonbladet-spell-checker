@@ -35,6 +35,11 @@ module.exports = {
       'id': 'https://aftonbladet.se/av/784d7e85-c655-45bb-b43d-57712d4b2d74',
       'authorName': 'TT',
       'authorEmail': 'redaktionen@tt.se'
+    },
+    {
+      'id': 'https://aftonbladet.se/av/8f27ff4e-ed0a-441b-8c02-52c9a3c593c8',
+      'authorName': 'Caroline Englund',
+      'authorEmail': 'caroline@breakit.se'
     }
   ]
 }
