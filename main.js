@@ -11,11 +11,8 @@ const fetch = require('node-fetch')
 const fs = require('fs')
 const SpellChecker = require('simple-spellchecker')
 const moment = require('moment')
-moment().format()
 
-getUpdatedDictionary()
-
-let myDictionary = null
+// Imports
 const config = require('./config.js')
 const mailer = require('./mailer.js')
 const logger = require('./logger.js')
@@ -24,6 +21,13 @@ const Article = require('./schemas/article.js')
 // Global variables
 const breakOnReadMore = /[LÄS]+[OCKSÅ]+/
 const breakOnArticleAbout = /[ARTIKELN ]+[HANDLAR ]+[OM]+/
+let myDictionary = null
+
+// Startup
+moment().format()
+getUpdatedDictionary()
+normalize()
+client.login(config.discordToken)
 
 // Discord startup
 client.on('ready', () => {
@@ -35,8 +39,6 @@ client.on('ready', () => {
     useNewUrlParser: true
   })
 })
-normalize()
-client.login(config.discordToken)
 
 // Discord listen
 client.on('message', message => {
