@@ -328,7 +328,7 @@ function alertAftonbladet (embedInfo) {
     from: config.mailAdress,
     to: authorEmail, // CHANGE THIS LINE TO SEND TEST MAIL!!!!!!!!!!!
     subject: 'Hej! Jag har hittat ett misstag i en artikel',
-    html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a><br><br>Ha en fortsatt bra dag!<br><br>Med vänliga hälsningar<br>Teamet bakom AftonbladetSpellchecker'
+    html: '<p><b>"' + misspelledWord + '"</b> stavas egentligen såhär "<b>' + correctWord + '</b>"</p><br><a href="' + articleUrl + '">' + articleTitle + '</a><br><br>' + getThingByTime() + '<br><br>Med vänliga hälsningar<br>Teamet bakom AftonbladetSpellchecker'
   }
   mailer.mail(mailOptions)
 }
@@ -515,4 +515,12 @@ function getAuthorByLink (authorLink) {
   const authorLinks = require('./authors.js')
   const authorInfo = authorLinks.authors.filter(author => author.id === authorLink)[0]
   return authorInfo
+}
+
+function getThingByTime () {
+  const currentHourHH = moment().hours()
+  let message = ''
+  if (currentHourHH >= 9 && currentHourHH <= 17) message = 'Ha en fortsatt trevlig dag!'
+  if (currentHourHH >= 18 && currentHourHH <= 20) message = 'Trevlig kväll!'
+  return message
 }
